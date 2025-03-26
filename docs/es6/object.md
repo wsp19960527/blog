@@ -1,13 +1,11 @@
 ---
-
 title: ES6 对象的扩展
 date: 2025/03/26
 tags:
-
-- es6
-- object
-  categories:
-- 前端
+  - es6
+  - object
+categories:
+  - 前端
 ---
 
 ![](https://static.vue-js.com/4da4dd40-5427-11eb-ab90-d9ae814b240d.png)

@@ -50,7 +50,7 @@ export default defineUserConfig({
 						children: [
 							{ text: "webpack", link: "/docs/webpack/webpack.md" },
 							{ text: "构建流程", link: "/docs/webpack/build_process.md" },
-						]
+						],
 					},
 					{
 						text: "NodeJS",
@@ -95,7 +95,6 @@ export default defineUserConfig({
 				children: [
 					{ text: "javascript", link: "/docs/fontend/js" },
 					{ text: "八股文", link: "/docs/八股文/" },
-
 				],
 			},
 		],
