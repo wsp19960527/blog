@@ -1,6 +1,15 @@
-# 面试官：Javascript本地存储的方式有哪些？区别及应用场景？
+---
+title: Javascript本地存储的方式
+date: 2025/03/26
+tags:
+  - js
+  - javascript
+  - 缓存
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/68dccf20-849f-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/68dccf20-849f-11eb-ab90-d9ae814b240d.png)
 
 ## 一、方式
 
@@ -10,7 +19,6 @@
 - sessionStorage
 - localStorage
 - indexedDB
-
 
 ### cookie
 
@@ -48,7 +56,7 @@ Path=/docs   # /docs/Web/ 下的资源会带 Cookie 首部
 关于`cookie`的使用如下：
 
 ```js
-document.cookie = '名字=值';
+document.cookie = "名字=值";
 ```
 
 关于`cookie`的修改，首先要确定`domain`和`path`属性都是相同的才可以，其中有一个不同得时候都会创建出一个新的`cookie`
@@ -60,11 +68,9 @@ document.cookie =name=bb; domain=aa.net; path=/  # 客户端设置
 
 最后`cookie`的删除，最常用的方法就是给`cookie`设置一个过期的事件，这样`cookie`过期后会被浏览器删除
 
-
-
 ### localStorage
 
-`HTML5`新方法，IE8及以上浏览器都兼容
+`HTML5`新方法，IE8 及以上浏览器都兼容
 
 ### 特点
 
@@ -80,54 +86,50 @@ document.cookie =name=bb; domain=aa.net; path=/  # 客户端设置
 设置
 
 ```js
-localStorage.setItem('username','cfangxu');
+localStorage.setItem("username", "cfangxu");
 ```
 
 获取
 
 ```js
-localStorage.getItem('username')
+localStorage.getItem("username");
 ```
 
 获取键名
 
 ```js
-localStorage.key(0) //获取第一个键名
+localStorage.key(0); //获取第一个键名
 ```
 
 删除
 
 ```js
-localStorage.removeItem('username')
+localStorage.removeItem("username");
 ```
 
 一次性清除所有存储
 
 ```js
-localStorage.clear()
+localStorage.clear();
 ```
 
 `localStorage` 也不是完美的，它有两个缺点：
 
-- 无法像` Cookie `一样设置过期时间
+- 无法像`Cookie`一样设置过期时间
 - 只能存入字符串，无法直接存对象
 
 ```js
-localStorage.setItem('key', {name: 'value'});
-console.log(localStorage.getItem('key')); // '[object, Object]'
+localStorage.setItem("key", { name: "value" });
+console.log(localStorage.getItem("key")); // '[object, Object]'
 ```
-
-
 
 ### sessionStorage
 
 `sessionStorage `和 `localStorage `使用方法基本一致，唯一不同的是生命周期，一旦页面（会话）关闭，`sessionStorage` 将会删除数据
 
-
-
 ### 扩展的前端存储方式
 
-`indexedDB `是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索
+`indexedDB `是一种低级 API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该 API 使用索引来实现对该数据的高性能搜索
 
 虽然 `Web Storage `对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。`IndexedDB`提供了一个解决方案
 
@@ -135,7 +137,7 @@ console.log(localStorage.getItem('key')); // '[object, Object]'
 
 - 储存量理论上没有上限
 - 所有操作都是异步的，相比 `LocalStorage` 同步操作性能更高，尤其是数据量较大时
-- 原生支持储存` JS `的对象
+- 原生支持储存`JS`的对象
 - 是个正经的数据库，意味着数据库能干的事它都能干
 
 #### 缺点：
@@ -154,20 +156,15 @@ console.log(localStorage.getItem('key')); // '[object, Object]'
 
 关于使用`indexdb`的使用会比较繁琐，大家可以通过使用`Godb.js`库进行缓存，最大化的降低操作难度
 
-
-
-
 ## 二、区别
 
 关于`cookie`、`sessionStorage`、`localStorage`三者的区别主要如下：
 
-- 存储大小：` cookie`数据大小不能超过`4k`，`sessionStorage`和`localStorage `虽然也有存储大小的限制，但比`cookie`大得多，可以达到5M或更大
+- 存储大小：` cookie`数据大小不能超过`4k`，`sessionStorage`和`localStorage `虽然也有存储大小的限制，但比`cookie`大得多，可以达到 5M 或更大
 
-- 有效时间：` localStorage   `存储持久数据，浏览器关闭后数据不丢失除非主动删除数据； `sessionStorage  `数据在当前浏览器窗口关闭后自动删除；` cookie `设置的`cookie`过期时间之前一直有效，即使窗口或浏览器关闭
+- 有效时间：`localStorage  `存储持久数据，浏览器关闭后数据不丢失除非主动删除数据； `sessionStorage  `数据在当前浏览器窗口关闭后自动删除；`cookie`设置的`cookie`过期时间之前一直有效，即使窗口或浏览器关闭
 
 - 数据与服务器之间的交互方式，`  cookie`的数据会自动的传递到服务器，服务器端也可以写`cookie`到客户端； `sessionStorage`和`localStorage`不会自动把数据发给服务器，仅在本地保存
-
-
 
 ## 三、应用场景
 
@@ -177,8 +174,6 @@ console.log(localStorage.getItem('key')); // '[object, Object]'
 - 适合长期保存在本地的数据（令牌），推荐使用`localStorage`
 - 敏感账号一次性登录，推荐使用`sessionStorage`
 - 存储大量数据的情况、在线文档（富文本编辑器）保存编辑历史的情况，推荐使用`indexedDB`
-
-
 
 ## 相关连接
 

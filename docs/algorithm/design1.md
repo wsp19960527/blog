@@ -1,9 +1,15 @@
-# 面试官：说说你对分而治之、动态规划的理解？区别？
+---
+title: 分而治之、动态规划
+date: 2025/03/26
+tags:
+  - algorithm
+  - 分而治之
+  - 动态规划
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/298437b0-29d0-11ec-a752-75723a64e8f5.png)
-
+![](https://static.vue-js.com/298437b0-29d0-11ec-a752-75723a64e8f5.png)
 
 ## 一、分而治之
 
@@ -31,22 +37,20 @@
 同样二分搜索也能使用分而治之的思想去实现，代码如下：
 
 ```js
-function binarySearch(arr,l,r,target){
-    if(l> r){
-        return -1;
-    }
-    let mid = l + Math.floor((r-l)/2)
-    if(arr[mid] === target){
-        return mid;
-    }else if(arr[mid] < target ){
-        return binarySearch(arr,mid + 1,r,target)
-    }else{
-        return binarySearch(arr,l,mid - 1,target)
-    }
+function binarySearch(arr, l, r, target) {
+	if (l > r) {
+		return -1;
+	}
+	let mid = l + Math.floor((r - l) / 2);
+	if (arr[mid] === target) {
+		return mid;
+	} else if (arr[mid] < target) {
+		return binarySearch(arr, mid + 1, r, target);
+	} else {
+		return binarySearch(arr, l, mid - 1, target);
+	}
 }
 ```
-
-
 
 ## 二、动态规划
 
@@ -58,11 +62,9 @@ function binarySearch(arr,l,r,target){
 
 然后呢，把子问题答案保存起来，以减少重复计算。再根据子问题答案反推，得出原问题解的一种方法。
 
-一般这些子问题很相似，可以通过函数关系式递推出来，例如斐波那契数列，我们可以得到公式：当 n 大于 2的时候，F(n) =  F(n-1) + F(n-2) ，
+一般这些子问题很相似，可以通过函数关系式递推出来，例如斐波那契数列，我们可以得到公式：当 n 大于 2 的时候，F(n) = F(n-1) + F(n-2) ，
 
-f(10)= f(9)+f(8),f(9) = f(8) + f(7)...是重叠子问题，当n = 1、2的时候，对应的值为2，这时候就通过可以使用一个数组记录每一步计算的结果，以此类推，减少不必要的重复计算
-
-
+f(10)= f(9)+f(8),f(9) = f(8) + f(7)...是重叠子问题，当 n = 1、2 的时候，对应的值为 2，这时候就通过可以使用一个数组记录每一步计算的结果，以此类推，减少不必要的重复计算
 
 ### 适用场景
 
@@ -76,7 +78,6 @@ f(10)= f(9)+f(8),f(9) = f(8) + f(7)...是重叠子问题，当n = 1、2的时候
 - 递归定义最优解的值
 - 按自底向上的方式计算最优解的值
 - 由计算出的结果构造一个最优解
-
 
 ## 三、区别
 
@@ -93,8 +94,6 @@ f(10)= f(9)+f(8),f(9) = f(8) + f(7)...是重叠子问题，当n = 1、2的时候
 - 动态规划：有最优子结构和重叠子问题
 
 - 分而治之：各子问题独立
-
-
 
 ## 参考文献
 

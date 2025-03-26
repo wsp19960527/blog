@@ -1,6 +1,15 @@
-# 面试官：你是怎么理解ES6中 Decorator 的？使用场景？
+---
+title: ES6中 Decorator 的理解和使用场景
+date: 2025/03/26
+tags:
+  - es6
+  - decorator
+  - 装饰器
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/7df43560-5ba5-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/7df43560-5ba5-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、介绍
 
@@ -13,15 +22,14 @@ Decorator，即装饰器，从名字上很容易让我们联想到装饰者模�
 这里定义一个士兵，这时候他什么装备都没有
 
 ```js
-class soldier{ 
-}
+class soldier {}
 ```
 
 定义一个得到 AK 装备的函数，即装饰器
 
 ```js
-function strong(target){
-    target.AK = true
+function strong(target) {
+	target.AK = true;
 }
 ```
 
@@ -29,22 +37,19 @@ function strong(target){
 
 ```js
 @strong
-class soldier{
-}
+class soldier {}
 ```
 
 这时候士兵就有武器了
 
 ```js
-soldier.AK // true
+soldier.AK; // true
 ```
 
 上述代码虽然简单，但也能够清晰看到了使用`Decorator`两大优点：
 
 - 代码可读性变强了，装饰器命名相当于一个注释
 - 在不改变原有代码情况下，对原来功能进行扩展
-
-
 
 ## 二、用法
 
@@ -74,35 +79,33 @@ A = decorator(A) || A;
 ```js
 @testable
 class MyTestableClass {
-  // ...
+	// ...
 }
 
 function testable(target) {
-  target.isTestable = true;
+	target.isTestable = true;
 }
 
-MyTestableClass.isTestable // true
+MyTestableClass.isTestable; // true
 ```
 
 如果想要传递参数，可以在装饰器外层再封装一层函数
 
 ```js
 function testable(isTestable) {
-  return function(target) {
-    target.isTestable = isTestable;
-  }
+	return function (target) {
+		target.isTestable = isTestable;
+	};
 }
 
 @testable(true)
 class MyTestableClass {}
-MyTestableClass.isTestable // true
+MyTestableClass.isTestable; // true
 
 @testable(false)
 class MyClass {}
-MyClass.isTestable // false
+MyClass.isTestable; // false
 ```
-
-
 
 ### 类属性的装饰
 
@@ -115,9 +118,9 @@ MyClass.isTestable // false
 首先定义一个`readonly`装饰器
 
 ```js
-function readonly(target, name, descriptor){
-  descriptor.writable = false; // 将可写属性设为false
-  return descriptor;
+function readonly(target, name, descriptor) {
+	descriptor.writable = false; // 将可写属性设为false
+	return descriptor;
 }
 ```
 
@@ -125,29 +128,31 @@ function readonly(target, name, descriptor){
 
 ```javascript
 class Person {
-  @readonly
-  name() { return `${this.first} ${this.last}` }
+	@readonly
+	name() {
+		return `${this.first} ${this.last}`;
+	}
 }
 ```
 
 相当于以下调用
 
 ```js
-readonly(Person.prototype, 'name', descriptor);
+readonly(Person.prototype, "name", descriptor);
 ```
 
 如果一个方法有多个装饰器，就像洋葱一样，先从外到内进入，再由内到外执行
 
 ```javascript
-function dec(id){
-    console.log('evaluated', id);
-    return (target, property, descriptor) =>console.log('executed', id);
+function dec(id) {
+	console.log("evaluated", id);
+	return (target, property, descriptor) => console.log("executed", id);
 }
 
 class Example {
-    @dec(1)
-    @dec(2)
-    method(){}
+	@dec(1)
+	@dec(2)
+	method() {}
 }
 // evaluated 1
 // evaluated 2
@@ -156,8 +161,6 @@ class Example {
 ```
 
 外层装饰器`@dec(1)`先进入，但是内层装饰器`@dec(2)`先执行
-
-
 
 ### 注意
 
@@ -194,8 +197,6 @@ add = function () {
 
 意图是执行后`counter`等于 1，但是实际上结果是`counter`等于 0
 
-
-
 ## 三、使用场景
 
 基于`Decorator`强大的作用，我们能够完成各种场景的需求，下面简单列举几种：
@@ -219,24 +220,24 @@ export default class MyReactComponent extends React.Component {}
 
 ```js
 function mixins(...list) {
-  return function (target) {
-    Object.assign(target.prototype, ...list);
-  };
+	return function (target) {
+		Object.assign(target.prototype, ...list);
+	};
 }
 
 // 使用
 const Foo = {
-  foo() { console.log('foo') }
+	foo() {
+		console.log("foo");
+	},
 };
 
 @mixins(Foo)
 class MyClass {}
 
 let obj = new MyClass();
-obj.foo() // "foo"
+obj.foo(); // "foo"
 ```
-
-
 
 下面再讲讲`core-decorators.js`几个常见的装饰器
 
@@ -245,13 +246,13 @@ obj.foo() // "foo"
 `autobind`装饰器使得方法中的`this`对象，绑定原始对象
 
 ```javascript
-import { autobind } from 'core-decorators';
+import { autobind } from "core-decorators";
 
 class Person {
-  @autobind
-  getPerson() {
-    return this;
-  }
+	@autobind
+	getPerson() {
+		return this;
+	}
 }
 
 let person = new Person();
@@ -261,42 +262,36 @@ getPerson() === person;
 // true
 ```
 
-
-
 #### @readonly
 
 `readonly`装饰器使得属性或方法不可写
 
 ```javascript
-import { readonly } from 'core-decorators';
+import { readonly } from "core-decorators";
 
 class Meal {
-  @readonly
-  entree = 'steak';
+	@readonly
+	entree = "steak";
 }
 
 var dinner = new Meal();
-dinner.entree = 'salmon';
+dinner.entree = "salmon";
 // Cannot assign to read only property 'entree' of [object Object]
 ```
-
-
-
-
 
 #### @deprecate
 
 `deprecate`或`deprecated`装饰器在控制台显示一条警告，表示该方法将废除
 
 ```javascript
-import { deprecate } from 'core-decorators';
+import { deprecate } from "core-decorators";
 
 class Person {
-  @deprecate
-  facepalm() {}
+	@deprecate
+	facepalm() {}
 
-  @deprecate('功能废除了')
-  facepalmHard() {}
+	@deprecate("功能废除了")
+	facepalmHard() {}
 }
 
 let person = new Person();
@@ -306,10 +301,7 @@ person.facepalm();
 
 person.facepalmHard();
 // DEPRECATION Person#facepalmHard: 功能废除了
-
 ```
-
-
 
 ## 参考文献
 

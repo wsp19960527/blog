@@ -1,8 +1,15 @@
-# 面试官：说说你对git rebase 和 git merge的理解？区别？
+---
+title: git rebase 和 git merge的理解
+date: 2025/03/26
+tags:
+  - git
+  - rebase
+  - merge
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/77590970-fdd4-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/77590970-fdd4-11eb-bc6f-3f06e1491664.png)
 
 ## 一、是什么
 
@@ -13,8 +20,6 @@
 
 `git rebase` 与 `git merge`都有相同的作用，都是将一个分支的提交合并到另一分支上，但是在原理上却不相同
 
-
-
 用法上两者也十分的简单：
 
 ### git merge
@@ -24,8 +29,6 @@
 ```cmd
 git merge xxx
 ```
-
-
 
 ### git rebase
 
@@ -41,10 +44,6 @@ git rebase -i <commit>
 git rebase --continue
 ```
 
-
-
-
-
 ## 二、分析
 
 ### git merge
@@ -55,7 +54,7 @@ git rebase --continue
 
 举个例子，`bugfix`分支是从`master`分支分叉出来的，如下所示：
 
- ![](https://static.vue-js.com/88410a30-fdd4-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/88410a30-fdd4-11eb-991d-334fd31f0201.png)
 
 合并` bugfix`分支到`master`分支时，如果`master`分支的状态没有被更改过，即 `bugfix`分支的历史记录包含`master`分支所有的历史记录
 
@@ -63,45 +62,37 @@ git rebase --continue
 
 如果`master`分支的历史记录在创建`bugfix`分支后又有新的提交，如下情况：
 
- ![](https://static.vue-js.com/929eb220-fdd4-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/929eb220-fdd4-11eb-991d-334fd31f0201.png)
 
 这时候使用`git merge`的时候，会生成一个新的提交，并且`master`分支的`HEAD`会移动到新的分支上，如下：
 
- ![](https://static.vue-js.com/9fdfa3e0-fdd4-11eb-991d-334fd31f0201.png)
-
-
+![](https://static.vue-js.com/9fdfa3e0-fdd4-11eb-991d-334fd31f0201.png)
 
 从上面可以看到，会把两个分支的最新快照以及二者最近的共同祖先进行三方合并，合并的结果是生成一个新的快照
-
-
 
 ### git rebase
 
 同样，`master`分支的历史记录在创建`bugfix`分支后又有新的提交，如下情况：
 
- ![](https://static.vue-js.com/ab2d5120-fdd4-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/ab2d5120-fdd4-11eb-bc6f-3f06e1491664.png)
 
 通过`git rebase`，会变成如下情况：
 
- ![](https://static.vue-js.com/b72aed70-fdd4-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/b72aed70-fdd4-11eb-991d-334fd31f0201.png)
 
 在移交过程中，如果发生冲突，需要修改各自的冲突，如下：
 
- ![](https://static.vue-js.com/c9ba0e80-fdd4-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/c9ba0e80-fdd4-11eb-bc6f-3f06e1491664.png)
 
 `rebase`之后，`master`的`HEAD`位置不变。因此，要合并`master`分支和`bugfix`分支
 
- ![](https://static.vue-js.com/dc660660-fdd4-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/dc660660-fdd4-11eb-991d-334fd31f0201.png)
 
 从上面可以看到，`rebase`会找到不同的分支的最近共同祖先，如上图的`B`
 
 然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件（老的提交`X`和`Y`也没有被销毁，只是简单地不能再被访问或者使用）
 
 然后将当前分支指向目标最新位置`D`, 然后将之前另存为临时文件的修改依序应用
-
-
-
-
 
 ## 三、区别
 
@@ -113,14 +104,11 @@ git rebase --continue
 
 其实是一种非破坏性的操作，对现有分支不会以任何方式被更改，但是会导致历史记录相对复杂
 
-
-
 ### rebase
 
 `rebase `会将整个分支移动到另一个分支上，有效地整合了所有分支上的提交
 
-主要的好处是历史记录更加清晰，是在原有提交的基础上将差异内容反映进去，消除了 ` git merge `所需的不必要的合并提交
-
+主要的好处是历史记录更加清晰，是在原有提交的基础上将差异内容反映进去，消除了 `git merge`所需的不必要的合并提交
 
 ## 参考文献
 

@@ -1,8 +1,15 @@
-# 面试官：说说你对算法中时间复杂度，空间复杂度的理解？如何计算？
+---
+title: 算法中时间复杂度，空间复杂度的理解
+date: 2025/03/26
+tags:
+  - algorithm
+  - time
+  - space
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/07fd4050-16fc-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/07fd4050-16fc-11ec-a752-75723a64e8f5.png)
 
 ## 一、前言
 
@@ -19,17 +26,15 @@
 
 最坏情况是算法运行时间的上界，对于某些算法来说，最坏情况出现的比较频繁，也意味着平均情况和最坏情况一样差
 
-
-
 ## 二、时间复杂度
 
 时间复杂度是指执行这个算法所需要的计算工作量，其复杂度反映了程序执行时间「随输入规模增长而增长的量级」，在很大程度上能很好地反映出算法的优劣与否
 
 一个算法花费的时间与算法中语句的「执行次数成正比」，执行次数越多，花费的时间就越多
 
-算法的复杂度通常用大O符号表述，定义为`T(n) = O(f(n))`，常见的时间复杂度有：O(1)常数型、O(log n)对数型、O(n)线性型、O(nlogn)线性对数型、O(n^2)平方型、O(n^3)立方型、O(n^k)k次方型、O(2^n)指数型，如下图所示：
+算法的复杂度通常用大 O 符号表述，定义为`T(n) = O(f(n))`，常见的时间复杂度有：O(1)常数型、O(log n)对数型、O(n)线性型、O(nlogn)线性对数型、O(n^2)平方型、O(n^3)立方型、O(n^k)k 次方型、O(2^n)指数型，如下图所示：
 
- ![](https://static.vue-js.com/33d5ebf0-16fc-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/33d5ebf0-16fc-11ec-8e64-91fdec0f05a1.png)
 
 从上述可以看到，随着问题规模`n`的不断增大，上述时间复杂度不断增大，算法的执行效率越低，由小到大排序如下：
 
@@ -43,13 +48,13 @@
 
 ```js
 function process(n) {
-  let a = 1
-  let b = 2
-  let sum = a + b
-  for(let i = 0; i < n; i++) {
-    sum += i
-  }
-  return sum
+	let a = 1;
+	let b = 2;
+	let sum = a + b;
+	for (let i = 0; i < n; i++) {
+		sum += i;
+	}
+	return sum;
 }
 ```
 
@@ -59,12 +64,12 @@ function process(n) {
 
 ```js
 function process(n) {
- let count = 0
-  for(let i = 0; i < n; i++){
-    for(let i = 0; i < n; i++){
-      count += 1
-    }
-  }
+	let count = 0;
+	for (let i = 0; i < n; i++) {
+		for (let i = 0; i < n; i++) {
+			count += 1;
+		}
+	}
 }
 ```
 
@@ -74,16 +79,16 @@ function process(n) {
 
 ```js
 function process(n) {
-  let sum = 0
-  for(let i = 0; i < n; i++) {
-    sum += i
-  }
-  for(let i = 0; i < n; i++){
-    for(let i = 0; i < n; i++){
-      sum += 1
-    }
-  }
-  return sum
+	let sum = 0;
+	for (let i = 0; i < n; i++) {
+		sum += i;
+	}
+	for (let i = 0; i < n; i++) {
+		for (let i = 0; i < n; i++) {
+			sum += 1;
+		}
+	}
+	return sum;
 }
 ```
 
@@ -93,20 +98,18 @@ function process(n) {
 
 ```js
 function process(n) {
-  let i = 1; // ①
-  while (i <= n) {
-     i = i * 2; // ②
-  }
+	let i = 1; // ①
+	while (i <= n) {
+		i = i * 2; // ②
+	}
 }
 ```
 
-循环语句中以2的倍数来逼近`n`，每次都乘以2。如果用公式表示就是1 *  2 * 2 * 2 … * 2 <=n，也就是说2的`x`次方小于等于`n`时会执行循环体，记作`2^x <= n`，于是得出`x<=logn`
+循环语句中以 2 的倍数来逼近`n`，每次都乘以 2。如果用公式表示就是 1 _ 2 _ 2 _ 2 … _ 2 <=n，也就是说 2 的`x`次方小于等于`n`时会执行循环体，记作`2^x <= n`，于是得出`x<=logn`
 
 因此循环在执行`logn`次之后，便结束，因此时间复杂度为`O(logn)`
 
 同理，如果一个`O(n)`循环里面嵌套`O(logn)`的循环，则时间复杂度为`O(nlogn)`，像`O(n^3)`无非也就是嵌套了三层`O(n)`循环
-
-
 
 ## 三、空间复杂度
 
@@ -117,9 +120,9 @@ function process(n) {
 下面给出空间复杂度为`O(1)`的示例，如下
 
 ```js
-let a = 1
-let b = 2
-let c = 3
+let a = 1;
+let b = 2;
+let c = 3;
 ```
 
 上述代码的临时空间不会随着`n`的变化而变化，因此空间复杂度为`O(1)`
@@ -134,10 +137,6 @@ for(i=1; i<=n; ++i){
 上述可以看到，随着`n`的增加，数组的占用的内存空间越大
 
 通常来说，只要算法不涉及到动态分配的空间，以及递归、栈所需的空间，空间复杂度通常为`O(1)`，一个一维数组`a[n]`，空间复杂度`O(n)`，二维数组为`O(n^2)`
-
-
-
-
 
 ## 参考文献
 

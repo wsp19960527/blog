@@ -1,18 +1,19 @@
-# 面试官：说说微信小程序中路由跳转的方式有哪些？区别？
+---
+title: 路由跳转的方式
+date: 2025/03/26
+tags:
+  - 微信小程序
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/52bd3820-31a5-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/52bd3820-31a5-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
 微信小程序拥有`web`网页和`Application`共同的特征，我们的页面都不是孤立存在的，而是通过和其他页面进行交互，来共同完成系统的功能
 
 在微信小程序中，每个页面可以看成是一个` pageModel`，`pageModel `全部以栈的形式进行管理
-
-
 
 ## 二、有哪些
 
@@ -24,8 +25,6 @@
 - wx.navigateBack(Object)
 - wx.reLaunch(Object)
 
-
-
 ### wx.navigateTo(Object)
 
 `wx.navigateTo()`用于保留当前页面、跳转到应用内的某个页面，使用 `wx.navigateBack`可以返回到原页面
@@ -34,13 +33,11 @@
 
 参数表如下所示：
 
- ![](https://static.vue-js.com/5e524ea0-31a5-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/5e524ea0-31a5-11ec-8e64-91fdec0f05a1.png)
 
 流程图如下：
 
- ![](https://static.vue-js.com/68f033e0-31a5-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/68f033e0-31a5-11ec-8e64-91fdec0f05a1.png)
 
 ### wx.redirectTo(Object)
 
@@ -52,13 +49,11 @@
 
 参数表如下所示：
 
- ![](https://static.vue-js.com/76066c20-31a5-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/76066c20-31a5-11ec-8e64-91fdec0f05a1.png)
 
 流程图如下所示：
 
- ![](https://static.vue-js.com/828c4b40-31a5-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/828c4b40-31a5-11ec-a752-75723a64e8f5.png)
 
 ### wx.switchTab(Object)
 
@@ -66,9 +61,7 @@
 
 参数表如下所示：
 
- ![](https://static.vue-js.com/968869d0-31a5-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/968869d0-31a5-11ec-a752-75723a64e8f5.png)
 
 ### wx.navigateBack(Object)
 
@@ -76,9 +69,7 @@
 
 参数表如下：
 
- ![](https://static.vue-js.com/a28d8030-31a5-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/a28d8030-31a5-11ec-a752-75723a64e8f5.png)
 
 ### wx.reLaunch(Object)
 
@@ -86,17 +77,11 @@
 
 流程图如下所示：
 
- ![](https://static.vue-js.com/accca3a0-31a5-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/accca3a0-31a5-11ec-8e64-91fdec0f05a1.png)
 
 参数表如下所示：
 
- ![](https://static.vue-js.com/b98c7e80-31a5-11ec-8e64-91fdec0f05a1.png)
-
-
-
-
-
-
+![](https://static.vue-js.com/b98c7e80-31a5-11ec-8e64-91fdec0f05a1.png)
 
 ## 三、总结
 
@@ -116,8 +101,6 @@
 - navigateBack 页面不断出栈，直到目标返回页，新页面入栈
 - switchTab 页面全部出栈，只留下新的 Tab 页面
 - reLanch 页面全部出栈，只留下新的页面
-
-
 
 ## 参考文献
 

@@ -1,12 +1,20 @@
-# 面试官：Vue项目中有封装过axios吗？主要是封装哪方面的？
+---
+title: Vue项目中有封装过axios吗？主要是封装哪方面的？
+date: 2025/03/26
+tags:
+  - vue
+  - axios
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/2bf1e460-45a7-11eb-85f6-6fac77c0c9b3.png)
 
-## 一、axios是什么
+## 一、axios 是什么
 
 `axios` 是一个轻量的 `HTTP`客户端
 
-基于 `XMLHttpRequest` 服务来执行 `HTTP` 请求，支持丰富的配置，支持 `Promise`，支持浏览器端和 `Node.js` 端。自`Vue`2.0起，尤大宣布取消对 `vue-resource` 的官方推荐，转而推荐 `axios`。现在 `axios` 已经成为大部分 `Vue` 开发者的首选
+基于 `XMLHttpRequest` 服务来执行 `HTTP` 请求，支持丰富的配置，支持 `Promise`，支持浏览器端和 `Node.js` 端。自`Vue`2.0 起，尤大宣布取消对 `vue-resource` 的官方推荐，转而推荐 `axios`。现在 `axios` 已经成为大部分 `Vue` 开发者的首选
 
 ### 特性
 
@@ -33,46 +41,44 @@ npm install axios --S
 导入
 
 ```js
-import axios from 'axios'
+import axios from "axios";
 ```
 
 发送请求
 
 ```js
-axios({        
-  url:'xxx',    // 设置请求的地址
-  method:"GET", // 设置请求方法
-  params:{      // get请求使用params进行参数凭借,如果是post请求用data
-    type: '',
-    page: 1
-  }
-}).then(res => {  
-  // res为后端返回的数据
-  console.log(res);   
-})
+axios({
+	url: "xxx", // 设置请求的地址
+	method: "GET", // 设置请求方法
+	params: {
+		// get请求使用params进行参数凭借,如果是post请求用data
+		type: "",
+		page: 1,
+	},
+}).then((res) => {
+	// res为后端返回的数据
+	console.log(res);
+});
 ```
-
-
 
 并发请求`axios.all([])`
 
 ```js
 function getUserAccount() {
-    return axios.get('/user/12345');
+	return axios.get("/user/12345");
 }
 
 function getUserPermissions() {
-    return axios.get('/user/12345/permissions');
+	return axios.get("/user/12345/permissions");
 }
 
-axios.all([getUserAccount(), getUserPermissions()])
-    .then(axios.spread(function (res1, res2) { 
-    // res1第一个请求的返回的内容，res2第二个请求返回的内容
-    // 两个请求都执行完成才会执行
-}));
+axios.all([getUserAccount(), getUserPermissions()]).then(
+	axios.spread(function (res1, res2) {
+		// res1第一个请求的返回的内容，res2第二个请求返回的内容
+		// 两个请求都执行完成才会执行
+	})
+);
 ```
-
-
 
 ## 二、为什么要封装
 
@@ -85,41 +91,43 @@ axios.all([getUserAccount(), getUserPermissions()])
 举个例子：
 
 ```js
-axios('http://localhost:3000/data', {
-  // 配置代码
-  method: 'GET',
-  timeout: 1000,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: 'xxx',
-  },
-  transformRequest: [function (data, headers) {
-    return data;
-  }],
-  // 其他请求配置...
-})
-.then((data) => {
-  // todo: 真正业务逻辑代码
-  console.log(data);
-}, (err) => {
-  // 错误处理代码  
-  if (err.response.status === 401) {
-  // handle authorization error
-  }
-  if (err.response.status === 403) {
-  // handle server forbidden error
-  }
-  // 其他错误处理.....
-  console.log(err);
-});
+axios("http://localhost:3000/data", {
+	// 配置代码
+	method: "GET",
+	timeout: 1000,
+	withCredentials: true,
+	headers: {
+		"Content-Type": "application/json",
+		Authorization: "xxx",
+	},
+	transformRequest: [
+		function (data, headers) {
+			return data;
+		},
+	],
+	// 其他请求配置...
+}).then(
+	(data) => {
+		// todo: 真正业务逻辑代码
+		console.log(data);
+	},
+	(err) => {
+		// 错误处理代码
+		if (err.response.status === 401) {
+			// handle authorization error
+		}
+		if (err.response.status === 403) {
+			// handle server forbidden error
+		}
+		// 其他错误处理.....
+		console.log(err);
+	}
+);
 ```
 
 如果每个页面都发送类似的请求，都要写一堆的配置与错误处理，就显得过于繁琐了
 
 这时候我们就需要对`axios`进行二次封装，让使用更为便利
-
-
 
 ## 三、如何封装
 
@@ -127,27 +135,25 @@ axios('http://localhost:3000/data', {
 
 设置接口请求前缀：根据开发、测试、生产环境的不同，前缀需要加以区分
 
-请求头 :  来实现一些具体的业务，必须携带一些参数才可以请求(例如：会员业务)
+请求头 : 来实现一些具体的业务，必须携带一些参数才可以请求(例如：会员业务)
 
-状态码:   根据接口返回的不同`status` ， 来执行不同的业务，这块需要和后端约定好
+状态码: 根据接口返回的不同`status` ， 来执行不同的业务，这块需要和后端约定好
 
 请求方法：根据`get`、`post`等方法进行一个再次封装，使用起来更为方便
 
-请求拦截器:  根据请求的请求头设定，来决定哪些请求可以访问
+请求拦截器: 根据请求的请求头设定，来决定哪些请求可以访问
 
 响应拦截器： 这块就是根据 后端`返回来的状态码判定执行不同业务
-
-
 
 ### 设置接口请求前缀
 
 利用`node`环境变量来作判断，用来区分开发、测试、生产环境
 
 ```js
-if (process.env.NODE_ENV === 'development') {
-  axios.defaults.baseURL = 'http://dev.xxx.com'
-} else if (process.env.NODE_ENV === 'production') {
-  axios.defaults.baseURL = 'http://prod.xxx.com'
+if (process.env.NODE_ENV === "development") {
+	axios.defaults.baseURL = "http://dev.xxx.com";
+} else if (process.env.NODE_ENV === "production") {
+	axios.defaults.baseURL = "http://prod.xxx.com";
 }
 ```
 
@@ -166,8 +172,6 @@ devServer: {
     }
   }
 ```
-
-
 
 ### 设置请求头与超时时间
 
@@ -190,100 +194,92 @@ const service = axios.create({
 })
 ```
 
-
-
 ### 封装请求方法
 
 先引入封装好的方法，在要调用的接口重新封装成一个方法暴露出去
 
 ```js
 // get 请求
-export function httpGet({
-  url,
-  params = {}
-}) {
-  return new Promise((resolve, reject) => {
-    axios.get(url, {
-      params
-    }).then((res) => {
-      resolve(res.data)
-    }).catch(err => {
-      reject(err)
-    })
-  })
+export function httpGet({ url, params = {} }) {
+	return new Promise((resolve, reject) => {
+		axios
+			.get(url, {
+				params,
+			})
+			.then((res) => {
+				resolve(res.data);
+			})
+			.catch((err) => {
+				reject(err);
+			});
+	});
 }
 
 // post
 // post请求
-export function httpPost({
-  url,
-  data = {},
-  params = {}
-}) {
-  return new Promise((resolve, reject) => {
-    axios({
-      url,
-      method: 'post',
-      transformRequest: [function (data) {
-        let ret = ''
-        for (let it in data) {
-          ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        return ret
-      }],
-      // 发送的数据
-      data,
-      // url参数
-      params
-
-    }).then(res => {
-      resolve(res.data)
-    })
-  })
+export function httpPost({ url, data = {}, params = {} }) {
+	return new Promise((resolve, reject) => {
+		axios({
+			url,
+			method: "post",
+			transformRequest: [
+				function (data) {
+					let ret = "";
+					for (let it in data) {
+						ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+					}
+					return ret;
+				},
+			],
+			// 发送的数据
+			data,
+			// url参数
+			params,
+		}).then((res) => {
+			resolve(res.data);
+		});
+	});
 }
 ```
 
 把封装的方法放在一个`api.js`文件中
 
 ```js
-import { httpGet, httpPost } from './http'
-export const getorglist = (params = {}) => httpGet({ url: 'apps/api/org/list', params })
+import { httpGet, httpPost } from "./http";
+export const getorglist = (params = {}) => httpGet({ url: "apps/api/org/list", params });
 ```
 
 页面中就能直接调用
 
 ```js
 // .vue
-import { getorglist } from '@/assets/js/api'
+import { getorglist } from "@/assets/js/api";
 
-getorglist({ id: 200 }).then(res => {
-  console.log(res)
-})
+getorglist({ id: 200 }).then((res) => {
+	console.log(res);
+});
 ```
 
 这样可以把`api`统一管理起来，以后维护修改只需要在`api.js`文件操作即可
 
-
-
 ### 请求拦截器
 
-请求拦截器可以在每个请求里加上token，做了统一处理后维护起来也方便
+请求拦截器可以在每个请求里加上 token，做了统一处理后维护起来也方便
 
 ```js
 // 请求拦截器
 axios.interceptors.request.use(
-  config => {
-    // 每次发送请求之前判断是否存在token
-    // 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况，此处token一般是用户完成登录后储存到localstorage里的
-    token && (config.headers.Authorization = token)
-    return config
-  },
-  error => {
-    return Promise.error(error)
-  })
+	(config) => {
+		// 每次发送请求之前判断是否存在token
+		// 如果存在，则统一在http请求的header都加上token，这样后台根据token判断你的登录情况，此处token一般是用户完成登录后储存到localstorage里的
+		token && (config.headers.Authorization = token);
+		return config;
+	},
+	(error) => {
+		return Promise.error(error);
+	}
+);
 ```
-
-
 
 ### 响应拦截器
 
@@ -291,37 +287,37 @@ axios.interceptors.request.use(
 
 ```js
 // 响应拦截器
-axios.interceptors.response.use(response => {
-  // 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
-  // 否则的话抛出错误
-  if (response.status === 200) {
-    if (response.data.code === 511) {
-      // 未授权调取授权接口
-    } else if (response.data.code === 510) {
-      // 未登录跳转登录页
-    } else {
-      return Promise.resolve(response)
-    }
-  } else {
-    return Promise.reject(response)
-  }
-}, error => {
-  // 我们可以在这里对异常状态作统一处理
-  if (error.response.status) {
-    // 处理请求失败的情况
-    // 对不同返回码对相应处理
-    return Promise.reject(error.response)
-  }
-})
+axios.interceptors.response.use(
+	(response) => {
+		// 如果返回的状态码为200，说明接口请求成功，可以正常拿到数据
+		// 否则的话抛出错误
+		if (response.status === 200) {
+			if (response.data.code === 511) {
+				// 未授权调取授权接口
+			} else if (response.data.code === 510) {
+				// 未登录跳转登录页
+			} else {
+				return Promise.resolve(response);
+			}
+		} else {
+			return Promise.reject(response);
+		}
+	},
+	(error) => {
+		// 我们可以在这里对异常状态作统一处理
+		if (error.response.status) {
+			// 处理请求失败的情况
+			// 对不同返回码对相应处理
+			return Promise.reject(error.response);
+		}
+	}
+);
 ```
-
-
 
 ### 小结
 
 - 封装是编程中很有意义的手段，简单的`axios`封装，就可以让我们可以领略到它的魅力
 - 封装 `axios` 没有一个绝对的标准，只要你的封装可以满足你的项目需求，并且用起来方便，那就是一个好的封装方案
-
 
 ## 参考文献
 

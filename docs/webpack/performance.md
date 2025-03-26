@@ -1,8 +1,14 @@
-# 面试官：说说如何借助webpack来优化前端性能？
+---
+title: 如何借助webpack来优化前端性能？
+date: 2025/03/26
+tags:
+  - webpack
+  - performance
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/15e1ace0-aee4-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/15e1ace0-aee4-11eb-ab90-d9ae814b240d.png)
 
 ## 一、背景
 
@@ -12,26 +18,20 @@
 
 一般项目在完成后，会通过`webpack`进行打包，利用`webpack`对前端项目性能优化是一个十分重要的环节
 
-
-
 ## 二、如何优化
-
-
 
 通过`webpack`优化前端的手段有：
 
-- JS代码压缩
-- CSS代码压缩
-- Html文件代码压缩
+- JS 代码压缩
+- CSS 代码压缩
+- Html 文件代码压缩
 - 文件大小压缩
 - 图片压缩
 - Tree Shaking
 - 代码分离
 - 内联 chunk
 
-
-
-### JS代码压缩
+### JS 代码压缩
 
 `terser`是一个`JavaScript`的解释、绞肉机、压缩机的工具集，可以帮助我们压缩、丑化我们的代码，让`bundle`更小
 
@@ -54,22 +54,20 @@ module.exports = {
 
 属性介绍如下：
 
--  extractComments：默认值为true，表示会将注释抽取到一个单独的文件中，开发阶段，我们可设置为 false ，不保留注释
--  parallel：使用多进程并发运行提高构建的速度，默认值是true，并发运行的默认数量： os.cpus().length - 1
--  terserOptions：设置我们的terser相关的配置：
-  - compress：设置压缩相关的选项，mangle：设置丑化相关的选项，可以直接设置为true
-  - mangle：设置丑化相关的选项，可以直接设置为true
-  - toplevel：底层变量是否进行转换
-  - keep_classnames：保留类的名称
-  - keep_fnames：保留函数的名称
+- extractComments：默认值为 true，表示会将注释抽取到一个单独的文件中，开发阶段，我们可设置为 false ，不保留注释
+- parallel：使用多进程并发运行提高构建的速度，默认值是 true，并发运行的默认数量： os.cpus().length - 1
+- terserOptions：设置我们的 terser 相关的配置：
+- compress：设置压缩相关的选项，mangle：设置丑化相关的选项，可以直接设置为 true
+- mangle：设置丑化相关的选项，可以直接设置为 true
+- toplevel：底层变量是否进行转换
+- keep_classnames：保留类的名称
+- keep_fnames：保留函数的名称
 
-
-
-### CSS代码压缩
+### CSS 代码压缩
 
 `CSS`压缩通常是去除无用的空格等，因为很难去修改选择器、属性的名称、值等
 
-CSS的压缩我们可以使用另外一个插件：`css-minimizer-webpack-plugin`
+CSS 的压缩我们可以使用另外一个插件：`css-minimizer-webpack-plugin`
 
 ```cmd
 npm install css-minimizer-webpack-plugin -D
@@ -78,25 +76,21 @@ npm install css-minimizer-webpack-plugin -D
 配置方法如下：
 
 ```js
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
-    // ...
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new CssMinimizerPlugin({
-                parallel: true
-            })
-        ]
-    }
-}
+	// ...
+	optimization: {
+		minimize: true,
+		minimizer: [
+			new CssMinimizerPlugin({
+				parallel: true,
+			}),
+		],
+	},
+};
 ```
 
-
-
-
-
-### Html文件代码压缩
+### Html 文件代码压缩
 
 使用`HtmlWebpackPlugin`插件来生成`HTML`的模板时候，通过配置属性`minify`进行`html`优化
 
@@ -118,8 +112,6 @@ module.exports = {
 
 设置了`minify`，实际会使用另一个插件`html-minifier-terser`
 
-
-
 ### 文件大小压缩
 
 对文件的大小进行压缩，减少`http`传输过程中宽带的损耗
@@ -130,16 +122,12 @@ npm install compression-webpack-plugin -D
 
 ```js
 new ComepressionPlugin({
-    test:/\.(css|js)$/,  // 哪些文件需要压缩
-    threshold:500, // 设置文件多大开始压缩
-    minRatio:0.7, // 至少压缩的比例
-    algorithm:"gzip", // 采用的压缩算法
-})
+	test: /\.(css|js)$/, // 哪些文件需要压缩
+	threshold: 500, // 设置文件多大开始压缩
+	minRatio: 0.7, // 至少压缩的比例
+	algorithm: "gzip", // 采用的压缩算法
+});
 ```
-
-
-
-
 
 ### 图片压缩
 
@@ -149,53 +137,49 @@ new ComepressionPlugin({
 
 ```js
 module: {
-  rules: [
-    {
-      test: /\.(png|jpg|gif)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[name]_[hash].[ext]',
-            outputPath: 'images/',
-          }
-        },
-        {
-          loader: 'image-webpack-loader',
-          options: {
-            // 压缩 jpeg 的配置
-            mozjpeg: {
-              progressive: true,
-              quality: 65
-            },
-            // 使用 imagemin**-optipng 压缩 png，enable: false 为关闭
-            optipng: {
-              enabled: false,
-            },
-            // 使用 imagemin-pngquant 压缩 png
-            pngquant: {
-              quality: '65-90',
-              speed: 4
-            },
-            // 压缩 gif 的配置
-            gifsicle: {
-              interlaced: false,
-            },
-            // 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
-            webp: {
-              quality: 75
-            }
-          }
-        }
-      ]
-    },
-  ]
-} 
+	rules: [
+		{
+			test: /\.(png|jpg|gif)$/,
+			use: [
+				{
+					loader: "file-loader",
+					options: {
+						name: "[name]_[hash].[ext]",
+						outputPath: "images/",
+					},
+				},
+				{
+					loader: "image-webpack-loader",
+					options: {
+						// 压缩 jpeg 的配置
+						mozjpeg: {
+							progressive: true,
+							quality: 65,
+						},
+						// 使用 imagemin**-optipng 压缩 png，enable: false 为关闭
+						optipng: {
+							enabled: false,
+						},
+						// 使用 imagemin-pngquant 压缩 png
+						pngquant: {
+							quality: "65-90",
+							speed: 4,
+						},
+						// 压缩 gif 的配置
+						gifsicle: {
+							interlaced: false,
+						},
+						// 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
+						webp: {
+							quality: 75,
+						},
+					},
+				},
+			],
+		},
+	];
+}
 ```
-
-
-
-
 
 ### Tree Shaking
 
@@ -203,12 +187,10 @@ module: {
 
 在`webpack`实现`Trss shaking`有两种不同的方案：
 
-- usedExports：通过标记某些函数是否被使用，之后通过Terser来进行优化的
+- usedExports：通过标记某些函数是否被使用，之后通过 Terser 来进行优化的
 - sideEffects：跳过整个模块/文件，直接查看该文件是否有副作用
 
 两种不同的配置方案， 有不同的效果
-
-
 
 #### usedExports
 
@@ -225,19 +207,15 @@ module.exports = {
 
 使用之后，没被用上的代码在`webpack`打包中会加入`unused harmony export mul`注释，用来告知 `Terser` 在优化时，可以删除掉这段代码
 
- 如下面`sum`函数没被用到，`webpack`打包会添加注释，`terser`在优化时，则将该函数去掉
+如下面`sum`函数没被用到，`webpack`打包会添加注释，`terser`在优化时，则将该函数去掉
 
- ![](https://static.vue-js.com/21b2e200-aee4-11eb-85f6-6fac77c0c9b3.png)
-
-
-
-
+![](https://static.vue-js.com/21b2e200-aee4-11eb-85f6-6fac77c0c9b3.png)
 
 #### sideEffects
 
 `sideEffects`用于告知`webpack compiler`哪些模块时有副作用，配置方法是在`package.json`中设置`sideEffects`属性
 
-如果`sideEffects`设置为false，就是告知`webpack`可以安全的删除未用到的`exports`
+如果`sideEffects`设置为 false，就是告知`webpack`可以安全的删除未用到的`exports`
 
 如果有些文件需要保留，可以设置为数组的形式
 
@@ -247,8 +225,6 @@ module.exports = {
     "*.css" // 所有的css文件
 ]
 ```
-
-
 
 上述都是关于`javascript`的`tree shaking`，`css`同样也能够实现`tree shaking`
 
@@ -277,10 +253,8 @@ module.exports = {
 }
 ```
 
-- paths：表示要检测哪些目录下的内容需要被分析，配合使用glob
-- 默认情况下，Purgecss会将我们的html标签的样式移除掉，如果我们希望保留，可以添加一个safelist的属性
-
-
+- paths：表示要检测哪些目录下的内容需要被分析，配合使用 glob
+- 默认情况下，Purgecss 会将我们的 html 标签的样式移除掉，如果我们希望保留，可以添加一个 safelist 的属性
 
 ### 代码分离
 
@@ -292,7 +266,7 @@ module.exports = {
 
 这里通过`splitChunksPlugin`来实现，该插件`webpack`已经默认安装和集成，只需要配置即可
 
-默认配置中，chunks仅仅针对于异步（async）请求，我们可以设置为initial或者all
+默认配置中，chunks 仅仅针对于异步（async）请求，我们可以设置为 initial 或者 all
 
 ```js
 module.exports = {
@@ -308,13 +282,11 @@ module.exports = {
 `splitChunks`主要属性有如下：
 
 - Chunks，对同步代码还是异步代码进行处理
-- minSize： 拆分包的大小, 至少为minSize，如何包的大小不超过minSize，这个包不会拆分
-- maxSize： 将大于maxSize的包，拆分为不小于minSize的包
--  minChunks：被引入的次数，默认是1
+- minSize： 拆分包的大小, 至少为 minSize，如何包的大小不超过 minSize，这个包不会拆分
+- maxSize： 将大于 maxSize 的包，拆分为不小于 minSize 的包
+- minChunks：被引入的次数，默认是 1
 
-
-
-### 内联chunk
+### 内联 chunk
 
 可以通过`InlineChunkHtmlPlugin`插件将一些`chunk`的模块内联到`html`，如`runtime`的代码（对模块进行解析、加载、模块信息相关的代码），代码量并不大，但是必须加载的
 
@@ -328,14 +300,9 @@ module.exports = {
 }
 ```
 
-
-
-
-
 ### 三、总结
 
-关于`webpack`对前端性能的优化，可以通过文件体积大小入手，其次还可通过分包的形式、减少http请求次数等方式，实现对前端性能的优化
-
+关于`webpack`对前端性能的优化，可以通过文件体积大小入手，其次还可通过分包的形式、减少 http 请求次数等方式，实现对前端性能的优化
 
 ## 参考文献
 

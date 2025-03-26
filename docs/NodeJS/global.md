@@ -1,6 +1,14 @@
-# 面试官：说说 Node. js 有哪些全局对象？
+---
+title: NodeJS全局对象
+date: 2025/03/26
+tags:
+  - nodejs
+  - 全局对象
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/79c7b100-c2a3-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/79c7b100-c2a3-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -12,8 +20,6 @@
 
 像上述的`global`全局对象则在全局作用域中，任何全局变量、函数、对象都是该对象的一个属性值
 
-
-
 ## 二、有哪些
 
 将全局对象分成两类：
@@ -21,8 +27,6 @@
 - 真正的全局对象
 
 - 模块级别的全局变量
-
-
 
 ### 真正的全局对象
 
@@ -37,17 +41,13 @@
 
 - global
 
-
-
 #### Class:Buffer
 
 可以处理二进制以及非`Unicode`编码的数据
 
-在`Buffer`类实例化中存储了原始数据。`Buffer`类似于一个整数数组，在V8堆原始存储空间给它分配了内存
+在`Buffer`类实例化中存储了原始数据。`Buffer`类似于一个整数数组，在 V8 堆原始存储空间给它分配了内存
 
 一旦创建了`Buffer`实例，则无法改变大小
-
-
 
 #### process
 
@@ -61,11 +61,11 @@
  node index.js 参数1 参数2 参数3
 ```
 
-index.js文件如下：
+index.js 文件如下：
 
 ```js
 process.argv.forEach((val, index) => {
-  console.log(`${index}: ${val}`);
+	console.log(`${index}: ${val}`);
 });
 ```
 
@@ -83,8 +83,6 @@ process.argv.forEach((val, index) => {
 
 ![](https://static.vue-js.com/85f473a0-c2a3-11eb-ab90-d9ae814b240d.png)
 
-
-
 #### console
 
 用来打印`stdout`和`stderr`
@@ -98,30 +96,28 @@ console.log("hello");
 清空控制台：console.clear
 
 ```js
-console.clear
+console.clear;
 ```
 
 打印函数的调用栈：console.trace
 
 ```js
 function test() {
-    demo();
+	demo();
 }
 
 function demo() {
-    foo();
+	foo();
 }
 
 function foo() {
-    console.trace();
+	console.trace();
 }
 
 test();
 ```
 
- ![](https://static.vue-js.com/91b6dbb0-c2a3-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/91b6dbb0-c2a3-11eb-85f6-6fac77c0c9b3.png)
 
 #### clearInterval、setInterval
 
@@ -135,8 +131,6 @@ setInterval(callback, delay[, ...args])
 
 `clearInterval`则为对应发取消定时器的方法
 
-
-
 #### clearTimeout、setTimeout
 
 设置延时器与清除延时器
@@ -149,33 +143,25 @@ setTimeout(callback,delay[,...args])
 
 `clearTimeout`则为对应取消延时器的方法
 
-
-
 #### global
 
 全局命名空间对象，墙面讲到的`process`、`console`、`setTimeout`等都有放到`global`中
 
 ```js
-console.log(process === global.process) // true
+console.log(process === global.process); // true
 ```
-
-
-
-
 
 ### 模块级别的全局对象
 
 这些全局对象是模块中的变量，只是每个模块都有，看起来就像全局变量，像在命令交互中是不可以使用，包括：
 
-- __dirname
-- __filename
+- \_\_dirname
+- \_\_filename
 - exports
 - module
 - require
 
-
-
-#### __dirname
+#### \_\_dirname
 
 获取当前文件所在的路径，不包括后面的文件名
 
@@ -186,9 +172,7 @@ console.log(__dirname);
 // 打印: /Users/mjr
 ```
 
-
-
-#### __filename
+#### \_\_filename
 
 获取当前文件所在的路径和文件名称，包括后面的文件名称
 
@@ -198,8 +182,6 @@ console.log(__dirname);
 console.log(__filename);
 // 打印: /Users/mjr/example.js
 ```
-
-
 
 #### exports
 
@@ -211,23 +193,15 @@ exports.age = age;
 exports.sayHello = sayHello;
 ```
 
-
-
 #### module
 
 对当前模块的引用，通过`module.exports` 用于指定一个模块所导出的内容，即可以通过 `require()` 访问的内容
-
-
 
 #### require
 
 用于引入模块、 `JSON`、或本地文件。 可以从 `node_modules` 引入模块。
 
-可以使用相对路径引入本地模块或` JSON `文件，路径会根据`__dirname`定义的目录名或当前工作目录进行处理
-
-
-
-
+可以使用相对路径引入本地模块或`JSON`文件，路径会根据`__dirname`定义的目录名或当前工作目录进行处理
 
 ## 参考文献
 

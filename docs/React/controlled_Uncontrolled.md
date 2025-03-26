@@ -1,8 +1,15 @@
-# 面试官：说说对受控组件和非受控组件的理解？应用场景？
+---
+title: React中受控组件和非受控组件
+date: 2025/03/26
+tags:
+  - react
+  - 组件
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/12990fd0-df2f-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/12990fd0-df2f-11eb-ab90-d9ae814b240d.png)
 
 ## 一、受控组件
 
@@ -12,13 +19,13 @@
 
 ```jsx
 class TestComponent extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = { username: 'lindaidai' };
-  }
-  render () {
-    return <input name="username" value={this.state.username} />
-  }
+	constructor(props) {
+		super(props);
+		this.state = { username: "lindaidai" };
+	}
+	render() {
+		return <input name="username" value={this.state.username} />;
+	}
 }
 ```
 
@@ -30,42 +37,38 @@ class TestComponent extends React.Component {
 
 因此，受控组件我们一般需要初始状态和一个状态更新事件函数
 
-
-
 ## 二、非受控组件
 
 非受控组件，简单来讲，就是不受我们控制的组件
 
 一般情况是在初始化的时候接受外部数据，然后自己在内部存储其自身状态
 
-当需要时，可以使用` ref ` 查询 `DOM `并查找其当前值，如下：
+当需要时，可以使用`ref` 查询 `DOM `并查找其当前值，如下：
 
 ```jsx
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export class UnControll extends Component {
-  constructor (props) {
-    super(props);
-    this.inputRef = React.createRef();
-  }
-  handleSubmit = (e) => {
-    console.log('我们可以获得input内的值为', this.inputRef.current.value);
-    e.preventDefault();
-  }
-  render () {
-    return (
-      <form onSubmit={e => this.handleSubmit(e)}>
-        <input defaultValue="lindaidai" ref={this.inputRef} />
-        <input type="submit" value="提交" />
-      </form>
-    )
-  }
+	constructor(props) {
+		super(props);
+		this.inputRef = React.createRef();
+	}
+	handleSubmit = (e) => {
+		console.log("我们可以获得input内的值为", this.inputRef.current.value);
+		e.preventDefault();
+	};
+	render() {
+		return (
+			<form onSubmit={(e) => this.handleSubmit(e)}>
+				<input defaultValue="lindaidai" ref={this.inputRef} />
+				<input type="submit" value="提交" />
+			</form>
+		);
+	}
 }
 ```
 
 关于`refs`的详情使用可以参考[之前文章](https://mp.weixin.qq.com/s/ZBKWcslVBi0IKQgz7lYzbA)
-
-
 
 ## 三、应用场景
 
@@ -75,14 +78,9 @@ export class UnControll extends Component {
 
 针对两者的区别，其应用场景如下图所示：
 
- ![](https://static.vue-js.com/f28aed20-df2f-11eb-ab90-d9ae814b240d.png)
-
-
-
-
+![](https://static.vue-js.com/f28aed20-df2f-11eb-ab90-d9ae814b240d.png)
 
 ## 参考文献
 
 - http://meloguo.com/2018/10/08/受控与非受控组件/
 - https://zhuanlan.zhihu.com/p/37579677
-

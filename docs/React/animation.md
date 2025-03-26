@@ -1,6 +1,14 @@
-# 面试官：在react中组件间过渡动画如何实现？
- ![](https://static.vue-js.com/294f1e00-e4b0-11eb-ab90-d9ae814b240d.png)
+---
+title: React组件间过渡动画
+date: 2025/03/26
+tags:
+  - react
+  - 动画
+categories:
+  - 前端
+---
 
+![](https://static.vue-js.com/294f1e00-e4b0-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -9,7 +17,6 @@
 当一个组件在显示与消失过程中存在过渡动画，可以很好的增加用户的体验
 
 在`react`中实现过渡动画效果会有很多种选择，如`react-transition-group`，`react-motion`，`Animated`，以及原生的`CSS`都能完成切换动画
-
 
 ## 二、如何实现
 
@@ -37,29 +44,23 @@
 
 ```jsx
 export default class App2 extends React.PureComponent {
+	state = { show: true };
 
-  state = {show: true};
+	onToggle = () => this.setState({ show: !this.state.show });
 
-  onToggle = () => this.setState({show: !this.state.show});
-
-  render() {
-    const {show} = this.state;
-    return (
-      <div className={'container'}>
-        <div className={'square-wrapper'}>
-          <CSSTransition
-            in={show}
-            timeout={500}
-            classNames={'fade'}
-            unmountOnExit={true}
-          >
-            <div className={'square'} />
-          </CSSTransition>
-        </div>
-        <Button onClick={this.onToggle}>toggle</Button>
-      </div>
-    );
-  }
+	render() {
+		const { show } = this.state;
+		return (
+			<div className={"container"}>
+				<div className={"square-wrapper"}>
+					<CSSTransition in={show} timeout={500} classNames={"fade"} unmountOnExit={true}>
+						<div className={"square"} />
+					</CSSTransition>
+				</div>
+				<Button onClick={this.onToggle}>toggle</Button>
+			</div>
+		);
+	}
 }
 ```
 
@@ -67,29 +68,27 @@ export default class App2 extends React.PureComponent {
 
 ```css
 .fade-enter {
-  opacity: 0;
-  transform: translateX(100%);
+	opacity: 0;
+	transform: translateX(100%);
 }
 
 .fade-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 500ms;
+	opacity: 1;
+	transform: translateX(0);
+	transition: all 500ms;
 }
 
 .fade-exit {
-  opacity: 1;
-  transform: translateX(0);
+	opacity: 1;
+	transform: translateX(0);
 }
 
 .fade-exit-active {
-  opacity: 0;
-  transform: translateX(-100%);
-  transition: all 500ms;
+	opacity: 0;
+	transform: translateX(-100%);
+	transition: all 500ms;
 }
 ```
-
-
 
 ### SwitchTransition
 
@@ -112,35 +111,29 @@ export default class App2 extends React.PureComponent {
 import { SwitchTransition, CSSTransition } from "react-transition-group";
 
 export default class SwitchAnimation extends PureComponent {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      isOn: true
-    }
-  }
+		this.state = {
+			isOn: true,
+		};
+	}
 
-  render() {
-    const {isOn} = this.state;
+	render() {
+		const { isOn } = this.state;
 
-    return (
-      <SwitchTransition mode="out-in">
-        <CSSTransition classNames="btn"
-                       timeout={500}
-                       key={isOn ? "on" : "off"}>
-          {
-          <button onClick={this.btnClick.bind(this)}>
-            {isOn ? "on": "off"}
-          </button>
-        }
-        </CSSTransition>
-      </SwitchTransition>
-    )
-  }
+		return (
+			<SwitchTransition mode="out-in">
+				<CSSTransition classNames="btn" timeout={500} key={isOn ? "on" : "off"}>
+					{<button onClick={this.btnClick.bind(this)}>{isOn ? "on" : "off"}</button>}
+				</CSSTransition>
+			</SwitchTransition>
+		);
+	}
 
-  btnClick() {
-    this.setState({isOn: !this.state.isOn})
-  }
+	btnClick() {
+		this.setState({ isOn: !this.state.isOn });
+	}
 }
 ```
 
@@ -148,29 +141,27 @@ export default class SwitchAnimation extends PureComponent {
 
 ```css
 .btn-enter {
-  transform: translate(100%, 0);
-  opacity: 0;
+	transform: translate(100%, 0);
+	opacity: 0;
 }
 
 .btn-enter-active {
-  transform: translate(0, 0);
-  opacity: 1;
-  transition: all 500ms;
+	transform: translate(0, 0);
+	opacity: 1;
+	transition: all 500ms;
 }
 
 .btn-exit {
-  transform: translate(0, 0);
-  opacity: 1;
+	transform: translate(0, 0);
+	opacity: 1;
 }
 
 .btn-exit-active {
-  transform: translate(-100%, 0);
-  opacity: 0;
-  transition: all 500ms;
+	transform: translate(-100%, 0);
+	opacity: 0;
+	transition: all 500ms;
 }
 ```
-
-
 
 ### TransitionGroup
 
@@ -182,49 +173,47 @@ export default class SwitchAnimation extends PureComponent {
 
 其处理方式如下：
 
-- 插入的节点，先渲染dom，然后再做动画
+- 插入的节点，先渲染 dom，然后再做动画
 
-- 删除的节点，先做动画，然后再删除dom
+- 删除的节点，先做动画，然后再删除 dom
 
 如下：
 
 ```jsx
-import React, { PureComponent } from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import React, { PureComponent } from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 export default class GroupAnimation extends PureComponent {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      friends: []
-    }
-  }
+		this.state = {
+			friends: [],
+		};
+	}
 
-  render() {
-    return (
-      <div>
-        <TransitionGroup>
-          {
-            this.state.friends.map((item, index) => {
-              return (
-                <CSSTransition classNames="friend" timeout={300} key={index}>
-                  <div>{item}</div>
-                </CSSTransition>
-              )
-            })
-          }
-        </TransitionGroup>
-        <button onClick={e => this.addFriend()}>+friend</button>
-      </div>
-    )
-  }
+	render() {
+		return (
+			<div>
+				<TransitionGroup>
+					{this.state.friends.map((item, index) => {
+						return (
+							<CSSTransition classNames="friend" timeout={300} key={index}>
+								<div>{item}</div>
+							</CSSTransition>
+						);
+					})}
+				</TransitionGroup>
+				<button onClick={(e) => this.addFriend()}>+friend</button>
+			</div>
+		);
+	}
 
-  addFriend() {
-    this.setState({
-      friends: [...this.state.friends, "coderwhy"]
-    })
-  }
+	addFriend() {
+		this.setState({
+			friends: [...this.state.friends, "coderwhy"],
+		});
+	}
 }
 ```
 
@@ -232,25 +221,25 @@ export default class GroupAnimation extends PureComponent {
 
 ```css
 .friend-enter {
-    transform: translate(100%, 0);
-    opacity: 0;
+	transform: translate(100%, 0);
+	opacity: 0;
 }
 
 .friend-enter-active {
-    transform: translate(0, 0);
-    opacity: 1;
-    transition: all 500ms;
+	transform: translate(0, 0);
+	opacity: 1;
+	transition: all 500ms;
 }
 
 .friend-exit {
-    transform: translate(0, 0);
-    opacity: 1;
+	transform: translate(0, 0);
+	opacity: 1;
 }
 
 .friend-exit-active {
-    transform: translate(-100%, 0);
-    opacity: 0;
-    transition: all 500ms;
+	transform: translate(-100%, 0);
+	opacity: 0;
+	transition: all 500ms;
 }
 ```
 

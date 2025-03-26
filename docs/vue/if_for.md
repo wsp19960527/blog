@@ -1,7 +1,16 @@
-# 面试官：v-if和v-for的优先级是什么？
+---
+title: v-if和v-for的优先级
+date: 2025/03/26
+tags:
+  - vue
+  - JavaScript
+  - v-if
+  - v-for
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/e8764810-3acb-11eb-85f6-6fac77c0c9b3.png)
-
 
 ## 一、作用
 
@@ -33,9 +42,7 @@
 
 ```html
 <div id="app">
-    <p v-if="isShow" v-for="item in items">
-        {{ item.title }}
-    </p>
+	<p v-if="isShow" v-for="item in items">{{ item.title }}</p>
 </div>
 ```
 
@@ -43,29 +50,27 @@
 
 ```js
 const app = new Vue({
-  el: "#app",
-  data() {
-    return {
-      items: [
-        { title: "foo" },
-        { title: "baz" }]
-    }
-  },
-  computed: {
-    isShow() {
-      return this.items && this.items.length > 0
-    }
-  }
-})
+	el: "#app",
+	data() {
+		return {
+			items: [{ title: "foo" }, { title: "baz" }],
+		};
+	},
+	computed: {
+		isShow() {
+			return this.items && this.items.length > 0;
+		},
+	},
+});
 ```
 
 模板指令的代码都会生成在`render`函数中，通过`app.$options.render`就能得到渲染函数
 
 ```js
 ƒ anonymous() {
-  with (this) { return 
-    _c('div', { attrs: { "id": "app" } }, 
-    _l((items), function (item) 
+  with (this) { return
+    _c('div', { attrs: { "id": "app" } },
+    _l((items), function (item)
     { return (isShow) ? _c('p', [_v("\n" + _s(item.title) + "\n")]) : _e() }), 0) }
 }
 ```
@@ -78,9 +83,9 @@ const app = new Vue({
 
 ```html
 <div id="app">
-    <template v-if="isShow">
-        <p v-for="item in items">{{item.title}}</p>
-    </template>
+	<template v-if="isShow">
+		<p v-for="item in items">{{item.title}}</p>
+	</template>
 </div>
 ```
 
@@ -88,7 +93,7 @@ const app = new Vue({
 
 ```js
 ƒ anonymous() {
-  with(this){return 
+  with(this){return
     _c('div',{attrs:{"id":"app"}},
     [(isShow)?[_v("\n"),
     _l((items),function(item){return _c('p',[_v(_s(item.title))])})]:_e()],2)}
@@ -131,7 +136,7 @@ export function genElement (el: ASTElement, state: CodegenState): string {
 ## 三、注意事项
 
 1. 永远不要把 `v-if` 和 `v-for` 同时用在同一个元素上，带来性能方面的浪费（每次渲染都会先循环再进行条件判断）
-2. 如果避免出现这种情况，则在外层嵌套`template`（页面渲染不生成`dom`节点），在这一层进行v-if判断，然后在内部进行v-for循环
+2. 如果避免出现这种情况，则在外层嵌套`template`（页面渲染不生成`dom`节点），在这一层进行 v-if 判断，然后在内部进行 v-for 循环
 
 ```js
 <template v-if="isShow">

@@ -1,8 +1,14 @@
-# 面试官：说说你对归并排序的理解？如何实现？应用场景？
+---
+title: 归并排序
+date: 2025/03/26
+tags:
+  - algorithm
+  - sort
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/fa1d5720-26ac-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/fa1d5720-26ac-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -12,7 +18,7 @@
 
 例如对于含有 `n` 个记录的无序表，首先默认表中每个记录各为一个有序表（只不过表的长度都为 1）
 
-然后进行两两合并，使 `n` 个有序表变为`n/2`  个长度为 2 或者 1 的有序表（例如 4 个小有序表合并为 2 个大的有序表）
+然后进行两两合并，使 `n` 个有序表变为`n/2` 个长度为 2 或者 1 的有序表（例如 4 个小有序表合并为 2 个大的有序表）
 
 通过不断地进行两两合并，直到得到一个长度为 `n` 的有序表为止
 
@@ -20,13 +26,11 @@
 
 如下图所示：
 
- ![](https://static.vue-js.com/05f14b60-26ad-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/05f14b60-26ad-11ec-a752-75723a64e8f5.png)
 
 归并合过程中，每次得到的新的子表本身有序，所以最终得到有序表
 
 上述分成两部分，则称为二路归并，如果分成三个部分则称为三路归并，以此类推
-
-
 
 ## 二、如何实现
 
@@ -45,46 +49,44 @@
 用代码表示则如下图所示：
 
 ```js
-function mergeSort(arr) {  // 采用自上而下的递归方法
-    const len = arr.length;
-    if(len < 2) {
-        return arr;
-    }
-    let middle = Math.floor(len / 2),
-        left = arr.slice(0, middle),
-        right = arr.slice(middle);
-    return merge(mergeSort(left), mergeSort(right));
+function mergeSort(arr) {
+	// 采用自上而下的递归方法
+	const len = arr.length;
+	if (len < 2) {
+		return arr;
+	}
+	let middle = Math.floor(len / 2),
+		left = arr.slice(0, middle),
+		right = arr.slice(middle);
+	return merge(mergeSort(left), mergeSort(right));
 }
 
-function merge(left, right)
-{
-    const result = [];
+function merge(left, right) {
+	const result = [];
 
-    while (left.length && right.length) {
-        if (left[0] <= right[0]) {
-            result.push(left.shift());
-        } else {
-            result.push(right.shift());
-        }
-    }
+	while (left.length && right.length) {
+		if (left[0] <= right[0]) {
+			result.push(left.shift());
+		} else {
+			result.push(right.shift());
+		}
+	}
 
-    while (left.length)
-        result.push(left.shift());
+	while (left.length) result.push(left.shift());
 
-    while (right.length)
-        result.push(right.shift());
+	while (right.length) result.push(right.shift());
 
-    return result;
+	return result;
 }
 ```
 
-上述归并分成了分、合两部分，在处理分过程中递归调用两个分的操作，所花费的时间为2乘`T(n/2)`，合的操作时间复杂度则为`O(n)`，因此可以得到以下公式：
+上述归并分成了分、合两部分，在处理分过程中递归调用两个分的操作，所花费的时间为 2 乘`T(n/2)`，合的操作时间复杂度则为`O(n)`，因此可以得到以下公式：
 
 总的执行时间 = 2 × 输入长度为`n/2`的`sort`函数的执行时间 + `merge`函数的执行时间`O(n)`
 
 当只有一个元素时，`T(1) = O(1)`
 
-如果对`T(n) = 2 * T(n/2) + O(n) `进行左右 / n的操作，得到 `T(n) / n = (n / 2) * T(n/2) + O(1)`
+如果对`T(n) = 2 * T(n/2) + O(n) `进行左右 / n 的操作，得到 `T(n) / n = (n / 2) * T(n/2) + O(1)`
 
 现在令 `S(n) = T(n)/n`，则`S(1) = O(1)`，然后利用表达式带入得到`S(n) = S(n/2) + O(1)`
 
@@ -92,9 +94,7 @@ function merge(left, right)
 
 综上可得，`T(n) = n * log(n) = nlogn`
 
-关于归并排序的稳定性，在进行合并过程，在1个或2个元素时，1个元素不会交换，2个元素如果大小相等也不会交换，由此可见归并排序是稳定的排序算法
-
-
+关于归并排序的稳定性，在进行合并过程，在 1 个或 2 个元素时，1 个元素不会交换，2 个元素如果大小相等也不会交换，由此可见归并排序是稳定的排序算法
 
 ## 三、应用场景
 
@@ -103,17 +103,15 @@ function merge(left, right)
 - 排序阶段：读入能够放进内存中的数据量，将其排序输出到临时文件，一次进行，将带排序数据组织为多个有序的临时文件
 - 归并阶段：将这些临时文件组合为大的有序文件
 
-例如，使用100m内存对900m的数据进行排序，过程如下：
+例如，使用 100m 内存对 900m 的数据进行排序，过程如下：
 
-- 读入100m数据内存，用常规方式排序
+- 读入 100m 数据内存，用常规方式排序
 - 将排序后的数据写入磁盘
-- 重复前两个步骤，得到9个100m的临时文件
-- 将100m的内存划分为10份，将9份为输入缓冲区，第10份为输出缓冲区
+- 重复前两个步骤，得到 9 个 100m 的临时文件
+- 将 100m 的内存划分为 10 份，将 9 份为输入缓冲区，第 10 份为输出缓冲区
 - 进行九路归并排序，将结果输出到缓冲区
   - 若输出缓冲区满，将数据写到目标文件，清空缓冲区
   - 若缓冲区空，读入相应文件的下一份数据
-
-
 
 ## 参考文献
 

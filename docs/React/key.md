@@ -1,6 +1,15 @@
-# 面试官：React中的key有什么作用？
+---
+title: React中的key有什么作用？
+date: 2025/03/26
+tags:
+  - react
+  - key
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/31677360-dd69-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/31677360-dd69-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -8,24 +17,24 @@
 
 ```jsx
 const data = [
-  { id: 0, name: 'abc' },
-  { id: 1, name: 'def' },
-  { id: 2, name: 'ghi' },
-  { id: 3, name: 'jkl' }
+	{ id: 0, name: "abc" },
+	{ id: 1, name: "def" },
+	{ id: 2, name: "ghi" },
+	{ id: 3, name: "jkl" },
 ];
 
 const ListItem = (props) => {
-  return <li>{props.name}</li>;
+	return <li>{props.name}</li>;
 };
 
 const List = () => {
-  return (
-    <ul>
-      {data.map((item) => (
-        <ListItem name={item.name}></ListItem>
-      ))}
-    </ul>
-  );
+	return (
+		<ul>
+			{data.map((item) => (
+				<ListItem name={item.name}></ListItem>
+			))}
+		</ul>
+	);
 };
 ```
 
@@ -41,17 +50,15 @@ Each child in a list should have a unique "key" prop.
 
 ```jsx
 const List = () => {
-  return (
-    <ul>
-      {data.map((item) => (
-        <ListItem name={item.name} key={item.id}></ListItem>
-      ))}
-    </ul>
-  );
+	return (
+		<ul>
+			{data.map((item) => (
+				<ListItem name={item.name} key={item.id}></ListItem>
+			))}
+		</ul>
+	);
 };
 ```
-
-
 
 ## 二、作用
 
@@ -97,7 +104,7 @@ insertMovie() {
 }
 ```
 
-当拥有`key`的时候，`react`根据`key`属性匹配原有树上的子元素以及最新树上的子元素，像上述情况只需要将000元素插入到最前面位置
+当拥有`key`的时候，`react`根据`key`属性匹配原有树上的子元素以及最新树上的子元素，像上述情况只需要将 000 元素插入到最前面位置
 
 当没有`key`的时候，所有的`li`标签都需要进行修改
 
@@ -107,22 +114,18 @@ insertMovie() {
 
 而写`key`则涉及到了节点的增和删，发现旧`key`不存在了，则将其删除，新`key`在之前没有，则插入，这就增加性能的开销
 
-
-
 ## 三、总结
 
 良好使用`key`属性是性能优化的非常关键的一步，注意事项为：
 
 - key 应该是唯一的
-- key不要使用随机值（随机数在下一次 render 时，会重新生成一个数字）
+- key 不要使用随机值（随机数在下一次 render 时，会重新生成一个数字）
 
-- 使用 index 作为 key值，对性能没有优化
+- 使用 index 作为 key 值，对性能没有优化
 
 `react`判断`key`的流程具体如下图：
 
- ![](https://static.vue-js.com/3b9afe10-dd69-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/3b9afe10-dd69-11eb-ab90-d9ae814b240d.png)
 
 ## 参考文献
 

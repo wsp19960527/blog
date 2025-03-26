@@ -1,10 +1,14 @@
-# 面试官：说说你对树的理解？相关的操作有哪些？
+---
+title: 树
+date: 2025/03/26
+tags:
+  - algorithm
+  - tree
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/5a7616f0-1dfe-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/5a7616f0-1dfe-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -15,19 +19,19 @@
 - 本身是有序树
 - 树中包含的各个结点的不能超过 2，即只能是 0、1 或者 2
 
-如下图，左侧的为二叉树，而右侧的因为头结点的子结点超过2，因此不属于二叉树：
+如下图，左侧的为二叉树，而右侧的因为头结点的子结点超过 2，因此不属于二叉树：
 
- ![](https://static.vue-js.com/66758800-1dfe-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/66758800-1dfe-11ec-a752-75723a64e8f5.png)
 
 同时，二叉树可以继续进行分类，分成了满二叉树和完成二叉树：
 
 - 满二叉树：如果二叉树中除了叶子结点，每个结点的度都为 2
 
- ![](https://static.vue-js.com/759db050-1dfe-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/759db050-1dfe-11ec-a752-75723a64e8f5.png)
 
 - 完成二叉树：如果二叉树中除去最后一层节点为满二叉树，且最后一层的结点依次从左到右分布
 
- ![](https://static.vue-js.com/84ae31f0-1dfe-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/84ae31f0-1dfe-11ec-8e64-91fdec0f05a1.png)
 
 ## 二、操作
 
@@ -38,10 +42,6 @@
 - 后序遍历
 
 - 层序遍历
-
-
-
-
 
 ### 前序遍历
 
@@ -55,35 +55,35 @@
 
 ```js
 const preOrder = (root) => {
-  if(!root){ return }
-  console.log(root)
-  preOrder(root.left)
-  preOrder(root.right)
-}
+	if (!root) {
+		return;
+	}
+	console.log(root);
+	preOrder(root.left);
+	preOrder(root.right);
+};
 ```
 
 如果不使用递归版本，可以借助栈先进后出的特性实现，先将根节点压入栈，再分别压入右节点和左节点，直到栈中没有元素，如下：
 
 ```js
 const preOrder = (root) => {
-  if(!root){ return }
-  const stack = [root]
-  while (stack.length) {
-    const n = stack.pop()
-    console.log(n.val)
-    if (n.right) {
-      stack.push(n.right)
-    }
-    if (n.left) {
-      stack.push(n.left)
-    }
-  }
-}
+	if (!root) {
+		return;
+	}
+	const stack = [root];
+	while (stack.length) {
+		const n = stack.pop();
+		console.log(n.val);
+		if (n.right) {
+			stack.push(n.right);
+		}
+		if (n.left) {
+			stack.push(n.left);
+		}
+	}
+};
 ```
-
-
-
-
 
 ### 中序遍历
 
@@ -97,35 +97,35 @@ const preOrder = (root) => {
 
 ```js
 const inOrder = (root) => {
-  if (!root) { return }
-  inOrder(root.left)
-  console.log(root.val)
-  inOrder(root.right)
-}
+	if (!root) {
+		return;
+	}
+	inOrder(root.left);
+	console.log(root.val);
+	inOrder(root.right);
+};
 ```
 
 非递归版本也是借助栈先进后出的特性，可以一直首先一直压入节点的左元素，当左节点没有后，才开始进行出栈操作，压入右节点，然后有依次压入左节点，如下：
 
 ```js
 const inOrder = (root) => {
-  if (!root) { return }
-  const stack = [root]
-  let p = root
-  while(stack.length || p){
-    while (p) {
-      stack.push(p)
-      p = p.left
-    }
-    const n = stack.pop()
-    console.log(n.val)
-    p = n.right
-  }
-}
+	if (!root) {
+		return;
+	}
+	const stack = [root];
+	let p = root;
+	while (stack.length || p) {
+		while (p) {
+			stack.push(p);
+			p = p.left;
+		}
+		const n = stack.pop();
+		console.log(n.val);
+		p = n.right;
+	}
+};
 ```
-
-
-
-
 
 ### 后序遍历
 
@@ -139,40 +139,40 @@ const inOrder = (root) => {
 
 ```js
 const postOrder = (root) => {
-  if (!root) { return }
-  postOrder(root.left)
-  postOrder(root.right)
-  console.log(n.val)
- }
+	if (!root) {
+		return;
+	}
+	postOrder(root.left);
+	postOrder(root.right);
+	console.log(n.val);
+};
 ```
 
 后序遍历非递归版本实际根全序遍历是逆序关系，可以再多创建一个栈用来进行输出，如下：
 
 ```js
 const preOrder = (root) => {
-  if(!root){ return }
-  const stack = [root]
-  const outPut = []
-  while (stack.length) {
-    const n = stack.pop()
-    outPut.push(n.val)
-    if (n.right) {
-      stack.push(n.right)
-    }
-    if (n.left) {
-      stack.push(n.left)
-    }
-  }
-  while (outPut.length) {
-    const n = outPut.pop()
-    console.log(n.val)
-  }
-}
+	if (!root) {
+		return;
+	}
+	const stack = [root];
+	const outPut = [];
+	while (stack.length) {
+		const n = stack.pop();
+		outPut.push(n.val);
+		if (n.right) {
+			stack.push(n.right);
+		}
+		if (n.left) {
+			stack.push(n.left);
+		}
+	}
+	while (outPut.length) {
+		const n = outPut.pop();
+		console.log(n.val);
+	}
+};
 ```
-
-
-
-
 
 ### 层序遍历
 
@@ -184,34 +184,35 @@ const preOrder = (root) => {
 
 ```js
 const levelOrder = (root) => {
-    if (!root) { return [] }
-    const queue = [[root, 0]]
-    const res = []
-    while (queue.length) {
-        const n = queue.shift()
-        const [node, leval] = n
-        if (!res[leval]) {
-            res[leval] = [node.val]
-        } else {
-            res[leval].push(node.val)
-        }
-        if (node.left) { queue.push([node.left, leval + 1]) }
-        if (node.right) { queue.push([node.right, leval + 1]) }
-    }
-    return res
+	if (!root) {
+		return [];
+	}
+	const queue = [[root, 0]];
+	const res = [];
+	while (queue.length) {
+		const n = queue.shift();
+		const [node, leval] = n;
+		if (!res[leval]) {
+			res[leval] = [node.val];
+		} else {
+			res[leval].push(node.val);
+		}
+		if (node.left) {
+			queue.push([node.left, leval + 1]);
+		}
+		if (node.right) {
+			queue.push([node.right, leval + 1]);
+		}
+	}
+	return res;
 };
 ```
-
-
-
-
 
 ## 三、总结
 
 树是一个非常重要的非线性结构，其中二叉树以二叉树最常见，二叉树的遍历方式可以分成前序遍历、中序遍历、后序遍历
 
 同时，二叉树又分成了完成二叉树和满二叉树
-
 
 ## 参考文献
 

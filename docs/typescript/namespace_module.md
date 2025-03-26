@@ -1,7 +1,16 @@
-# 面试官：说说对 TypeScript 中命名空间与模块的理解？区别？
+---
+title: namespace 与 module
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+  - namespace
+  - module
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/9378d760-137e-11ec-8e64-91fdec0f05a1.png)
-
+![](https://static.vue-js.com/9378d760-137e-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、模块
 
@@ -12,12 +21,12 @@
 例如我们在在一个 `TypeScript` 工程下建立一个文件 `1.ts`，声明一个变量`a`，如下：
 
 ```ts
-const a = 1
+const a = 1;
 ```
 
 然后在另一个文件同样声明一个变量`a`，这时候会出现错误信息
 
- ![](https://static.vue-js.com/a239d970-137e-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/a239d970-137e-11ec-a752-75723a64e8f5.png)
 
 提示重复声明`a`变量，但是所处的空间是全局的
 
@@ -26,25 +35,23 @@ const a = 1
 ```ts
 const a = 10;
 
-export default a
+export default a;
 ```
 
 在`typescript`中，`export`关键字可以导出变量或者类型，用法与`es6`模块一致，如下：
 
 ```ts
-export const a = 1
+export const a = 1;
 export type Person = {
-    name: String
-}
+	name: String;
+};
 ```
 
 通过`import` 引入模块，如下：
 
 ```ts
-import { a, Person } from './export';
+import { a, Person } from "./export";
 ```
-
-
 
 ## 二、命名空间
 
@@ -58,8 +65,8 @@ import { a, Person } from './export';
 
 ```ts
 namespace SomeNameSpaceName {
-   export interface ISomeInterfaceName {      }
-   export class SomeClassName {      }
+	export interface ISomeInterfaceName {}
+	export class SomeClassName {}
 }
 ```
 
@@ -68,18 +75,18 @@ namespace SomeNameSpaceName {
 使用方式如下：
 
 ```ts
-SomeNameSpaceName.SomeClassName
+SomeNameSpaceName.SomeClassName;
 ```
 
 命名空间本质上是一个对象，作用是将一系列相关的全局变量组织到一个对象的属性，如下：
 
 ```ts
 namespace Letter {
-  export let a = 1;
-  export let b = 2;
-  export let c = 3;
-  // ...
-  export let z = 26;
+	export let a = 1;
+	export let b = 2;
+	export let c = 3;
+	// ...
+	export let z = 26;
 }
 ```
 
@@ -88,26 +95,21 @@ namespace Letter {
 ```js
 var Letter;
 (function (Letter) {
-    Letter.a = 1;
-    Letter.b = 2;
-    Letter.c = 3;
-    // ...
-    Letter.z = 26;
+	Letter.a = 1;
+	Letter.b = 2;
+	Letter.c = 3;
+	// ...
+	Letter.z = 26;
 })(Letter || (Letter = {}));
 ```
 
-
-
-
-
 ## 三、区别
 
-- 命名空间是位于全局命名空间下的一个普通的带有名字的  JavaScript  对象，使用起来十分容易。但就像其它的全局命名空间污染一样，它很难去识别组件之间的依赖关系，尤其是在大型的应用中
+- 命名空间是位于全局命名空间下的一个普通的带有名字的 JavaScript 对象，使用起来十分容易。但就像其它的全局命名空间污染一样，它很难去识别组件之间的依赖关系，尤其是在大型的应用中
 
 - 像命名空间一样，模块可以包含代码和声明。 不同的是模块可以声明它的依赖
 
-- 在正常的TS项目开发过程中并不建议用命名空间，但通常在通过 d.ts 文件标记 js 库类型的时候使用命名空间，主要作用是给编译器编写代码的时候参考使用
-
+- 在正常的 TS 项目开发过程中并不建议用命名空间，但通常在通过 d.ts 文件标记 js 库类型的时候使用命名空间，主要作用是给编译器编写代码的时候参考使用
 
 ## 参考文献
 

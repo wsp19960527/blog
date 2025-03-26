@@ -1,8 +1,15 @@
-# 面试官：说说对高阶组件的理解？应用场景?
+---
+title: 高阶组件
+date: 2025/03/26
+tags:
+  - react
+  - 高阶组件
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/c8901850-e197-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/c8901850-e197-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -21,22 +28,21 @@ const EnhancedComponent = highOrderComponent(WrappedComponent);
 
 高阶组件的这种实现方式，本质上是一个装饰者设计模式
 
-
 ## 二、如何编写
 
 最基本的高阶组件的编写模板如下：
 
 ```jsx
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export default (WrappedComponent) => {
-  return class EnhancedComponent extends Component {
-    // do something
-    render() {
-      return <WrappedComponent />;
-    }
-  }
-}
+	return class EnhancedComponent extends Component {
+		// do something
+		render() {
+			return <WrappedComponent />;
+		}
+	};
+};
 ```
 
 通过对传入的原始组件 `WrappedComponent` 做一些你想要的操作（比如操作 props，提取 state，给原始组件包裹其他元素等），从而加工出想要的组件 `EnhancedComponent`
@@ -52,7 +58,7 @@ export default (WrappedComponent) => {
 - 不要以任何方式改变原始组件 WrappedComponent
 - 透传不相关 props 属性给被包裹的组件 WrappedComponent
 - 不要再 render() 方法中使用高阶组件
-- 使用  compose 组合高阶组件
+- 使用 compose 组合高阶组件
 - 包装显示名字以便于调试
 
 这里需要注意的是，高阶组件可以传递所有的`props`，但是不能传递`ref`
@@ -61,29 +67,28 @@ export default (WrappedComponent) => {
 
 ```jsx
 function withLogging(WrappedComponent) {
-    class Enhance extends WrappedComponent {
-        componentWillReceiveProps() {
-            console.log('Current props', this.props);
-            console.log('Next props', nextProps);
-        }
-        render() {
-            const {forwardedRef, ...rest} = this.props;
-            // 把 forwardedRef 赋值给 ref
-            return <WrappedComponent {...rest} ref={forwardedRef} />;
-        }
-    };
+	class Enhance extends WrappedComponent {
+		componentWillReceiveProps() {
+			console.log("Current props", this.props);
+			console.log("Next props", nextProps);
+		}
+		render() {
+			const { forwardedRef, ...rest } = this.props;
+			// 把 forwardedRef 赋值给 ref
+			return <WrappedComponent {...rest} ref={forwardedRef} />;
+		}
+	}
 
-    // React.forwardRef 方法会传入 props 和 ref 两个参数给其回调函数
-    // 所以这边的 ref 是由 React.forwardRef 提供的
-    function forwardRef(props, ref) {
-        return <Enhance {...props} forwardRef={ref} />
-    }
+	// React.forwardRef 方法会传入 props 和 ref 两个参数给其回调函数
+	// 所以这边的 ref 是由 React.forwardRef 提供的
+	function forwardRef(props, ref) {
+		return <Enhance {...props} forwardRef={ref} />;
+	}
 
-    return React.forwardRef(forwardRef);
+	return React.forwardRef(forwardRef);
 }
 const EnhancedComponent = withLogging(SomeComponent);
 ```
-
 
 ## 三、应用场景
 
@@ -92,18 +97,17 @@ const EnhancedComponent = withLogging(SomeComponent);
 举个例子，存在一个组件，需要从缓存中获取数据，然后渲染。一般情况，我们会如下编写：
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 class MyComponent extends Component {
+	componentWillMount() {
+		let data = localStorage.getItem("data");
+		this.setState({ data });
+	}
 
-  componentWillMount() {
-      let data = localStorage.getItem('data');
-      this.setState({data});
-  }
-  
-  render() {
-    return <div>{this.state.data}</div>
-  }
+	render() {
+		return <div>{this.state.data}</div>;
+	}
 }
 ```
 
@@ -112,64 +116,63 @@ class MyComponent extends Component {
 下面就可以通过高价组件来进行改写，如下：
 
 ```jsx
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 function withPersistentData(WrappedComponent) {
-  return class extends Component {
-    componentWillMount() {
-      let data = localStorage.getItem('data');
-        this.setState({data});
-    }
-    
-    render() {
-      // 通过{...this.props} 把传递给当前组件的属性继续传递给被包装的组件WrappedComponent
-      return <WrappedComponent data={this.state.data} {...this.props} />
-    }
-  }
+	return class extends Component {
+		componentWillMount() {
+			let data = localStorage.getItem("data");
+			this.setState({ data });
+		}
+
+		render() {
+			// 通过{...this.props} 把传递给当前组件的属性继续传递给被包装的组件WrappedComponent
+			return <WrappedComponent data={this.state.data} {...this.props} />;
+		}
+	};
 }
 
-class MyComponent2 extends Component {  
-  render() {
-    return <div>{this.props.data}</div>
-  }
+class MyComponent2 extends Component {
+	render() {
+		return <div>{this.props.data}</div>;
+	}
 }
 
-const MyComponentWithPersistentData = withPersistentData(MyComponent2)
+const MyComponentWithPersistentData = withPersistentData(MyComponent2);
 ```
 
 再比如组件渲染性能监控，如下：
 
 ```jsx
 class Home extends React.Component {
-    render() {
-        return (<h1>Hello World.</h1>);
-    }
+	render() {
+		return <h1>Hello World.</h1>;
+	}
 }
 function withTiming(WrappedComponent) {
-    return class extends WrappedComponent {
-        constructor(props) {
-            super(props);
-            this.start = 0;
-            this.end = 0;
-        }
-        componentWillMount() {
-            super.componentWillMount && super.componentWillMount();
-            this.start = Date.now();
-        }
-        componentDidMount() {
-            super.componentDidMount && super.componentDidMount();
-            this.end = Date.now();
-            console.log(`${WrappedComponent.name} 组件渲染时间为 ${this.end - this.start} ms`);
-        }
-        render() {
-            return super.render();
-        }
-    };
+	return class extends WrappedComponent {
+		constructor(props) {
+			super(props);
+			this.start = 0;
+			this.end = 0;
+		}
+		componentWillMount() {
+			super.componentWillMount && super.componentWillMount();
+			this.start = Date.now();
+		}
+		componentDidMount() {
+			super.componentDidMount && super.componentDidMount();
+			this.end = Date.now();
+			console.log(`${WrappedComponent.name} 组件渲染时间为 ${this.end - this.start} ms`);
+		}
+		render() {
+			return super.render();
+		}
+	};
 }
 
 export default withTiming(Home);
 ```
-
 
 ## 参考文献
 

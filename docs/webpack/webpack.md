@@ -1,6 +1,13 @@
-# 面试官：说说你对webpack的理解？解决了什么问题？
+---
+title: webpack
+date: 2025/03/26
+tags:
+  - webpack
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/898ed570-a578-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/898ed570-a578-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、背景
 
@@ -25,10 +32,10 @@
 
 ```js
 window.moduleA = {
-  method1: function () {
-    console.log('moduleA#method1')
-  }
-}
+	method1: function () {
+		console.log("moduleA#method1");
+	},
+};
 ```
 
 这种方式也并没有解决第一种方式的依赖等问题
@@ -38,25 +45,24 @@ window.moduleA = {
 ```js
 // module-a.js
 (function ($) {
-  var name = 'module-a'
+	var name = "module-a";
 
-  function method1 () {
-    console.log(name + '#method1')
-    $('body').animate({ margin: '200px' })
-  }
+	function method1() {
+		console.log(name + "#method1");
+		$("body").animate({ margin: "200px" });
+	}
 
-  window.moduleA = {
-    method1: method1
-  }
-})(jQuery)
+	window.moduleA = {
+		method1: method1,
+	};
+})(jQuery);
 ```
 
 上述的方式都是早期解决模块的方式，但是仍然存在一些没有解决的问题。例如，我们是用过`script`标签在页面引入这些模块的，这些模块的加载并不受代码的控制，时间一久维护起来也十分的麻烦
 
-理想的解决方式是，在页面中引入一个` JS `入口文件，其余用到的模块可以通过代码控制，按需加载进来
+理想的解决方式是，在页面中引入一个`JS`入口文件，其余用到的模块可以通过代码控制，按需加载进来
 
 除了模块加载的问题以外，还需要规定模块化的规范，如今流行的则是`CommonJS `、`ES Modules`
-
 
 ## 二、问题
 
@@ -67,17 +73,16 @@ window.moduleA = {
 现代前端开发已经变得十分的复杂，所以我们开发过程中会遇到如下的问题：
 
 - 需要通过模块化的方式来开发
-- 使用一些高级的特性来加快我们的开发效率或者安全性，比如通过ES6+、TypeScript开发脚本逻辑，通过sass、less等方式来编写css样式代码
+- 使用一些高级的特性来加快我们的开发效率或者安全性，比如通过 ES6+、TypeScript 开发脚本逻辑，通过 sass、less 等方式来编写 css 样式代码
 - 监听文件的变化来并且反映到浏览器上，提高开发的效率
 - JavaScript 代码需要模块化，HTML 和 CSS 这些资源文件也会面临需要被模块化的问题
 - 开发完成后我们还需要将代码进行压缩、合并以及其他相关的优化
 
 而`webpack`恰巧可以解决以上问题
 
-
 ## 三、是什么
 
-`webpack` 是一个用于现代` JavaScript `应用程序的静态模块打包工具
+`webpack` 是一个用于现代`JavaScript`应用程序的静态模块打包工具
 
 - 静态模块
 
@@ -85,7 +90,7 @@ window.moduleA = {
 
 当 `webpack `处理应用程序时，它会在内部构建一个依赖图，此依赖图对应映射到项目所需的每个模块（不再局限`js`文件），并生成一个或多个 `bundle`
 
- ![](https://static.vue-js.com/9ce194a0-a578-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/9ce194a0-a578-11eb-85f6-6fac77c0c9b3.png)
 
 #### `webpack`的能力：
 
@@ -97,5 +102,6 @@ window.moduleA = {
 ![](https://static.vue-js.com/e3c5a040-a592-11eb-ab90-d9ae814b240d.png)
 
 ## 参考文献
+
 - https://webpack.docschina.org/concepts/
 - https://zhuanlan.zhihu.com/p/267875652

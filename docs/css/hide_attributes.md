@@ -1,4 +1,11 @@
-# 面试官：css中，有哪些方式可以隐藏页面元素？区别?
+---
+title: css中，有哪些方式可以隐藏页面元素？区别?
+date: 2025/03/26
+tags:
+  - css3
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/ccf96f50-929a-11eb-ab90-d9ae814b240d.png)
 
@@ -17,7 +24,7 @@
 - display:none
 - visibility:hidden
 - opacity:0
-- 设置height、width模型属性为0
+- 设置 height、width 模型属性为 0
 - position:absolute
 - clip-path
 
@@ -27,7 +34,7 @@
 
 ```css
 .hide {
-    display:none;
+	display: none;
 }
 ```
 
@@ -43,11 +50,11 @@
 
 设置元素的`visibility`为`hidden`也是一种常用的隐藏元素的方法
 
-从页面上仅仅是隐藏该元素，DOM结果均会存在，只是当时在一个不可见的状态，不会触发重排，但是会触发重绘
+从页面上仅仅是隐藏该元素，DOM 结果均会存在，只是当时在一个不可见的状态，不会触发重排，但是会触发重绘
 
 ```css
-.hidden{
-    visibility:hidden
+.hidden {
+	visibility: hidden;
 }
 ```
 
@@ -55,47 +62,42 @@
 
 特点：元素不可见，占据页面空间，无法响应点击事件
 
-
 ### opacity:0
 
-`opacity`属性表示元素的透明度，将元素的透明度设置为0后，在我们用户眼中，元素也是隐藏的
+`opacity`属性表示元素的透明度，将元素的透明度设置为 0 后，在我们用户眼中，元素也是隐藏的
 
 不会引发重排，一般情况下也会引发重绘
 
-> 如果利用 animation 动画，对 opacity 做变化（animation会默认触发GPU加速），则只会触发 GPU 层面的 composite，不会触发重绘
+> 如果利用 animation 动画，对 opacity 做变化（animation 会默认触发 GPU 加速），则只会触发 GPU 层面的 composite，不会触发重绘
 
 ```css
 .transparent {
-    opacity:0;
+	opacity: 0;
 }
 ```
 
 由于其仍然是存在于页面上的，所以他自身的的事件仍然是可以触发的，但被他遮挡的元素是不能触发其事件的
 
-需要注意的是：其子元素不能设置opacity来达到显示的效果
+需要注意的是：其子元素不能设置 opacity 来达到显示的效果
 
 特点：改变元素透明度，元素不可见，占据页面空间，可以响应点击事件
 
+### 设置 height、width 属性为 0
 
-
-### 设置height、width属性为0
-
-将元素的`margin`，`border`，`padding`，`height`和`width`等影响元素盒模型的属性设置成0，如果元素内有子元素或内容，还应该设置其`overflow:hidden`来隐藏其子元素
+将元素的`margin`，`border`，`padding`，`height`和`width`等影响元素盒模型的属性设置成 0，如果元素内有子元素或内容，还应该设置其`overflow:hidden`来隐藏其子元素
 
 ```css
 .hiddenBox {
-    margin:0;     
-    border:0;
-    padding:0;
-    height:0;
-    width:0;
-    overflow:hidden;
+	margin: 0;
+	border: 0;
+	padding: 0;
+	height: 0;
+	width: 0;
+	overflow: hidden;
 }
 ```
 
 特点：元素不可见，不占据页面空间，无法响应点击事件
-
-
 
 ### position:absolute
 
@@ -103,14 +105,13 @@
 
 ```css
 .hide {
-   position: absolute;
-   top: -9999px;
-   left: -9999px;
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
 }
 ```
 
 特点：元素不可见，不影响页面布局
-
 
 ### clip-path
 
@@ -118,17 +119,15 @@
 
 ```css
 .hide {
-  clip-path: polygon(0px 0px,0px 0px,0px 0px,0px 0px);
+	clip-path: polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px);
 }
 ```
 
 特点：元素不可见，占据页面空间，无法响应点击事件
 
-
 ### 小结
 
 最常用的还是`display:none`和`visibility:hidden`，其他的方式只能认为是奇招，它们的真正用途并不是用于隐藏元素，所以并不推荐使用它们
-
 
 ## 三、区别
 
@@ -143,7 +142,6 @@
 | transition             | 不支持        | 支持               | 支持       |
 | 子元素可复原           | 不能          | 能                 | 不能       |
 | 被遮挡的元素可触发事件 | 能            | 能                 | 不能       |
-
 
 ## 参考文献
 

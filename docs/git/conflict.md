@@ -1,6 +1,14 @@
-# 面试官：说说 git 发生冲突的场景？如何解决？
+---
+title: git 发生冲突的场景及解决
+date: 2025/03/26
+tags:
+  - git
+  - 冲突
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/8aeccc40-fdb3-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/8aeccc40-fdb3-11eb-bc6f-3f06e1491664.png)
 
 ## 一、是什么
 
@@ -15,13 +23,11 @@
 
 应用在命令中，就是`push`、`pull`、`stash`、`rebase`等命令下都有可能产生冲突情况，从本质上来讲，都是`merge`和`patch`（应用补丁）时产生冲突
 
-
-
 ## 二、分析
 
 在本地主分值`master`创建一个`a.txt`文件，文件起始位置写上`master commit`，如下：
 
- ![](https://static.vue-js.com/959ade20-fdb3-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/959ade20-fdb3-11eb-991d-334fd31f0201.png)
 
 然后提交到仓库：
 
@@ -37,7 +43,7 @@ git checkout -b featurel1
 然后修改`a.txt`文件首行文字为 `featurel commit`，然后添加到暂存区，并开始进行提交到仓库：
 
 - git add a.txt
-- git commit -m 'featurel  first change'
+- git commit -m 'featurel first change'
 
 然后通过`git checkout master`切换到主分支，通过`git merge`进行合并，发现不会冲突
 
@@ -53,23 +59,23 @@ git checkout -b featurel1
 
 此时，`master`分支和`feature1`分支各自都分别有新的提交，变成了下图所示：
 
- ![](https://static.vue-js.com/a05488c0-fdb3-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/a05488c0-fdb3-11eb-991d-334fd31f0201.png)
 
 这种情况下，无法执行快速合并，只能试图把各自的修改合并起来，但这种合并就可能会有冲突
 
 现在通过`git merge featurel`进行分支合并，如下所示：
 
- ![](https://static.vue-js.com/b0991d90-fdb3-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/b0991d90-fdb3-11eb-bc6f-3f06e1491664.png)
 
 从冲突信息可以看到，`a.txt`发生冲突，必须手动解决冲突之后再提交
 
 而`git status`同样可以告知我们冲突的文件：
 
- ![](https://static.vue-js.com/c5823430-fdb3-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/c5823430-fdb3-11eb-991d-334fd31f0201.png)
 
 打开`a.txt`文件，可以看到如下内容：
 
- ![](https://static.vue-js.com/ce7a0a90-fdb3-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/ce7a0a90-fdb3-11eb-bc6f-3f06e1491664.png)
 
 `git`用`<<<<<<<`，`=======`，`>>>>>>>`标记出不同分支的内容：
 
@@ -83,23 +89,17 @@ git checkout -b featurel1
 
 此时`master`分支和`feature1`分支变成了下图所示：
 
- ![](https://static.vue-js.com/d7421e60-fdb3-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/d7421e60-fdb3-11eb-bc6f-3f06e1491664.png)
 
 使用`git log`命令可以看到合并的信息：
 
- ![](https://static.vue-js.com/e0dfd1b0-fdb3-11eb-991d-334fd31f0201.png)
-
-
-
-
+![](https://static.vue-js.com/e0dfd1b0-fdb3-11eb-991d-334fd31f0201.png)
 
 ## 三、总结
 
 当`Git`无法自动合并分支时，就必须首先解决冲突，解决冲突后，再提交，合并完成
 
 解决冲突就是把`Git`合并失败的文件手动编辑为我们希望的内容，再提交
-
-
 
 ## 参考文献
 

@@ -1,6 +1,15 @@
-# 面试官：说说你对事件循环的理解
+---
+title: 事件循环
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+  - 事件循环
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/50f062d0-7cb8-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/50f062d0-7cb8-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -14,31 +23,29 @@
 
 同步任务与异步任务的运行流程图如下：
 
- ![](https://static.vue-js.com/61efbc20-7cb8-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/61efbc20-7cb8-11eb-85f6-6fac77c0c9b3.png)
 
 从上面我们可以看到，同步任务进入主线程，即主执行栈，异步任务进入任务队列，主线程内的任务执行完毕为空，会去任务队列读取对应的任务，推入主线程执行。上述过程的不断重复就事件循环
-
-
 
 ## 二、宏任务与微任务
 
 如果将任务划分为同步任务和异步任务并不是那么的准确，举个例子：
 
 ```js
-console.log(1)
+console.log(1);
 
-setTimeout(()=>{
-    console.log(2)
-}, 0)
+setTimeout(() => {
+	console.log(2);
+}, 0);
 
-new Promise((resolve, reject)=>{
-    console.log('new Promise')
-    resolve()
-}).then(()=>{
-    console.log('then')
-})
+new Promise((resolve, reject) => {
+	console.log("new Promise");
+	resolve();
+}).then(() => {
+	console.log("then");
+});
 
-console.log(3)
+console.log(3);
 ```
 
 如果按照上面流程图来分析代码，我们会得到下面的执行步骤：
@@ -73,47 +80,41 @@ console.log(3)
 
 - process.nextTick（Node.js）
 
-  
-
 ### 宏任务
 
 宏任务的时间粒度比较大，执行的时间间隔是不能精确控制的，对一些高实时性的需求就不太符合
 
 常见的宏任务有：
 
-- script (可以理解为外层同步代码) 
-- setTimeout/setInterval 
-- UI rendering/UI事件 
-- postMessage、MessageChannel 
+- script (可以理解为外层同步代码)
+- setTimeout/setInterval
+- UI rendering/UI 事件
+- postMessage、MessageChannel
 - setImmediate、I/O（Node.js）
-
-
 
 这时候，事件循环，宏任务，微任务的关系如图所示
 
- ![](https://static.vue-js.com/6e80e5e0-7cb8-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/6e80e5e0-7cb8-11eb-85f6-6fac77c0c9b3.png)
 
 按照这个流程，它的执行机制是：
 
 - 执行一个宏任务，如果遇到微任务就将它放到微任务的事件队列中
 - 当前宏任务执行完成后，会查看微任务的事件队列，然后将里面的所有微任务依次执行完
 
-
-
 回到上面的题目
 
 ```js
-console.log(1)
-setTimeout(()=>{
-    console.log(2)
-}, 0)
-new Promise((resolve, reject)=>{
-    console.log('new Promise')
-    resolve()
-}).then(()=>{
-    console.log('then')
-})
-console.log(3)
+console.log(1);
+setTimeout(() => {
+	console.log(2);
+}, 0);
+new Promise((resolve, reject) => {
+	console.log("new Promise");
+	resolve();
+}).then(() => {
+	console.log("then");
+});
+console.log(3);
 ```
 
 流程如下
@@ -128,11 +129,9 @@ console.log(3)
 // 当一次宏任务执行完，再去执行新的宏任务，这里就剩一个定时器的宏任务了，执行它，打印 2
 ```
 
+## 三、async 与 await
 
-
-## 三、async与await
-
-`async` 是异步的意思，`await `则可以理解为 `async wait`。所以可以理解` async `就是用来声明一个异步方法，而 `await `是用来等待异步方法执行
+`async` 是异步的意思，`await `则可以理解为 `async wait`。所以可以理解`async`就是用来声明一个异步方法，而 `await `是用来等待异步方法执行
 
 ### async
 
@@ -140,12 +139,12 @@ console.log(3)
 
 ```js
 function f() {
-    return Promise.resolve('TEST');
+	return Promise.resolve("TEST");
 }
 
 // asyncF is equivalent to f!
 async function asyncF() {
-    return 'TEST';
+	return "TEST";
 }
 ```
 
@@ -154,36 +153,34 @@ async function asyncF() {
 正常情况下，`await`命令后面是一个 `Promise `对象，返回该对象的结果。如果不是 `Promise `对象，就直接返回对应的值
 
 ```js
-async function f(){
-    // 等同于
-    // return 123
-    return await 123
+async function f() {
+	// 等同于
+	// return 123
+	return await 123;
 }
-f().then(v => console.log(v)) // 123
+f().then((v) => console.log(v)); // 123
 ```
 
 不管`await`后面跟着的是什么，`await`都会阻塞后面的代码
 
 ```js
-async function fn1 (){
-    console.log(1)
-    await fn2()
-    console.log(2) // 阻塞
+async function fn1() {
+	console.log(1);
+	await fn2();
+	console.log(2); // 阻塞
 }
 
-async function fn2 (){
-    console.log('fn2')
+async function fn2() {
+	console.log("fn2");
 }
 
-fn1()
-console.log(3)
+fn1();
+console.log(3);
 ```
 
 上面的例子中，`await` 会阻塞下面的代码（即加入微任务队列），先执行 `async `外面的同步代码，同步代码执行完，再回到 `async` 函数中，再执行之前阻塞的代码
 
 所以上述输出结果为：`1`，`fn2`，`3`，`2`
-
-
 
 ## 四、流程分析
 
@@ -193,36 +190,35 @@ console.log(3)
 
 ```js
 async function async1() {
-    console.log('async1 start')
-    await async2()
-    console.log('async1 end')
+	console.log("async1 start");
+	await async2();
+	console.log("async1 end");
 }
 async function async2() {
-    console.log('async2')
+	console.log("async2");
 }
-console.log('script start')
+console.log("script start");
 setTimeout(function () {
-    console.log('settimeout')
-})
-async1()
+	console.log("settimeout");
+});
+async1();
 new Promise(function (resolve) {
-    console.log('promise1')
-    resolve()
+	console.log("promise1");
+	resolve();
 }).then(function () {
-    console.log('promise2')
-})
-console.log('script end')
+	console.log("promise2");
+});
+console.log("script end");
 ```
 
 分析过程：
 
 1. 执行整段代码，遇到 `console.log('script start')` 直接打印结果，输出 `script start`
 2. 遇到定时器了，它是宏任务，先放着不执行
-3. 遇到 `async1()`，执行 `async1` 函数，先打印 `async1 start`，下面遇到` await `怎么办？先执行 `async2`，打印 `async2`，然后阻塞下面代码（即加入微任务列表），跳出去执行同步代码
+3. 遇到 `async1()`，执行 `async1` 函数，先打印 `async1 start`，下面遇到`await`怎么办？先执行 `async2`，打印 `async2`，然后阻塞下面代码（即加入微任务列表），跳出去执行同步代码
 4. 跳到 `new Promise` 这里，直接执行，打印 `promise1`，下面遇到 `.then()`，它是微任务，放到微任务列表等待执行
 5. 最后一行直接打印 `script end`，现在同步代码执行完了，开始执行微任务，即 `await `下面的代码，打印 `async1 end`
 6. 继续执行下一个微任务，即执行 `then` 的回调，打印 `promise2`
 7. 上一个宏任务所有事都做完了，开始下一个宏任务，就是定时器，打印 `settimeout`
 
 所以最后的结果是：`script start`、`async1 start`、`async2`、`promise1`、`script end`、`async1 end`、`promise2`、`settimeout`
-

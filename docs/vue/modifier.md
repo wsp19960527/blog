@@ -1,4 +1,12 @@
-# 面试官：Vue常用的修饰符有哪些有什么应用场景
+---
+title: 修饰符
+date: 2025/03/26
+tags:
+  - vue
+  - vue修饰符
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/8f718e30-42c0-11eb-ab90-d9ae814b240d.png)
 
@@ -14,7 +22,7 @@
 - 事件修饰符
 - 鼠标按键修饰符
 - 键值修饰符
-- v-bind修饰符
+- v-bind 修饰符
 
 ## 二、修饰符的作用
 
@@ -119,7 +127,7 @@
 </div>
 </div>
 </div>
-// 输出结构: 1 2 4 3 
+// 输出结构: 1 2 4 3
 ```
 
 #### passive
@@ -145,7 +153,7 @@
 <my-component v-on:click.native="doSomething"></my-component>
 ```
 
-> 使用.native修饰符来操作普通HTML标签是会令事件失效的
+> 使用.native 修饰符来操作普通 HTML 标签是会令事件失效的
 
 ### 鼠标按钮修饰符
 
@@ -178,12 +186,12 @@
 还可以通过以下方式自定义一些全局的键盘码别名
 
 ```js
-Vue.config.keyCodes.f2 = 113
+Vue.config.keyCodes.f2 = 113;
 ```
 
-### v-bind修饰符
+### v-bind 修饰符
 
-v-bind修饰符主要是为属性进行操作，用来分别有如下：
+v-bind 修饰符主要是为属性进行操作，用来分别有如下：
 
 - async
 - prop
@@ -195,7 +203,7 @@ v-bind修饰符主要是为属性进行操作，用来分别有如下：
 
 ```js
 //父组件
-<comp :myMessage.sync="bar"></comp> 
+<comp :myMessage.sync="bar"></comp>
 //子组件
 this.$emit('update:myMessage',params);
 ```
@@ -224,7 +232,7 @@ func2(){
 
 #### props
 
-设置自定义标签属性，避免暴露数据，防止污染HTML结构
+设置自定义标签属性，避免暴露数据，防止污染 HTML 结构
 
 ```js
 <input id="uid" title="title1" value="1" :index.prop="index">
@@ -251,8 +259,6 @@ func2(){
 - .once：只触发一次
 - .keyCode：监听特定键盘按下
 - .right：右键
-
-
 
 ## 参考文献
 

@@ -1,4 +1,12 @@
-# 面试官：说说你对正则表达式的理解？应用场景？
+---
+title: 正则表达式
+date: 2025/03/26
+tags:
+  - js
+  - regexp
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/55388a40-7f1d-11eb-ab90-d9ae814b240d.png)
 
@@ -19,15 +27,13 @@ const re = /\d+/g;
 2. 调用`RegExp`对象的构造函数
 
 ```js
-const re = new RegExp("\\d+","g");
+const re = new RegExp("\\d+", "g");
 
-const rul = "\\d+"
-const re1 = new RegExp(rul,"g");
+const rul = "\\d+";
+const re1 = new RegExp(rul, "g");
 ```
 
 使用构建函数创建，第一个参数可以是一个变量，遇到特殊字符`\`需要使用`\\`进行转义
-
-
 
 ## 二、匹配规则
 
@@ -38,18 +44,18 @@ const re1 = new RegExp(rul,"g");
 | \           | 转义                                                  |
 | ^           | 匹配输入的开始                                        |
 | $           | 匹配输入的结束                                        |
-| *           | 匹配前一个表达式 0 次或多次                           |
+| \*          | 匹配前一个表达式 0 次或多次                           |
 | +           | 匹配前面一个表达式 1 次或者多次。等价于 `{1,}`        |
 | ?           | 匹配前面一个表达式 0 次或者 1 次。等价于`{0,1}`       |
 | .           | 默认匹配除换行符之外的任何单个字符                    |
 | x(?=y)      | 匹配'x'仅仅当'x'后面跟着'y'。这种叫做先行断言         |
 | (?<=y)x     | 匹配'x'仅当'x'前面是'y'.这种叫做后行断言              |
 | x(?!y)      | 仅仅当'x'后面不跟着'y'时匹配'x'，这被称为正向否定查找 |
-| (?<!*y*)*x* | 仅仅当'x'前面不是'y'时匹配'x'，这被称为反向否定查找   |
+| (?<!_y_)_x_ | 仅仅当'x'前面不是'y'时匹配'x'，这被称为反向否定查找   |
 | x\|y        | 匹配‘x’或者‘y’                                        |
 | {n}         | n 是一个正整数，匹配了前面一个字符刚好出现了 n 次     |
-| {n,}        | n是一个正整数，匹配前一个字符至少出现了n次            |
-| {n,m}       | n 和 m 都是整数。匹配前面的字符至少n次，最多m次       |
+| {n,}        | n 是一个正整数，匹配前一个字符至少出现了 n 次         |
+| {n,m}       | n 和 m 都是整数。匹配前面的字符至少 n 次，最多 m 次   |
 | [xyz\]      | 一个字符集合。匹配方括号中的任意字符                  |
 | [^xyz\]     | 匹配任何没有包含在方括号中的字符                      |
 | \b          | 匹配一个词的边界，例如在字母和空格之间                |
@@ -89,7 +95,7 @@ var re = new RegExp("pattern", "flags");
 在了解贪婪模式前，首先举个例子：
 
 ```js
-const reg = /ab{1,3}c/
+const reg = /ab{1,3}c/;
 ```
 
 在匹配过程中，尝试可能的顺序是从多往少的方向去尝试。首先会尝试`bbb`，然后再看整个正则是否能匹配。不能匹配时，吐出一个`b`，即在`bb`的基础上，再继续尝试，以此重复
@@ -99,7 +105,7 @@ const reg = /ab{1,3}c/
 ```js
 const string = "12345";
 const regx = /(\d{1,3})(\d{1,3})/;
-console.log( string.match(reg) );
+console.log(string.match(reg));
 // => ["12345", "123", "45", index: 0, input: "12345"]
 ```
 
@@ -112,7 +118,7 @@ console.log( string.match(reg) );
 ```js
 var string = "12345";
 var regex = /(\d{1,3}?)(\d{1,3})/;
-console.log( string.match(regex) );
+console.log(string.match(regex));
 // => ["1234", "1", "234", index: 0, input: "12345"]
 ```
 
@@ -120,7 +126,7 @@ console.log( string.match(regex) );
 
 ### 分组
 
-分组主要是用过`()`进行实现，比如`beyond{3}`，是匹配`d`字母3次。而`(beyond){3}`是匹配`beyond`三次
+分组主要是用过`()`进行实现，比如`beyond{3}`，是匹配`d`字母 3 次。而`(beyond){3}`是匹配`beyond`三次
 
 在`()`内使用`|`达到或的效果，如`(abc | xxx)`可以匹配`abc`或者`xxx`
 
@@ -130,12 +136,8 @@ console.log( string.match(regex) );
 let str = "John Smith";
 
 // 交换名字和姓氏
-console.log(str.replace(/(john) (smith)/i, '$2, $1')) // Smith, John
+console.log(str.replace(/(john) (smith)/i, "$2, $1")); // Smith, John
 ```
-
-
-
-
 
 ## 三、匹配方法
 
@@ -144,17 +146,15 @@ console.log(str.replace(/(john) (smith)/i, '$2, $1')) // Smith, John
 - 字符串（str）方法：`match`、`matchAll`、`search`、`replace`、`split`
 - 正则对象下（regexp）的方法：`test`、`exec`
 
-| 方法     | 描述                                                         |
-| :------- | :----------------------------------------------------------- |
-| exec     | 一个在字符串中执行查找匹配的RegExp方法，它返回一个数组（未匹配到则返回 null）。 |
-| test     | 一个在字符串中测试是否匹配的RegExp方法，它返回 true 或 false。 |
-| match    | 一个在字符串中执行查找匹配的String方法，它返回一个数组，在未匹配到时会返回 null。 |
-| matchAll | 一个在字符串中执行查找所有匹配的String方法，它返回一个迭代器（iterator）。 |
-| search   | 一个在字符串中测试匹配的String方法，它返回匹配到的位置索引，或者在失败时返回-1。 |
-| replace  | 一个在字符串中执行查找匹配的String方法，并且使用替换字符串替换掉匹配到的子字符串。 |
+| 方法     | 描述                                                                                                   |
+| :------- | :----------------------------------------------------------------------------------------------------- |
+| exec     | 一个在字符串中执行查找匹配的 RegExp 方法，它返回一个数组（未匹配到则返回 null）。                      |
+| test     | 一个在字符串中测试是否匹配的 RegExp 方法，它返回 true 或 false。                                       |
+| match    | 一个在字符串中执行查找匹配的 String 方法，它返回一个数组，在未匹配到时会返回 null。                    |
+| matchAll | 一个在字符串中执行查找所有匹配的 String 方法，它返回一个迭代器（iterator）。                           |
+| search   | 一个在字符串中测试匹配的 String 方法，它返回匹配到的位置索引，或者在失败时返回-1。                     |
+| replace  | 一个在字符串中执行查找匹配的 String 方法，并且使用替换字符串替换掉匹配到的子字符串。                   |
 | split    | 一个使用正则表达式或者一个固定字符串分隔一个字符串，并将分隔后的子字符串存储到数组中的 `String` 方法。 |
-
-
 
 ### str.match(regexp)
 
@@ -167,13 +167,13 @@ let str = "I love JavaScript";
 
 let result = str.match(/Java(Script)/);
 
-console.log( result[0] );     // JavaScript（完全匹配）
-console.log( result[1] );     // Script（第一个分组）
-console.log( result.length ); // 2
+console.log(result[0]); // JavaScript（完全匹配）
+console.log(result[1]); // Script（第一个分组）
+console.log(result.length); // 2
 
 // 其他信息：
-console.log( result.index );  // 7（匹配位置）
-console.log( result.input );  // I love JavaScript（源字符串）
+console.log(result.index); // 7（匹配位置）
+console.log(result.input); // I love JavaScript（源字符串）
 ```
 
 如果 `regexp` 带有 `g` 标记，则它将所有匹配项的数组作为字符串返回，而不包含分组和其他详细信息
@@ -183,8 +183,8 @@ let str = "I love JavaScript";
 
 let result = str.match(/Java(Script)/g);
 
-console.log( result[0] ); // JavaScript
-console.log( result.length ); // 1
+console.log(result[0]); // JavaScript
+console.log(result.length); // 1
 ```
 
 如果没有匹配项，则无论是否带有标记 `g` ，都将返回 `null`
@@ -197,15 +197,13 @@ let result = str.match(/HTML/);
 console.log(result); // null
 ```
 
-
-
 ### str.matchAll(regexp)
 
 返回一个包含所有匹配正则表达式的结果及分组捕获组的迭代器
 
 ```js
 const regexp = /t(e)(st(\d?))/g;
-const str = 'test1test2';
+const str = "test1test2";
 
 const array = [...str.matchAll(regexp)];
 
@@ -216,12 +214,6 @@ console.log(array[1]);
 // expected output: Array ["test2", "e", "st2", "2"]
 ```
 
-
-
-
-
-
-
 ### str.search(regexp)
 
 返回第一个匹配项的位置，如果未找到，则返回 `-1`
@@ -229,41 +221,31 @@ console.log(array[1]);
 ```js
 let str = "A drop of ink may make a million think";
 
-console.log( str.search( /ink/i ) ); // 10（第一个匹配位置）
+console.log(str.search(/ink/i)); // 10（第一个匹配位置）
 ```
 
 这里需要注意的是，`search` 仅查找第一个匹配项
-
-
-
-
-
-
 
 ## str.replace(regexp)
 
 替换与正则表达式匹配的子串，并返回替换后的字符串。在不设置全局匹配`g`的时候，只替换第一个匹配成功的字符串片段
 
 ```js
-const reg1=/javascript/i;
-const reg2=/javascript/ig;
-console.log('hello Javascript Javascript Javascript'.replace(reg1,'js'));
+const reg1 = /javascript/i;
+const reg2 = /javascript/gi;
+console.log("hello Javascript Javascript Javascript".replace(reg1, "js"));
 //hello js Javascript Javascript
-console.log('hello Javascript Javascript Javascript'.replace(reg2,'js'));
+console.log("hello Javascript Javascript Javascript".replace(reg2, "js"));
 //hello js js js
 ```
-
-
 
 ### str.split(regexp)
 
 使用正则表达式（或子字符串）作为分隔符来分割字符串
 
 ```js
-console.log('12, 34, 56'.split(/,\s*/)) // 数组 ['12', '34', '56']
+console.log("12, 34, 56".split(/,\s*/)); // 数组 ['12', '34', '56']
 ```
-
-
 
 ### regexp.exec(str)
 
@@ -276,19 +258,17 @@ console.log('12, 34, 56'.split(/,\s*/)) // 数组 ['12', '34', '56']
 如果有标记 `g`，调用 `regexp.exec(str)` 会返回第一个匹配项，并将紧随其后的位置保存在属性`regexp.lastIndex` 中。 下一次同样的调用会从位置 `regexp.lastIndex` 开始搜索，返回下一个匹配项，并将其后的位置保存在 `regexp.lastIndex` 中
 
 ```js
-let str = 'More about JavaScript at https://javascript.info';
-let regexp = /javascript/ig;
+let str = "More about JavaScript at https://javascript.info";
+let regexp = /javascript/gi;
 
 let result;
 
-while (result = regexp.exec(str)) {
-  console.log( `Found ${result[0]} at position ${result.index}` );
-  // Found JavaScript at position 11
-  // Found javascript at position 33
+while ((result = regexp.exec(str))) {
+	console.log(`Found ${result[0]} at position ${result.index}`);
+	// Found JavaScript at position 11
+	// Found javascript at position 33
 }
 ```
-
-
 
 ### regexp.test(str)
 
@@ -298,12 +278,8 @@ while (result = regexp.exec(str)) {
 let str = "I love JavaScript";
 
 // 这两个测试相同
-console.log( /love/i.test(str) ); // true
+console.log(/love/i.test(str)); // true
 ```
-
-
-
-
 
 ## 四、应用场景
 
@@ -311,72 +287,78 @@ console.log( /love/i.test(str) ); // true
 
 下面再来看看正则表达式一些案例场景：
 
-验证QQ合法性（5~15位、全是数字、不以0开头）：
+验证 QQ 合法性（5~15 位、全是数字、不以 0 开头）：
 
 ```js
-const reg = /^[1-9][0-9]{4,14}$/
-const isvalid = patrn.exec(s)
+const reg = /^[1-9][0-9]{4,14}$/;
+const isvalid = patrn.exec(s);
 ```
 
-校验用户账号合法性（只能输入5-20个以字母开头、可带数字、“_”、“.”的字串）：
+校验用户账号合法性（只能输入 5-20 个以字母开头、可带数字、“\_”、“.”的字串）：
 
 ```js
-var patrn=/^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
-const isvalid = patrn.exec(s)
+var patrn = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){4,19}$/;
+const isvalid = patrn.exec(s);
 ```
 
 将`url`参数解析为对象
 
 ```js
-const protocol = '(?<protocol>https?:)';
-const host = '(?<host>(?<hostname>[^/#?:]+)(?::(?<port>\\d+))?)';
-const path = '(?<pathname>(?:\\/[^/#?]+)*\\/?)';
-const search = '(?<search>(?:\\?[^#]*)?)';
-const hash = '(?<hash>(?:#.*)?)';
+const protocol = "(?<protocol>https?:)";
+const host = "(?<host>(?<hostname>[^/#?:]+)(?::(?<port>\\d+))?)";
+const path = "(?<pathname>(?:\\/[^/#?]+)*\\/?)";
+const search = "(?<search>(?:\\?[^#]*)?)";
+const hash = "(?<hash>(?:#.*)?)";
 const reg = new RegExp(`^${protocol}\/\/${host}${path}${search}${hash}$`);
-function execURL(url){
-    const result = reg.exec(url);
-    if(result){
-        result.groups.port = result.groups.port || '';
-        return result.groups;
-    }
-    return {
-        protocol:'',host:'',hostname:'',port:'',
-        pathname:'',search:'',hash:'',
-    };
+function execURL(url) {
+	const result = reg.exec(url);
+	if (result) {
+		result.groups.port = result.groups.port || "";
+		return result.groups;
+	}
+	return {
+		protocol: "",
+		host: "",
+		hostname: "",
+		port: "",
+		pathname: "",
+		search: "",
+		hash: "",
+	};
 }
 
-console.log(execURL('https://localhost:8080/?a=b#xxxx'));
-protocol: "https:"
-host: "localhost:8080"
-hostname: "localhost"
-port: "8080"
-pathname: "/"
-search: "?a=b"
-hash: "#xxxx"
+console.log(execURL("https://localhost:8080/?a=b#xxxx"));
+protocol: "https:";
+host: "localhost:8080";
+hostname: "localhost";
+port: "8080";
+pathname: "/";
+search: "?a=b";
+hash: "#xxxx";
 ```
 
 再将上面的`search`和`hash`进行解析
 
 ```js
-function execUrlParams(str){
-    str = str.replace(/^[#?&]/,'');
-    const result = {};
-    if(!str){ //如果正则可能配到空字符串，极有可能造成死循环，判断很重要
-        return result; 
-    }
-    const reg = /(?:^|&)([^&=]*)=?([^&]*?)(?=&|$)/y
-    let exec = reg.exec(str);
-    while(exec){
-        result[exec[1]] = exec[2];
-        exec = reg.exec(str);
-    }
-    return result;
+function execUrlParams(str) {
+	str = str.replace(/^[#?&]/, "");
+	const result = {};
+	if (!str) {
+		//如果正则可能配到空字符串，极有可能造成死循环，判断很重要
+		return result;
+	}
+	const reg = /(?:^|&)([^&=]*)=?([^&]*?)(?=&|$)/y;
+	let exec = reg.exec(str);
+	while (exec) {
+		result[exec[1]] = exec[2];
+		exec = reg.exec(str);
+	}
+	return result;
 }
-console.log(execUrlParams('#'));// {}
-console.log(execUrlParams('##'));//{'#':''}
-console.log(execUrlParams('?q=3606&src=srp')); //{q: "3606", src: "srp"}
-console.log(execUrlParams('test=a=b=c&&==&a='));//{test: "a=b=c", "": "=", a: ""}
+console.log(execUrlParams("#")); // {}
+console.log(execUrlParams("##")); //{'#':''}
+console.log(execUrlParams("?q=3606&src=srp")); //{q: "3606", src: "srp"}
+console.log(execUrlParams("test=a=b=c&&==&a=")); //{test: "a=b=c", "": "=", a: ""}
 ```
 
 ## 参考文献

@@ -1,6 +1,15 @@
-# 面试官：你在React项目中是如何使用Redux的? 项目结构是如何划分的？
+---
+title: React项目中是如何使用Redux的? 项目结构是如何划分的？
+date: 2025/03/26
+tags:
+  - react
+  - redux
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/31a4aff0-e7dc-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/31a4aff0-e7dc-11eb-ab90-d9ae814b240d.png)
 
 ## 一、背景
 
@@ -16,7 +25,6 @@
 通过`redux`将整个应用状态存储到`store`中，组件可以派发`dispatch`行为`action`给`store`
 
 其他组件通过订阅`store`中的状态`state`来更新自身的视图
-
 
 ## 二、如何做
 
@@ -39,8 +47,6 @@
 <Provider>
 ```
 
-
-
 ### connection
 
 `connect`方法将`store`上的`getState `和 `dispatch `包装成组件的`props`
@@ -54,7 +60,7 @@ import { connect } from "react-redux";
 用法如下：
 
 ```js
-connect(mapStateToProps, mapDispatchToProps)(MyComponent)
+connect(mapStateToProps, mapDispatchToProps)(MyComponent);
 ```
 
 可以传递两个参数：
@@ -62,8 +68,6 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 - mapStateToProps
 
 - mapDispatchToProps
-
-
 
 ### mapStateToProps
 
@@ -73,11 +77,11 @@ connect(mapStateToProps, mapDispatchToProps)(MyComponent)
 
 ```jsx
 const mapStateToProps = (state) => {
-    return {
-        // prop : state.xxx  | 意思是将state中的某个数据映射到props中
-        foo: state.bar
-    }
-}
+	return {
+		// prop : state.xxx  | 意思是将state中的某个数据映射到props中
+		foo: state.bar,
+	};
+};
 ```
 
 组件内部就能够通过`props`获取到`store`中的数据
@@ -98,48 +102,41 @@ Foo = connect()(Foo)
 export default Foo
 ```
 
-
 ### mapDispatchToProps
 
 将`redux`中的`dispatch`映射到组件内部的`props`中
 
 ```jsx
-const mapDispatchToProps = (dispatch) => { // 默认传递参数就是dispatch
-  return {
-    onClick: () => {
-      dispatch({
-        type: 'increatment'
-      });
-    }
-  };
-}
-
+const mapDispatchToProps = (dispatch) => {
+	// 默认传递参数就是dispatch
+	return {
+		onClick: () => {
+			dispatch({
+				type: "increatment",
+			});
+		},
+	};
+};
 ```
 
 ```js
 class Foo extends Component {
-    constructor(props){
-        super(props);
-    }
-    render(){
-        return(
-         
-             <button onClick = {this.props.onClick}>点击increase</button>
-        )
-    }
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return <button onClick={this.props.onClick}>点击increase</button>;
+	}
 }
 Foo = connect()(Foo);
 export default Foo;
 ```
 
-
 ### 小结
 
 整体流程图大致如下所示：
 
- ![](https://static.vue-js.com/3e47db10-e7dc-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/3e47db10-e7dc-11eb-85f6-6fac77c0c9b3.png)
 
 ## 三、项目结构
 
@@ -149,28 +146,24 @@ export default Foo;
 
 角色如下：
 
-- reducers 
+- reducers
 - actions
-- components 
-- containers 
+- components
+- containers
 
 参考如下：
 
 ```js
-reducers/
-  todoReducer.js
-  filterReducer.js
-actions/
-  todoAction.js
-  filterActions.js
-components/
-  todoList.js
-  todoItem.js
-  filter.js
-containers/
-  todoListContainer.js
-  todoItemContainer.js
-  filterContainer.js
+reducers / todoReducer.js;
+filterReducer.js;
+actions / todoAction.js;
+filterActions.js;
+components / todoList.js;
+todoItem.js;
+filter.js;
+containers / todoListContainer.js;
+todoItemContainer.js;
+filterContainer.js;
 ```
 
 #### 按功能组织
@@ -182,38 +175,34 @@ containers/
 参考如下：
 
 ```js
-todoList/
-  actions.js
-  actionTypes.js
-  index.js
-  reducer.js
-  views/
-    components.js
-    containers.js
-filter/
-  actions.js
-  actionTypes.js
-  index.js
-  reducer.js
-  views/
-    components.js
-    container.js
+todoList / actions.js;
+actionTypes.js;
+index.js;
+reducer.js;
+views / components.js;
+containers.js;
+filter / actions.js;
+actionTypes.js;
+index.js;
+reducer.js;
+views / components.js;
+container.js;
 ```
 
 每个功能模块对应一个目录，每个目录下包含同样的角色文件：
 
-- actionTypes.js 定义action类型
-- actions.js 定义action构造函数
-- reducer.js  定义这个功能模块如果响应actions.js定义的动作
-- views 包含功能模块中所有的React组件，包括展示组件和容器组件
+- actionTypes.js 定义 action 类型
+- actions.js 定义 action 构造函数
+- reducer.js 定义这个功能模块如果响应 actions.js 定义的动作
+- views 包含功能模块中所有的 React 组件，包括展示组件和容器组件
 - index.js 把所有的角色导入，统一导出
 
 其中`index`模块用于导出对外的接口
 
 ```js
-import * as actions from './actions.js';
-import reducer from './reducer.js';
-import view from './views/container.js';
+import * as actions from "./actions.js";
+import reducer from "./reducer.js";
+import view from "./views/container.js";
 
 export { actions, reducer, view };
 ```
@@ -221,9 +210,8 @@ export { actions, reducer, view };
 导入方法如下：
 
 ```js
-import { actions, reducer, view as TodoList } from './xxxx'
+import { actions, reducer, view as TodoList } from "./xxxx";
 ```
-
 
 ## 参考文献
 

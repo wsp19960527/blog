@@ -1,4 +1,12 @@
-# 面试官：说说对 Node 中的 process 的理解？有哪些常用方法？
+---
+title: Node 中的 process
+date: 2025/03/26
+tags:
+  - nodejs
+  - JavaScript
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/4f7866b0-c2b2-11eb-85f6-6fac77c0c9b3.png)
 
@@ -12,17 +20,13 @@
 
 由于`JavaScript`是一个单线程语言，所以通过`node xxx`启动一个文件后，只有一条主线程
 
-
-
-
-
 ## 二、属性与方法
 
 关于`process`常见的属性有如下：
 
 - process.env：环境变量，例如通过 `process.env.NODE_ENV 获取不同环境项目配置信息
 - process.nextTick：这个在谈及 `EventLoop` 时经常为会提到
-- process.pid：获取当前进程id
+- process.pid：获取当前进程 id
 - process.ppid：当前进程对应的父进程
 - process.cwd()：获取当前进程工作目录，
 - process.platform：获取当前进程运行的操作系统平台
@@ -31,8 +35,6 @@
 - 三个标准流： process.stdout 标准输出、 process.stdin 标准输入、 process.stderr 标准错误输出
 - process.title 指定进程名称，有的时候需要给进程指定一个名称
 
-
-
 下面再稍微介绍下某些方法的使用：
 
 ### process.cwd()
@@ -40,8 +42,6 @@
 返回当前 `Node `进程执行的目录
 
 一个` Node` 模块 `A` 通过 NPM 发布，项目 `B` 中使用了模块 `A`。在 `A` 中需要操作 `B` 项目下的文件时，就可以用 `process.cwd()` 来获取 `B` 项目的路径
-
-
 
 ### process.argv
 
@@ -57,8 +57,6 @@
 const args = process.argv.slice(2);
 ```
 
-
-
 ### process.env
 
 返回一个对象，存储当前环境相关的所有信息，一般很少直接用到。
@@ -66,8 +64,6 @@ const args = process.argv.slice(2);
 一般我们会在 `process.env` 上挂载一些变量标识当前的环境。比如最常见的用 `process.env.NODE_ENV` 区分 `development` 和 `production`
 
 在 `vue-cli` 的源码中也经常会看到 `process.env.VUE_CLI_DEBUG` 标识当前是不是 `DEBUG` 模式
-
-
 
 ### process.nextTick()
 
@@ -79,11 +75,11 @@ const args = process.argv.slice(2);
 
 ```js
 function foo() {
-    console.error('foo');
+	console.error("foo");
 }
 
 process.nextTick(foo);
-console.error('bar');
+console.error("bar");
 ```
 
 输出结果为`bar`、`foo`
@@ -92,17 +88,13 @@ console.error('bar');
 
 ```js
 setTimeout(foo, 0);
-console.log('bar');
+console.log("bar");
 ```
 
 两者区别在于：
 
-- process.nextTick()会在这一次event loop的call stack清空后（下一次event loop开始前）再调用callback
-- setTimeout()是并不知道什么时候call stack清空的，所以何时调用callback函数是不确定的
-
-
-
-
+- process.nextTick()会在这一次 event loop 的 call stack 清空后（下一次 event loop 开始前）再调用 callback
+- setTimeout()是并不知道什么时候 call stack 清空的，所以何时调用 callback 函数是不确定的
 
 ### 参考文献
 

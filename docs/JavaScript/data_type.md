@@ -1,6 +1,14 @@
-# 面试官：说说JavaScript中的数据类型？存储上的差别？
+---
+title: JavaScript中的数据类型
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/6d133f90-6463-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/6d133f90-6463-11eb-ab90-d9ae814b240d.png)
 
 ## 前言
 
@@ -11,11 +19,9 @@
 
 两种类型的区别是：存储位置不同
 
-
-
 ## 一、基本类型
 
-基本类型主要为以下6种：
+基本类型主要为以下 6 种：
 
 - Number
 - String
@@ -24,16 +30,14 @@
 - null
 - symbol
 
-
-
 ### Number
 
-数值最常见的整数类型格式则为十进制，还可以设置八进制（零开头）、十六进制（0x开头）
+数值最常见的整数类型格式则为十进制，还可以设置八进制（零开头）、十六进制（0x 开头）
 
 ```js
-let intNum = 55 // 10进制的55
-let num1 = 070 // 8进制的56
-let hexNum1 = 0xA //16进制的10
+let intNum = 55; // 10进制的55
+let num1 = 070; // 8进制的56
+let hexNum1 = 0xa; //16进制的10
 ```
 
 浮点类型则在数值汇总必须包含小数点，还可通过科学计数法表示
@@ -41,18 +45,16 @@ let hexNum1 = 0xA //16进制的10
 ```js
 let floatNum1 = 1.1;
 let floatNum2 = 0.1;
-let floatNum3 = .1; // 有效，但不推荐
+let floatNum3 = 0.1; // 有效，但不推荐
 let floatNum = 3.125e7; // 等于 31250000
 ```
 
 在数值类型中，存在一个特殊数值`NaN`，意为“不是数值”，用于表示本来要返回数值的操作失败了（而不是抛出错误）
 
 ```js
-console.log(0/0); // NaN
-console.log(-0/+0); // NaN
+console.log(0 / 0); // NaN
+console.log(-0 / +0); // NaN
 ```
-
-
 
 ### Undefined
 
@@ -72,26 +74,22 @@ console.log(message); // "undefined"
 console.log(age); // 没有声明过这个变量，报错
 ```
 
-
-
 ### String
 
 字符串可以使用双引号（"）、单引号（'）或反引号（`）标示
 
 ```js
 let firstName = "John";
-let lastName = 'Jacob';
-let lastName = `Jingleheimerschmidt`
+let lastName = "Jacob";
+let lastName = `Jingleheimerschmidt`;
 ```
 
 字符串是不可变的，意思是一旦创建，它们的值就不能变了
 
 ```js
 let lang = "Java";
-lang = lang + "Script";  // 先销毁再创建
+lang = lang + "Script"; // 先销毁再创建
 ```
-
-
 
 ### Null
 
@@ -112,8 +110,6 @@ console.log(null == undefined); // true
 
 只要变量要保存对象，而当时又没有那个对象可保存，就可用 `null `来填充该变量
 
-
-
 ### Boolean
 
 `Boolean `（布尔值）类型有两个字面值： `true` 和` false`
@@ -124,13 +120,11 @@ console.log(null == undefined); // true
 
 ```js
 数据类型      				转换为 true 的值      				转换为 false 的值
- String        				 非空字符串          					"" 
- Number 				非零数值（包括无穷值）						0 、 NaN 
+ String        				 非空字符串          					""
+ Number 				非零数值（包括无穷值）						0 、 NaN
  Object 					 任意对象 							   null
 Undefined 					N/A （不存在） 						undefined
 ```
-
-
 
 ### Symbol
 
@@ -141,14 +135,10 @@ let genericSymbol = Symbol();
 let otherGenericSymbol = Symbol();
 console.log(genericSymbol == otherGenericSymbol); // false
 
-let fooSymbol = Symbol('foo');
-let otherFooSymbol = Symbol('foo');
+let fooSymbol = Symbol("foo");
+let otherFooSymbol = Symbol("foo");
 console.log(fooSymbol == otherFooSymbol); // false
 ```
-
-
-
-
 
 ## 二、引用类型
 
@@ -158,34 +148,28 @@ console.log(fooSymbol == otherFooSymbol); // false
 - Array
 - Function
 
-
-
 ### Object
 
 创建`object`常用方式为对象字面量表示法，属性名可以是字符串或数值
 
 ```js
 let person = {
-    name: "Nicholas",
-    "age": 29,
-    5: true
+	name: "Nicholas",
+	age: 29,
+	5: true,
 };
 ```
-
-
 
 ### Array
 
 `JavaScript`数组是一组有序的数据，但跟其他语言不同的是，数组中每个槽位可以存储任意类型的数据。并且，数组也是动态大小的，会随着数据添加而自动增长
 
 ```js
-let colors = ["red", 2, {age: 20 }]
-colors.push(2)
+let colors = ["red", 2, { age: 20 }];
+colors.push(2);
 ```
 
-
-
-### Function 
+### Function
 
 函数实际上是对象，每个函数都是 `Function`类型的实例，而 `Function `也有属性和方法，跟其他引用类型一样
 
@@ -195,16 +179,16 @@ colors.push(2)
 
 ```js
 // 函数声明
-function sum (num1, num2) {
-    return num1 + num2;
+function sum(num1, num2) {
+	return num1 + num2;
 }
 ```
 
 - 函数表达式
 
 ```js
-let sum = function(num1, num2) {
-    return num1 + num2;
+let sum = function (num1, num2) {
+	return num1 + num2;
 };
 ```
 
@@ -214,17 +198,13 @@ let sum = function(num1, num2) {
 
 ```js
 let sum = (num1, num2) => {
-    return num1 + num2;
+	return num1 + num2;
 };
 ```
-
-
 
 ### 其他引用类型
 
 除了上述说的三种之外，还包括`Date`、`RegExp`、`Map`、`Set`等......
-
-
 
 ## 三、存储区别
 
@@ -251,14 +231,12 @@ console.log(a); // 10值
 
 下图演示了基本类型赋值的过程：
 
- ![](https://static.vue-js.com/906ffb90-6463-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/906ffb90-6463-11eb-85f6-6fac77c0c9b3.png)
 
 ### 引用类型
 
 ```js
-var obj1 = {}
+var obj1 = {};
 var obj2 = obj1;
 obj2.name = "Xxx";
 console.log(obj1.name); // xxx
@@ -270,9 +248,7 @@ console.log(obj1.name); // xxx
 
 下图演示这个引用类型赋值过程
 
- ![](https://static.vue-js.com/a34bdd10-6463-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/a34bdd10-6463-11eb-ab90-d9ae814b240d.png)
 
 ### 小结
 

@@ -1,4 +1,12 @@
-# 面试官：state 和 props 有什么区别？
+---
+title: React 中 state 和 props 有什么区别？
+date: 2025/03/26
+tags:
+  - react
+  - JavaScript
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/7f272780-d440-11eb-ab90-d9ae814b240d.png)
 
@@ -10,26 +18,22 @@
 
 ```jsx
 class Button extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      count: 0,
-    };
-  }
+	constructor() {
+		super();
+		this.state = {
+			count: 0,
+		};
+	}
 
-  updateCount() {
-    this.setState((prevState, props) => {
-      return { count: prevState.count + 1 };
-    });
-  }
+	updateCount() {
+		this.setState((prevState, props) => {
+			return { count: prevState.count + 1 };
+		});
+	}
 
-  render() {
-    return (
-      <button onClick={() => this.updateCount()}>
-        Clicked {this.state.count} times
-      </button>
-    );
-  }
+	render() {
+		return <button onClick={() => this.updateCount()}>Clicked {this.state.count} times</button>;
+	}
 }
 ```
 
@@ -37,10 +41,10 @@ class Button extends React.Component {
 
 ```js
 this.setState(
-  {
-    name: "JS每日一题",
-  },
-  () => console.log("setState finished")
+	{
+		name: "JS每日一题",
+	},
+	() => console.log("setState finished")
 );
 ```
 
@@ -56,9 +60,9 @@ this.setState(
 
 ```jsx
 class Welcome extends React.Component {
-  render() {
-    return <h1>Hello {this.props.name}</h1>;
-  }
+	render() {
+		return <h1>Hello {this.props.name}</h1>;
+	}
 }
 
 const element = <Welcome name="Sara" onNameChanged={this.handleName} />;

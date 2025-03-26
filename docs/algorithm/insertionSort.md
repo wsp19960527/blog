@@ -1,8 +1,14 @@
-# 面试官：说说你对插入排序的理解？如何实现？应用场景？
+---
+title: 插入排序
+date: 2025/03/26
+tags:
+  - algorithm
+  - 插入排序
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/912adc10-267f-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/912adc10-267f-11ec-a752-75723a64e8f5.png)
 
 ## 一、是什么
 
@@ -16,23 +22,23 @@
 
 例如一个无序数组 3、1、7、5、2、4、9、6，将其升序的结果则如下：
 
-一开始有序表中无数据，直接插入3
+一开始有序表中无数据，直接插入 3
 
-从第二个数开始，插入一个元素1，然后和有序表中记录3比较，1<3，所以插入到记录 3 的左侧
+从第二个数开始，插入一个元素 1，然后和有序表中记录 3 比较，1<3，所以插入到记录 3 的左侧
 
- ![](https://static.vue-js.com/9d24f5f0-267f-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/9d24f5f0-267f-11ec-a752-75723a64e8f5.png)
 
 向有序表插入记录 7 时，同有序表中记录 3 进行比较，3<7，所以插入到记录 3 的右侧
 
- ![](https://static.vue-js.com/a6a954e0-267f-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/a6a954e0-267f-11ec-8e64-91fdec0f05a1.png)
 
 向有序表中插入记录 5 时，同有序表中记录 7 进行比较，5<7，同时 5>3，所以插入到 3 和 7 中间
 
- ![](https://static.vue-js.com/b1981940-267f-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/b1981940-267f-11ec-8e64-91fdec0f05a1.png)
 
-照此规律，依次将无序表中的记录 4，9 和 6插入到有序表中
+照此规律，依次将无序表中的记录 4，9 和 6 插入到有序表中
 
- ![](https://static.vue-js.com/bc2ed290-267f-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/bc2ed290-267f-11ec-a752-75723a64e8f5.png)
 
 ## 二、如何实现
 
@@ -48,18 +54,18 @@
 
 ```js
 function insertionSort(arr) {
-    const len = arr.length;
-    let preIndex, current;
-    for (let i = 1; i < len; i++) {
-        preIndex = i - 1;
-        current = arr[i];
-        while(preIndex >= 0 && arr[preIndex] > current) {
-            arr[preIndex+1] = arr[preIndex];
-            preIndex--;
-        }
-        arr[preIndex+1] = current;
-    }
-    return arr;
+	const len = arr.length;
+	let preIndex, current;
+	for (let i = 1; i < len; i++) {
+		preIndex = i - 1;
+		current = arr[i];
+		while (preIndex >= 0 && arr[preIndex] > current) {
+			arr[preIndex + 1] = arr[preIndex];
+			preIndex--;
+		}
+		arr[preIndex + 1] = current;
+	}
+	return arr;
 }
 ```
 
@@ -68,8 +74,6 @@ function insertionSort(arr) {
 最坏的情况是待排序数组是逆序的，此时需要比较次数最多，总次数记为：1+2+3+…+N-1，所以，插入排序最坏情况下的时间复杂度为`O(n^2)`
 
 通过上面了解，可以看到插入排序是一种稳定的排序方式
-
-
 
 ## 三、应用场景
 

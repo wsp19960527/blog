@@ -1,7 +1,15 @@
-# 面试官：动态给vue的data添加一个新的属性时会发生什么？怎样解决？
+---
+title: Vue动态添加属性
+date: 2025/03/26
+tags:
+  - vue
+  - JavaScript
+  - vue动态添加属性
+categories:
+  - 前端
+---
 
 ![image.png](https://static.vue-js.com/a502dde0-3acc-11eb-ab90-d9ae814b240d.png)
-
 
 ## 一、直接添加属性的问题
 
@@ -12,9 +20,7 @@
 然后给`botton`标签绑定点击事件，我们预期点击按钮时，数据新增一个属性，界面也 新增一行
 
 ```html
-<p v-for="(value,key) in item" :key="key">
-    {{ value }}
-</p>
+<p v-for="(value,key) in item" :key="key">{{ value }}</p>
 <button @click="addProperty">动态添加新属性</button>
 ```
 
@@ -22,23 +28,22 @@
 
 ```js
 const app = new Vue({
-    el:"#app",
-   	data:()=>{
-       	item:{
-            oldProperty:"旧属性"
-        }
-    },
-    methods:{
-        addProperty(){
-            this.items.newProperty = "新属性"  // 为items添加新属性
-            console.log(this.items)  // 输出带有newProperty的items
-        }
-    }
-})
+	el: "#app",
+	data: () => {
+		item: {
+			oldProperty: "旧属性";
+		}
+	},
+	methods: {
+		addProperty() {
+			this.items.newProperty = "新属性"; // 为items添加新属性
+			console.log(this.items); // 输出带有newProperty的items
+		},
+	},
+});
 ```
 
 点击按钮，发现结果不及预期，数据虽然更新了（`console`打印出了新属性），但页面并没有更新
-
 
 ## 二、原理分析
 
@@ -68,14 +73,14 @@ Object.defineProperty(obj, 'foo', {
 当我们访问`foo`属性或者设置`foo`值的时候都能够触发`setter`与`getter`
 
 ```js
-obj.foo   
-obj.foo = 'new'
+obj.foo;
+obj.foo = "new";
 ```
 
 但是我们为`obj`添加新属性的时候，却无法触发事件属性的拦截
 
 ```js
-obj.bar  = '新属性'
+obj.bar = "新属性";
 ```
 
 原因是一开始`obj`的`foo`属性被设成了响应式数据，而`bar`是后面新增的属性，并没有通过`Object.defineProperty`设置成响应式数据
@@ -89,8 +94,6 @@ obj.bar  = '新属性'
 - Vue.set()
 - Object.assign()
 - $forcecUpdated()
-
-
 
 ### Vue.set()
 
@@ -127,22 +130,20 @@ function set (target: Array<any> | Object, key: any, val: any): any {
 
 ```js
 function defineReactive(obj, key, val) {
-    Object.defineProperty(obj, key, {
-        get() {
-            console.log(`get ${key}:${val}`);
-            return val
-        },
-        set(newVal) {
-            if (newVal !== val) {
-                console.log(`set ${key}:${newVal}`);
-                val = newVal
-            }
-        }
-    })
+	Object.defineProperty(obj, key, {
+		get() {
+			console.log(`get ${key}:${val}`);
+			return val;
+		},
+		set(newVal) {
+			if (newVal !== val) {
+				console.log(`set ${key}:${newVal}`);
+				val = newVal;
+			}
+		},
+	});
 }
 ```
-
-
 
 ### Object.assign()
 
@@ -154,8 +155,6 @@ function defineReactive(obj, key, val) {
 this.someObject = Object.assign({},this.someObject,{newProperty1:1,newProperty2:2 ...})
 ```
 
-
-
 ### $forceUpdate
 
 如果你发现你自己需要在 `Vue `中做一次强制更新，99.9% 的情况，是你在某个地方做错了事
@@ -164,8 +163,6 @@ this.someObject = Object.assign({},this.someObject,{newProperty1:1,newProperty2:
 
 PS：仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件。
 
-
-
 ### 小结
 
 - 如果为对象添加少量的新属性，可以直接采用`Vue.set()`
@@ -173,10 +170,8 @@ PS：仅仅影响实例本身和插入插槽内容的子组件，而不是所有
 - 如果需要为新对象添加大量的新属性，则通过`Object.assign()`创建新对象
 
 - 如果你实在不知道怎么操作时，可采取`$forceUpdate()`进行强制刷新 (不建议)
-  
 
 PS：`vue3`是用过`proxy`实现数据响应式的，直接动态添加新属性仍可以实现数据响应式
-
 
 ## 参考文献
 

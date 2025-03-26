@@ -1,4 +1,14 @@
-# 面试官：Vue中组件和插件有什么区别？
+---
+title: Vue中组件和插件有什么区别？
+date: 2025/03/26
+tags:
+  - vue
+  - JavaScript
+  - 组件
+  - 插件
+categories:
+  - 前端
+---
 
 ![image.png](https://static.vue-js.com/683475e0-3acc-11eb-ab90-d9ae814b240d.png)
 
@@ -34,7 +44,6 @@
 - 注册形式
 - 使用场景
 
-
 ### 编写形式
 
 #### 编写组件
@@ -44,31 +53,30 @@
 `vue`文件标准格式
 
 ```vue
-<template>
-</template>
+<template></template>
 <script>
-export default{ 
-    ...
-}
+	export default{
+	    ...
+	}
 </script>
-<style>
-</style>
+<style></style>
 ```
 
 我们还可以通过`template`属性来编写一个组件，如果组件内容多，我们可以在外部定义`template`组件内容，如果组件内容并不多，我们可直接写在`template`属性上
 
 ```js
 <template id="testComponent">     // 组件显示的内容
-    <div>component!</div>   
+    <div>component!</div>
 </template>
 
-Vue.component('componentA',{ 
-    template: '#testComponent'  
+Vue.component('componentA',{
+    template: '#testComponent'
     template: `<div>component</div>`  // 组件内容少可以通过这种形式
 })
 ```
 
 #### 编写插件
+
 `vue`插件的实现应该暴露一个 `install` 方法。这个方法的第一个参数是 `Vue` 构造器，第二个参数是一个可选的选项对象
 
 ```js
@@ -101,7 +109,6 @@ MyPlugin.install = function (Vue, options) {
 }
 ```
 
-
 ### 注册形式
 
 #### 组件注册
@@ -111,7 +118,9 @@ MyPlugin.install = function (Vue, options) {
 全局注册通过`Vue.component`方法，第一个参数为组件的名称，第二个参数为传入的配置项
 
 ```js
-Vue.component('my-component-name', { /* ... */ })
+Vue.component("my-component-name", {
+	/* ... */
+});
 ```
 
 局部注册只需在用到的地方通过`components`属性注册一个组件
@@ -126,12 +135,14 @@ export default {
 }
 ```
 
-
 #### 插件注册
+
 插件的注册通过`Vue.use()`的方式进行注册（安装），第一个参数为插件的名字，第二个参数是可选择的配置项
 
 ```js
-Vue.use(插件名字,{ /* ... */} )
+Vue.use(插件名字, {
+	/* ... */
+});
 ```
 
 注意的是：
@@ -139,8 +150,6 @@ Vue.use(插件名字,{ /* ... */} )
 注册插件的时候，需要在调用 `new Vue()` 启动应用之前完成
 
 `Vue.use`会自动阻止多次注册相同插件，只会注册一次
-
-
 
 ### 使用场景
 
@@ -151,7 +160,6 @@ Vue.use(插件名字,{ /* ... */} )
 插件 `(Plugin)` 是用来增强你的技术栈的功能模块，它的目标是 `Vue` 本身
 
 简单来说，插件就是指对`Vue`的功能的增强或补充
-
 
 ## 参考文献
 

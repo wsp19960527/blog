@@ -1,6 +1,14 @@
-# 面试官：如何提高webpack的构建速度？
+---
+title: 如何提高webpack的构建速度？
+date: 2025/03/26
+tags:
+  - webpack
+  - 构建速度
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/3a1b8620-b01b-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/3a1b8620-b01b-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、背景
 
@@ -9,7 +17,6 @@
 构建时间与我们日常开发效率密切相关，当我们本地开发启动 `devServer` 或者 `build` 的时候，如果时间过长，会大大降低我们的工作效率
 
 所以，优化`webpack` 构建速度是十分重要的环节
-
 
 ## 二、如何优化
 
@@ -24,11 +31,7 @@
 - terser 启动多线程
 - 合理使用 sourceMap
 
-
-
-
-
-### 优化loader配置
+### 优化 loader 配置
 
 在使用`loader`时，可以通过配置`include`、`exclude`、`test`属性来匹配文件，接触`include`、`exclude`规定哪些匹配应用`loader`
 
@@ -36,22 +39,20 @@
 
 ```js
 module.exports = {
-  module: {
-    rules: [
-      {
-        // 如果项目源码中只有 js 文件就不要写成 /\.jsx?$/，提升正则表达式性能
-        test: /\.js$/,
-        // babel-loader 支持缓存转换出的结果，通过 cacheDirectory 选项开启
-        use: ['babel-loader?cacheDirectory'],
-        // 只对项目根目录下的 src 目录中的文件采用 babel-loader
-        include: path.resolve(__dirname, 'src'),
-      },
-    ]
-  },
+	module: {
+		rules: [
+			{
+				// 如果项目源码中只有 js 文件就不要写成 /\.jsx?$/，提升正则表达式性能
+				test: /\.js$/,
+				// babel-loader 支持缓存转换出的结果，通过 cacheDirectory 选项开启
+				use: ["babel-loader?cacheDirectory"],
+				// 只对项目根目录下的 src 目录中的文件采用 babel-loader
+				include: path.resolve(__dirname, "src"),
+			},
+		],
+	},
 };
 ```
-
-
 
 ### 合理使用 resolve.extensions
 
@@ -70,8 +71,6 @@ module.exports = {
 
 当我们配置的时候，则不要随便把所有后缀都写在里面，这会调用多次文件的查找，这样就会减慢打包速度
 
-
-
 ### 优化 resolve.modules
 
 `resolve.modules` 用于配置 `webpack` 去哪些目录下寻找第三方模块。默认值为`['node_modules']`，所以默认会从`node_modules`中查找文件
@@ -87,9 +86,7 @@ module.exports = {
 };
 ```
 
-
-
-### 优化 resolve.alias 
+### 优化 resolve.alias
 
 `alias`给一些常用的路径起一个别名，特别当我们的项目目录结构比较深的时候，一个文件的路径可能是`./../../`的形式
 
@@ -106,13 +103,9 @@ module.exports = {
 }
 ```
 
-
-
-
-
 ### 使用 DLLPlugin 插件
 
-`DLL`全称是 动态链接库，是为软件在winodw种实现共享函数库的一种实现方式，而Webpack也内置了DLL的功能，为的就是可以共享，不经常改变的代码，抽成一个共享的库。这个库在之后的编译过程中，会被引入到其他项目的代码中
+`DLL`全称是 动态链接库，是为软件在 winodw 种实现共享函数库的一种实现方式，而 Webpack 也内置了 DLL 的功能，为的就是可以共享，不经常改变的代码，抽成一个共享的库。这个库在之后的编译过程中，会被引入到其他项目的代码中
 
 使用步骤分成两部分：
 
@@ -121,7 +114,7 @@ module.exports = {
 
 #### 打包一个 DLL 库
 
-`webpack`内置了一个`DllPlugin`可以帮助我们打包一个DLL的库文件
+`webpack`内置了一个`DllPlugin`可以帮助我们打包一个 DLL 的库文件
 
 ```js
 module.exports = {
@@ -134,8 +127,6 @@ module.exports = {
     ]
 }
 ```
-
-
 
 #### 引入 DLL 库
 
@@ -157,8 +148,6 @@ module.exports = {
 }
 ```
 
-
-
 ### 使用 cache-loader
 
 在一些性能开销较大的 `loader `之前添加 `cache-loader`，以将结果缓存到磁盘里，显著提升二次构建速度
@@ -167,19 +156,17 @@ module.exports = {
 
 ```js
 module.exports = {
-    module: {
-        rules: [
-            {
-                test: /\.ext$/,
-                use: ['cache-loader', ...loaders],
-                include: path.resolve('src'),
-            },
-        ],
-    },
+	module: {
+		rules: [
+			{
+				test: /\.ext$/,
+				use: ["cache-loader", ...loaders],
+				include: path.resolve("src"),
+			},
+		],
+	},
 };
 ```
-
-
 
 ### terser 启动多线程
 
@@ -187,32 +174,25 @@ module.exports = {
 
 ```js
 module.exports = {
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-      }),
-    ],
-  },
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				parallel: true,
+			}),
+		],
+	},
 };
 ```
 
-
-
 ### 合理使用 sourceMap
 
-打包生成  `sourceMap` 的时候，如果信息越详细，打包速度就会越慢。对应属性取值如下所示：
+打包生成 `sourceMap` 的时候，如果信息越详细，打包速度就会越慢。对应属性取值如下所示：
 
 ![](https://static.vue-js.com/11647af0-b01d-11eb-85f6-6fac77c0c9b3.png)
-
-
-
-
 
 ### 三、总结
 
 可以看到，优化`webpack`构建的方式有很多，主要可以从优化搜索时间、缩小文件搜索范围、减少不必要的编译等方面入手
-
 
 ## 参考文献
 

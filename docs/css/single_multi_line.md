@@ -1,7 +1,14 @@
-# 面试官：如何实现单行／多行文本溢出的省略样式？
+---
+title: 如何实现单行／多行文本溢出的省略样式？
+date: 2025/03/26
+tags:
+  - css
+  - 文本溢出
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/ada8d840-a0e9-11eb-ab90-d9ae814b240d.png)
-
+![](https://static.vue-js.com/ada8d840-a0e9-11eb-ab90-d9ae814b240d.png)
 
 ## 一、前言
 
@@ -12,11 +19,7 @@
 - 单行文本溢出
 - 多行文本溢出
 
-
-
 ## 二、实现方式
-
-
 
 ### 单行文本溢出省略
 
@@ -58,11 +61,9 @@
 
 效果如下：
 
- ![](https://static.vue-js.com/bb3048e0-a0e9-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/bb3048e0-a0e9-11eb-85f6-6fac77c0c9b3.png)
 
 可以看到，设置单行文本溢出较为简单，并且省略号显示的位置较好
-
-
 
 ### 多行文本溢出省略
 
@@ -70,8 +71,6 @@
 
 - 基于高度截断
 - 基于行数截断
-
-
 
 #### 基于高度截断
 
@@ -90,23 +89,23 @@
 
 ```html
 <style>
-    .demo {
-        position: relative;
-        line-height: 20px;
-        height: 40px;
-        overflow: hidden;
-    }
-    .demo::after {
-        content: "...";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        padding: 0 20px 0 10px;
-    }
+	.demo {
+		position: relative;
+		line-height: 20px;
+		height: 40px;
+		overflow: hidden;
+	}
+	.demo::after {
+		content: "...";
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		padding: 0 20px 0 10px;
+	}
 </style>
 
 <body>
-    <div class='demo'>这是一段很长的文本</div>
+	<div class="demo">这是一段很长的文本</div>
 </body>
 ```
 
@@ -119,34 +118,29 @@
 
 一般文本存在英文的时候，可以设置`word-break: break-all`使一个单词能够在换行时进行拆分
 
-
-
 #### 基于行数截断
 
 纯`css`实现也非常简单，核心的`css`代码如下：
 
-- -webkit-line-clamp: 2：用来限制在一个块元素显示的文本的行数，为了实现该效果，它需要组合其他的WebKit属性）
-- display: -webkit-box：和1结合使用，将对象作为弹性伸缩盒子模型显示 
-- -webkit-box-orient: vertical：和1结合使用 ，设置或检索伸缩盒对象的子元素的排列方式 
+- -webkit-line-clamp: 2：用来限制在一个块元素显示的文本的行数，为了实现该效果，它需要组合其他的 WebKit 属性）
+- display: -webkit-box：和 1 结合使用，将对象作为弹性伸缩盒子模型显示
+- -webkit-box-orient: vertical：和 1 结合使用 ，设置或检索伸缩盒对象的子元素的排列方式
 - overflow: hidden：文本溢出限定的宽度就隐藏内容
 - text-overflow: ellipsis：多行文本的情况下，用省略号“…”隐藏溢出范围的文本
 
 ```html
 <style>
-    p {
-        width: 400px;
-        border-radius: 1px solid red;
-        -webkit-line-clamp: 2;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+	p {
+		width: 400px;
+		border-radius: 1px solid red;
+		-webkit-line-clamp: 2;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 </style>
-<p>
-    这是一些文本这是一些文本这是一些文本这是一些文本这是一些文本
-    这是一些文本这是一些文本这是一些文本这是一些文本这是一些文本
-</p >
+<p>这是一些文本这是一些文本这是一些文本这是一些文本这是一些文本 这是一些文本这是一些文本这是一些文本这是一些文本这是一些文本</p>
 ```
 
 可以看到，上述使用了`webkit`的`CSS`属性扩展，所以兼容浏览器范围是`PC`端的`webkit`内核的浏览器，由于移动端大多数是使用`webkit`，所以移动端常用该形式
@@ -155,52 +149,45 @@
 
 还能通过使用`javascript`实现配合`css`，实现代码如下所示：
 
-css结构如下：
+css 结构如下：
 
 ```css
 p {
-    position: relative;
-    width: 400px;
-    line-height: 20px;
-    overflow: hidden;
-
+	position: relative;
+	width: 400px;
+	line-height: 20px;
+	overflow: hidden;
 }
-.p-after:after{
-    content: "..."; 
-    position: absolute; 
-    bottom: 0; 
-    right: 0; 
-    padding-left: 40px;
-    background: -webkit-linear-gradient(left, transparent, #fff 55%);
-    background: -moz-linear-gradient(left, transparent, #fff 55%);
-    background: -o-linear-gradient(left, transparent, #fff 55%);
-    background: linear-gradient(to right, transparent, #fff 55%);
+.p-after:after {
+	content: "...";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	padding-left: 40px;
+	background: -webkit-linear-gradient(left, transparent, #fff 55%);
+	background: -moz-linear-gradient(left, transparent, #fff 55%);
+	background: -o-linear-gradient(left, transparent, #fff 55%);
+	background: linear-gradient(to right, transparent, #fff 55%);
 }
 ```
 
-javascript代码如下：
+javascript 代码如下：
 
 ```js
-$(function(){
- //获取文本的行高，并获取文本的高度，假设我们规定的行数是五行，那么对超过行数的部分进行限制高度，并加上省略号
-   $('p').each(function(i, obj){
-        var lineHeight = parseInt($(this).css("line-height"));
-        var height = parseInt($(this).height());
-        if((height / lineHeight) >3 ){
-            $(this).addClass("p-after")
-            $(this).css("height","60px");
-        }else{
-            $(this).removeClass("p-after");
-        }
-    });
-})
+$(function () {
+	//获取文本的行高，并获取文本的高度，假设我们规定的行数是五行，那么对超过行数的部分进行限制高度，并加上省略号
+	$("p").each(function (i, obj) {
+		var lineHeight = parseInt($(this).css("line-height"));
+		var height = parseInt($(this).height());
+		if (height / lineHeight > 3) {
+			$(this).addClass("p-after");
+			$(this).css("height", "60px");
+		} else {
+			$(this).removeClass("p-after");
+		}
+	});
+});
 ```
-
-
-
-
-
-
 
 ## 参考文献
 

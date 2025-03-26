@@ -1,6 +1,15 @@
-# 面试官：React事件绑定的方式有哪些？区别？
+---
+title: React事件绑定的方式有哪些？区别？
+date: 2025/03/26
+tags:
+  - react
+  - JavaScript
+  - 事件绑定
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/e21f5560-d8fa-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/e21f5560-d8fa-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -10,13 +19,13 @@
 
 ```jsx
 class ShowAlert extends React.Component {
-  showAlert() {
-    console.log("Hi");
-  }
+	showAlert() {
+		console.log("Hi");
+	}
 
-  render() {
-    return <button onClick={this.showAlert}>show</button>;
-  }
+	render() {
+		return <button onClick={this.showAlert}>show</button>;
+	}
 }
 ```
 
@@ -24,81 +33,65 @@ class ShowAlert extends React.Component {
 
 上述的代码看似没有问题，但是当将处理函数输出代码换成`console.log(this)`的时候，点击按钮，则会发现控制台输出`undefined`
 
-
-
 ## 二、如何绑定
 
 为了解决上面正确输出`this`的问题，常见的绑定方式有如下：
 
-- render方法中使用bind
-- render方法中使用箭头函数
-- constructor中bind
+- render 方法中使用 bind
+- render 方法中使用箭头函数
+- constructor 中 bind
 - 定义阶段使用箭头函数绑定
 
-
-
-### render方法中使用bind
+### render 方法中使用 bind
 
 如果使用一个类组件，在其中给某个组件/元素一个`onClick`属性，它现在并会自定绑定其`this`到当前组件，解决这个问题的方法是在事件函数后使用`.bind(this)`将`this`绑定到当前组件中
 
 ```jsx
 class App extends React.Component {
-  handleClick() {
-    console.log('this > ', this);
-  }
-  render() {
-    return (
-      <div onClick={this.handleClick.bind(this)}>test</div>
-    )
-  }
+	handleClick() {
+		console.log("this > ", this);
+	}
+	render() {
+		return <div onClick={this.handleClick.bind(this)}>test</div>;
+	}
 }
 ```
 
 这种方式在组件每次`render`渲染的时候，都会重新进行`bind`的操作，影响性能
 
-
-
-### render方法中使用箭头函数
+### render 方法中使用箭头函数
 
 通过`ES6`的上下文来将`this`的指向绑定给当前组件，同样再每一次`render`的时候都会生成新的方法，影响性能
 
 ```jsx
 class App extends React.Component {
-  handleClick() {
-    console.log('this > ', this);
-  }
-  render() {
-    return (
-      <div onClick={e => this.handleClick(e)}>test</div>
-    )
-  }
+	handleClick() {
+		console.log("this > ", this);
+	}
+	render() {
+		return <div onClick={(e) => this.handleClick(e)}>test</div>;
+	}
 }
 ```
 
-
-
-## constructor中bind
+## constructor 中 bind
 
 在`constructor`中预先`bind`当前组件，可以避免在`render`操作中重复绑定
 
 ```jsx
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleClick = this.handleClick.bind(this);
-  }
-  handleClick() {
-    console.log('this > ', this);
-  }
-  render() {
-    return (
-      <div onClick={this.handleClick}>test</div>
-    )
-  }
+	constructor(props) {
+		super(props);
+		this.handleClick = this.handleClick.bind(this);
+	}
+	handleClick() {
+		console.log("this > ", this);
+	}
+	render() {
+		return <div onClick={this.handleClick}>test</div>;
+	}
 }
 ```
-
-
 
 ### 定义阶段使用箭头函数绑定
 
@@ -106,31 +99,26 @@ class App extends React.Component {
 
 ```jsx
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  handleClick = () => {
-    console.log('this > ', this);
-  }
-  render() {
-    return (
-      <div onClick={this.handleClick}>test</div>
-    )
-  }
+	constructor(props) {
+		super(props);
+	}
+	handleClick = () => {
+		console.log("this > ", this);
+	};
+	render() {
+		return <div onClick={this.handleClick}>test</div>;
+	}
 }
 ```
-
-
 
 ## 三、区别
 
 上述四种方法的方式，区别主要如下：
 
 - 编写方面：方式一、方式二写法简单，方式三的编写过于冗杂
-- 性能方面：方式一和方式二在每次组件render的时候都会生成新的方法实例，性能问题欠缺。若该函数作为属性值传给子组件的时候，都会导致额外的渲染。而方式三、方式四只会生成一个方法实例
+- 性能方面：方式一和方式二在每次组件 render 的时候都会生成新的方法实例，性能问题欠缺。若该函数作为属性值传给子组件的时候，都会导致额外的渲染。而方式三、方式四只会生成一个方法实例
 
 综合上述，方式四是最优的事件绑定方式
-
 
 ## 参考文献
 

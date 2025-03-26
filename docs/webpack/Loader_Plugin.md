@@ -1,4 +1,13 @@
-# 面试官：说说Loader和Plugin的区别？编写Loader，Plugin的思路？
+---
+title: Webpack Loader和Plugin的区别
+date: 2025/03/26
+tags:
+  - webpack
+  - loader
+  - plugin
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/93042280-a894-11eb-ab90-d9ae814b240d.png)
 
@@ -15,16 +24,14 @@
 
 可以看到，两者在运行时机上的区别：
 
--  loader 运行在打包文件之前
--  plugins 在整个编译周期都起作用
+- loader 运行在打包文件之前
+- plugins 在整个编译周期都起作用
 
-在` Webpack` 运行的生命周期中会广播出许多事件，`Plugin` 可以监听这些事件，在合适的时机通过` Webpack `提供的 `API `改变输出结果
+在` Webpack` 运行的生命周期中会广播出许多事件，`Plugin` 可以监听这些事件，在合适的时机通过`Webpack`提供的 `API `改变输出结果
 
-对于`loader`，实质是一个转换器，将A文件进行编译形成B文件，操作的是文件，比如将`A.scss`或`A.less`转变为`B.css`，单纯的文件转换过程
+对于`loader`，实质是一个转换器，将 A 文件进行编译形成 B 文件，操作的是文件，比如将`A.scss`或`A.less`转变为`B.css`，单纯的文件转换过程
 
-
-
-## 二、编写loader
+## 二、编写 loader
 
 在编写 `loader` 前，我们首先需要了解 `loader` 的本质
 
@@ -40,34 +47,32 @@
 
 ```js
 // 导出一个函数，source为webpack传递给loader的文件源内容
-module.exports = function(source) {
-    const content = doSomeThing2JsString(source);
-    
-    // 如果 loader 配置了 options 对象，那么this.query将指向 options
-    const options = this.query;
-    
-    // 可以用作解析其他模块路径的上下文
-    console.log('this.context');
-    
-    /*
-     * this.callback 参数：
-     * error：Error | null，当 loader 出错时向外抛出一个 error
-     * content：String | Buffer，经过 loader 编译后需要导出的内容
-     * sourceMap：为方便调试生成的编译后内容的 source map
-     * ast：本次编译生成的 AST 静态语法树，之后执行的 loader 可以直接使用这个 AST，进而省去重复生成 AST 的过程
-     */
-    this.callback(null, content); // 异步
-    return content; // 同步
-}
+module.exports = function (source) {
+	const content = doSomeThing2JsString(source);
+
+	// 如果 loader 配置了 options 对象，那么this.query将指向 options
+	const options = this.query;
+
+	// 可以用作解析其他模块路径的上下文
+	console.log("this.context");
+
+	/*
+	 * this.callback 参数：
+	 * error：Error | null，当 loader 出错时向外抛出一个 error
+	 * content：String | Buffer，经过 loader 编译后需要导出的内容
+	 * sourceMap：为方便调试生成的编译后内容的 source map
+	 * ast：本次编译生成的 AST 静态语法树，之后执行的 loader 可以直接使用这个 AST，进而省去重复生成 AST 的过程
+	 */
+	this.callback(null, content); // 异步
+	return content; // 同步
+};
 ```
 
 一般在编写`loader`的过程中，保持功能单一，避免做多种功能
 
-如` less `文件转换成 `css `文件也不是一步到位，而是 `less-loader`、`css-loader`、` style-loader `几个 `loader `的链式调用才能完成转换
+如`less`文件转换成 `css `文件也不是一步到位，而是 `less-loader`、`css-loader`、`style-loader`几个 `loader `的链式调用才能完成转换
 
-
-
-## 三、编写plugin
+## 三、编写 plugin
 
 由于`webpack`基于发布订阅模式，在运行的生命周期中会广播出许多事件，插件通过监听这些事件，就可以在特定的阶段执行自己的插件任务
 
@@ -82,27 +87,24 @@ module.exports = function(source) {
 - 传给每个插件的 `compiler` 和 `compilation` 对象都是同一个引用，因此不建议修改
 - 异步的事件需要在插件处理完任务时调用回调函数通知 `Webpack` 进入下一个流程，不然会卡住
 
-
-
 实现`plugin`的模板如下：
 
 ```js
 class MyPlugin {
-    // Webpack 会调用 MyPlugin 实例的 apply 方法给插件实例传入 compiler 对象
-  apply (compiler) {
-    // 找到合适的事件钩子，实现自己的插件功能
-    compiler.hooks.emit.tap('MyPlugin', compilation => {
-        // compilation: 当前打包构建流程的上下文
-        console.log(compilation);
-        
-        // do something...
-    })
-  }
+	// Webpack 会调用 MyPlugin 实例的 apply 方法给插件实例传入 compiler 对象
+	apply(compiler) {
+		// 找到合适的事件钩子，实现自己的插件功能
+		compiler.hooks.emit.tap("MyPlugin", (compilation) => {
+			// compilation: 当前打包构建流程的上下文
+			console.log(compilation);
+
+			// do something...
+		});
+	}
 }
 ```
 
 在 `emit` 事件发生时，代表源文件的转换和组装已经完成，可以读取到最终将输出的资源、代码块、模块及其依赖，并且可以修改输出资源的内容
-
 
 ## 参考文献
 

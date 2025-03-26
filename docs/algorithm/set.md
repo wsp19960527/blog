@@ -1,10 +1,14 @@
-# 面试官：说说你对集合的理解？常见的操作有哪些？
+---
+title: 集合
+date: 2025/03/26
+tags:
+  - js
+  - 集合
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/e3de7810-1d36-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/e3de7810-1d36-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -21,7 +25,6 @@
 - 无序性：在一个集合中，不考虑元素之间的顺序，只要元素完全相同，就认为是同一个集合
 - 互异性：集合中任意两个元素都是不同的
 
-
 ## 二、操作
 
 在`ES6`中，集合本身是一个构建函数`Set`，用来生成 `Set` 数据结构，如下：
@@ -36,8 +39,6 @@ const s = new Set();
 - delete()：删
 - has()：改
 - clear()：查
-
-
 
 ### add()
 
@@ -56,7 +57,7 @@ s.add(1).add(2).add(2); // 2只被添加了一次
 删除某个值，返回一个布尔值，表示删除是否成功
 
 ```js
-s.delete(1)
+s.delete(1);
 ```
 
 ### has()
@@ -64,7 +65,7 @@ s.delete(1)
 返回一个布尔值，判断该值是否为`Set`的成员
 
 ```js
-s.has(2)
+s.has(2);
 ```
 
 ### clear()
@@ -72,10 +73,8 @@ s.has(2)
 清除所有成员，没有返回值
 
 ```js
-s.clear()
+s.clear();
 ```
-
-
 
 关于多个集合常见的操作有：
 
@@ -83,13 +82,11 @@ s.clear()
 - 交集
 - 差集
 
-
-
 ### 并集
 
 两个集合的共同元素，如下图所示：
 
- ![](https://static.vue-js.com/ed96df50-1d36-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/ed96df50-1d36-11ec-a752-75723a64e8f5.png)
 
 代码实现方式如下：
 
@@ -102,15 +99,11 @@ let union = new Set([...a, ...b]);
 // Set {1, 2, 3, 4}
 ```
 
-
-
-
-
 ### 交集
 
 两个集合`A` 和 `B`，即属于`A`又属于`B`的元素，如下图所示：
 
- ![](https://static.vue-js.com/f8a9cd80-1d36-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/f8a9cd80-1d36-11ec-a752-75723a64e8f5.png)
 
 用代码标识则如下：
 
@@ -119,17 +112,15 @@ let a = new Set([1, 2, 3]);
 let b = new Set([4, 3, 2]);
 
 // 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
+let intersect = new Set([...a].filter((x) => b.has(x)));
 // set {2, 3}
 ```
-
-
 
 ### 差集
 
 两个集合`A` 和 `B`，属于`A`的元素但不属于`B`的元素称为`A`相对于`B`的差集，如下图所示：
 
- ![](https://static.vue-js.com/0191c560-1d37-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/0191c560-1d37-11ec-8e64-91fdec0f05a1.png)
 
 代码标识则如下：
 
@@ -138,13 +129,9 @@ let a = new Set([1, 2, 3]);
 let b = new Set([4, 3, 2]);
 
 // （a 相对于 b 的）差集
-let difference = new Set([...a].filter(x => !b.has(x)));
+let difference = new Set([...a].filter((x) => !b.has(x)));
 // Set {1}
 ```
-
-
-
-
 
 ## 三、应用场景
 
@@ -153,10 +140,6 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 使用`set`集合的场景一般是借助其确定性，其本身只包含不同的元素
 
 所以，可以利用`Set`的一些原生方法轻松的完成数组去重，查找数组公共元素及不同元素等操作
-
-
-
-
 
 ## 参考文献
 

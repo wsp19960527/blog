@@ -1,6 +1,15 @@
-# 面试官：说说你对栈、队列的理解？应用场景？
+---
+title: 栈、队列
+date: 2025/03/26
+tags:
+  - algorithm
+  - stack
+  - queue
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/bc57f530-1b99-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/bc57f530-1b99-11ec-a752-75723a64e8f5.png)
 
 ## 一、栈
 
@@ -14,52 +23,52 @@
 
 ```js
 class Stack {
-  constructor() {
-    this.items = [];
-  }
+	constructor() {
+		this.items = [];
+	}
 
-  /**
-   * 添加一个（或几个）新元素到栈顶
-   * @param {*} element 新元素
-   */
-  push(element) {
-    this.items.push(element)
-  }
+	/**
+	 * 添加一个（或几个）新元素到栈顶
+	 * @param {*} element 新元素
+	 */
+	push(element) {
+		this.items.push(element);
+	}
 
-  /**
-   * 移除栈顶的元素，同时返回被移除的元素
-   */
-  pop() {
-    return this.items.pop()
-  }
+	/**
+	 * 移除栈顶的元素，同时返回被移除的元素
+	 */
+	pop() {
+		return this.items.pop();
+	}
 
-  /**
-   * 返回栈顶的元素，不对栈做任何修改（这个方法不会移除栈顶的元素，仅仅返回它）
-   */
-  peek() {
-    return this.items[this.items.length - 1]
-  }
+	/**
+	 * 返回栈顶的元素，不对栈做任何修改（这个方法不会移除栈顶的元素，仅仅返回它）
+	 */
+	peek() {
+		return this.items[this.items.length - 1];
+	}
 
-  /**
-   * 如果栈里没有任何元素就返回true,否则返回false
-   */
-  isEmpty() {
-    return this.items.length === 0
-  }
+	/**
+	 * 如果栈里没有任何元素就返回true,否则返回false
+	 */
+	isEmpty() {
+		return this.items.length === 0;
+	}
 
-  /**
-   * 移除栈里的所有元素
-   */
-  clear() {
-    this.items = []
-  }
+	/**
+	 * 移除栈里的所有元素
+	 */
+	clear() {
+		this.items = [];
+	}
 
-  /**
-   * 返回栈里的元素个数。这个方法和数组的length属性很类似
-   */
-  size() {
-    return this.items.length
-  }
+	/**
+	 * 返回栈里的元素个数。这个方法和数组的length属性很类似
+	 */
+	size() {
+		return this.items.length;
+	}
 }
 ```
 
@@ -67,10 +76,6 @@ class Stack {
 
 - push：入栈操作
 - pop：出栈操作
-
-
-
-
 
 ## 二、队列
 
@@ -84,19 +89,19 @@ class Stack {
 
 ```js
 class Queue {
-    constructor() {
-        this.list = []
-        this.frontIndex = 0
-        this.tailIndex = 0
-    }
-    enqueue(item) {
-        this.list[this.tailIndex++] = item
-    }
-    unqueue() {
-        const item  = this.list[this.frontIndex]
-        this.frontIndex++        
-        return item
-    }
+	constructor() {
+		this.list = [];
+		this.frontIndex = 0;
+		this.tailIndex = 0;
+	}
+	enqueue(item) {
+		this.list[this.tailIndex++] = item;
+	}
+	unqueue() {
+		const item = this.list[this.frontIndex];
+		this.frontIndex++;
+		return item;
+	}
 }
 ```
 
@@ -106,46 +111,44 @@ class Queue {
 
 在实际使用队列时，为了使队列空间能重复使用，往往对队列的使用方法稍加改进：
 
-无论插入或删除，一旦`rear`指针增1或`front`指针增1 时超出了所分配的队列空间，就让它指向这片连续空间的起始位置，这种队列也就是循环队列
+无论插入或删除，一旦`rear`指针增 1 或`front`指针增 1 时超出了所分配的队列空间，就让它指向这片连续空间的起始位置，这种队列也就是循环队列
 
 下面实现一个循环队列，如下：
 
 ```js
 class Queue {
-    constructor(size) {
-        this.size = size; // 长度需要限制, 来达到空间的利用, 代表空间的长度
-        this.list = [];
-        this.font = 0; // 指向首元素
-        this.rear = 0;  // 指向准备插入元素的位置
-    }
-    enQueue() {
-        if (this.isFull() == true) {
-            return false
-        }
-        this.rear = this.rear % this.k;
-        this._data[this.rear++] = value;
-        return true
-    }
-    deQueue() {
-        if(this.isEmpty()){
-            return false;
-        }
-        this.font++;
-        this.font = this.font % this.k;
-        return true;
-    }
-    isEmpty() {
-        return this.font == this.rear - 1;
-    }
-    isFull() {
-        return this.rear % this.k == this.font;
-    }
+	constructor(size) {
+		this.size = size; // 长度需要限制, 来达到空间的利用, 代表空间的长度
+		this.list = [];
+		this.font = 0; // 指向首元素
+		this.rear = 0; // 指向准备插入元素的位置
+	}
+	enQueue() {
+		if (this.isFull() == true) {
+			return false;
+		}
+		this.rear = this.rear % this.k;
+		this._data[this.rear++] = value;
+		return true;
+	}
+	deQueue() {
+		if (this.isEmpty()) {
+			return false;
+		}
+		this.font++;
+		this.font = this.font % this.k;
+		return true;
+	}
+	isEmpty() {
+		return this.font == this.rear - 1;
+	}
+	isFull() {
+		return this.rear % this.k == this.font;
+	}
 }
 ```
 
-上述通过求余的形式代表首尾指针增1 时超出了所分配的队列空间
-
-
+上述通过求余的形式代表首尾指针增 1 时超出了所分配的队列空间
 
 ## 三、应用场景
 

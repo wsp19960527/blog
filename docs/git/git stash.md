@@ -1,8 +1,14 @@
-# 面试官：说说你对git stash 的理解？应用场景？
+---
+title: git stash
+date: 2025/03/26
+tags:
+  - git
+  - stash
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/83ddf210-fd6f-11eb-bc6f-3f06e1491664.png)
-
-
+![](https://static.vue-js.com/83ddf210-fd6f-11eb-bc6f-3f06e1491664.png)
 
 ## 一、是什么
 
@@ -13,7 +19,7 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 默认情况下，`git stash`会缓存下列状态的文件：
 
 - 添加到暂存区的修改（staged changes）
-- Git跟踪的但并未添加到暂存区的修改（unstaged changes）
+- Git 跟踪的但并未添加到暂存区的修改（unstaged changes）
 
 但以下状态的文件不会缓存：
 
@@ -21,8 +27,6 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 - 被忽略的文件（ignored files）
 
 如果想要上述的文件都被缓存，可以使用`-u`或者`--include-untracked`可以工作目录新的文件，使用`-a`或者`--all`命令可以当前目录下的所有修改
-
-
 
 ## 二、如何使用
 
@@ -39,13 +43,9 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 - git stash drop
 - git stash clear
 
-
-
 ### git stash
 
 保存当前工作进度，会把暂存区和工作区的改动保存起来
-
-
 
 ### git stash save
 
@@ -58,17 +58,13 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 - --include-untracked 为追踪的文件也会被缓存,当前的工作空间会被恢复为完全清空的状态
 - -a 或者 --all 命令可以当前目录下的所有修改，包括被 git 忽略的文件
 
-
-
 ### git stash list
 
 显示保存进度的列表。也就意味着，`git stash`命令可以多次执行，当多次使用`git stash`命令后，栈里会充满未提交的代码，如下：
 
- ![](https://static.vue-js.com/50216dd0-fccf-11eb-bc6f-3f06e1491664.png)
+![](https://static.vue-js.com/50216dd0-fccf-11eb-bc6f-3f06e1491664.png)
 
 其中，`stash@{0}`、`stash@{1}`就是当前`stash`的名称
-
-
 
 ### git stash pop
 
@@ -78,10 +74,6 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 
 如果从`stash`中恢复的内容和当前目录中的内容发生了冲突，则需要手动修复冲突或者创建新的分支来解决冲突
 
-
-
-
-
 ### git stash apply
 
 将堆栈中的内容应用到当前目录，不同于`git stash pop`，该命令不会将内容从堆栈中删除
@@ -89,12 +81,6 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 也就说该命令能够将堆栈的内容多次应用到工作目录中，适应于多个分支的情况
 
 同样，可以通过`git stash apply` + `stash`名字执行恢复哪个`stash`恢复到当前目录
-
-
-
-
-
-
 
 ### git stash show
 
@@ -104,21 +90,15 @@ stash，译为存放，在 git 中，可以理解为保存当前工作进度，�
 
 通过使用`git stash show stash@{1}`查看指定的`stash`和当前目录差异
 
- ![](https://static.vue-js.com/458620a0-fccf-11eb-bc6f-3f06e1491664.png)
-
-
+![](https://static.vue-js.com/458620a0-fccf-11eb-bc6f-3f06e1491664.png)
 
 ### git stash drop
 
-`git stash drop` + `stash`名称表示从堆栈中移除某个指定的stash
-
-
+`git stash drop` + `stash`名称表示从堆栈中移除某个指定的 stash
 
 ### git stash clear
 
 删除所有存储的进度
-
-
 
 ## 三、应用场景
 

@@ -1,8 +1,15 @@
-# 面试官：说说对Redux中间件的理解？常用的中间件有哪些？实现原理？
+---
+title: Redux Middleware
+date: 2025/03/26
+tags:
+  - react
+  - redux
+  - middleware
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/4520bbd0-e699-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/4520bbd0-e699-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -14,10 +21,9 @@
 
 `Redux`中，中间件就是放在就是在`dispatch`过程，在分发`action`进行拦截处理，如下图：
 
- ![](https://static.vue-js.com/57edf750-e699-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/57edf750-e699-11eb-ab90-d9ae814b240d.png)
 
 其本质上一个函数，对`store.dispatch`方法进行了改造，在发出 `Action `和执行 `Reducer `这两步之间，添加了其他功能
-
 
 ## 二、常用的中间件
 
@@ -31,10 +37,7 @@
 然后作为第二个参数传入到`createStore`中
 
 ```js
-const store = createStore(
-  reducer,
-  applyMiddleware(thunk, logger)
-);
+const store = createStore(reducer, applyMiddleware(thunk, logger));
 ```
 
 ### redux-thunk
@@ -45,45 +48,36 @@ const store = createStore(
 
 `redux-thunk`中间件会判断你当前传进来的数据类型，如果是一个函数，将会给函数传入参数值（dispatch，getState）
 
-- dispatch函数用于我们之后再次派发action
-- getState函数考虑到我们之后的一些操作需要依赖原来的状态，用于让我们可以获取之前的一些状态
+- dispatch 函数用于我们之后再次派发 action
+- getState 函数考虑到我们之后的一些操作需要依赖原来的状态，用于让我们可以获取之前的一些状态
 
 所以`dispatch`可以写成下述函数的形式：
 
 ```js
 const getHomeMultidataAction = () => {
-  return (dispatch) => {
-    axios.get("http://xxx.xx.xx.xx/test").then(res => {
-      const data = res.data.data;
-      dispatch(changeBannersAction(data.banner.list));
-      dispatch(changeRecommendsAction(data.recommend.list));
-    })
-  }
-}
+	return (dispatch) => {
+		axios.get("http://xxx.xx.xx.xx/test").then((res) => {
+			const data = res.data.data;
+			dispatch(changeBannersAction(data.banner.list));
+			dispatch(changeRecommendsAction(data.recommend.list));
+		});
+	};
+};
 ```
 
-
-
 ### redux-logger
-
 
 如果想要实现一个日志功能，则可以使用现成的`redux-logger`
 
 ```js
-
-import { applyMiddleware, createStore } from 'redux';
-import createLogger from 'redux-logger';
+import { applyMiddleware, createStore } from "redux";
+import createLogger from "redux-logger";
 const logger = createLogger();
 
-const store = createStore(
-  reducer,
-  applyMiddleware(logger)
-);
+const store = createStore(reducer, applyMiddleware(logger));
 ```
 
 这样我们就能简单通过中间件函数实现日志记录的信息
-
-
 
 ## 三、实现原理
 
@@ -91,20 +85,20 @@ const store = createStore(
 
 ```js
 export default function applyMiddleware(...middlewares) {
-  return (createStore) => (reducer, preloadedState, enhancer) => {
-    var store = createStore(reducer, preloadedState, enhancer);
-    var dispatch = store.dispatch;
-    var chain = [];
+	return (createStore) => (reducer, preloadedState, enhancer) => {
+		var store = createStore(reducer, preloadedState, enhancer);
+		var dispatch = store.dispatch;
+		var chain = [];
 
-    var middlewareAPI = {
-      getState: store.getState,
-      dispatch: (action) => dispatch(action)
-    };
-    chain = middlewares.map(middleware => middleware(middlewareAPI));
-    dispatch = compose(...chain)(store.dispatch);
+		var middlewareAPI = {
+			getState: store.getState,
+			dispatch: (action) => dispatch(action),
+		};
+		chain = middlewares.map((middleware) => middleware(middlewareAPI));
+		dispatch = compose(...chain)(store.dispatch);
 
-    return {...store, dispatch}
-  }
+		return { ...store, dispatch };
+	};
 }
 ```
 
@@ -116,17 +110,17 @@ export default function applyMiddleware(...middlewares) {
 
 ```js
 function patchThunk(store) {
-    let next = store.dispatch;
+	let next = store.dispatch;
 
-    function dispatchAndThunk(action) {
-        if (typeof action === "function") {
-            action(store.dispatch, store.getState);
-        } else {
-            next(action);
-        }
-    }
+	function dispatchAndThunk(action) {
+		if (typeof action === "function") {
+			action(store.dispatch, store.getState);
+		} else {
+			next(action);
+		}
+	}
 
-    store.dispatch = dispatchAndThunk;
+	store.dispatch = dispatchAndThunk;
 }
 ```
 
@@ -136,14 +130,13 @@ function patchThunk(store) {
 let next = store.dispatch;
 
 function dispatchAndLog(action) {
-  console.log("dispatching:", addAction(10));
-  next(addAction(5));
-  console.log("新的state:", store.getState());
+	console.log("dispatching:", addAction(10));
+	next(addAction(5));
+	console.log("新的state:", store.getState());
 }
 
 store.dispatch = dispatchAndLog;
 ```
-
 
 ## 参考文献
 

@@ -1,6 +1,15 @@
-# 面试官：说说你对React Router的理解？常用的Router组件有哪些？
+---
+title: React Router
+date: 2025/03/26
+tags:
+  - react
+  - react-router
+  - router
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/c6635670-e8ac-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/c6635670-e8ac-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -18,10 +27,6 @@
 
 - react-router-config: 用于配置静态路由的工具库
 
-
-
-
-
 ## 二、有哪些
 
 这里主要讲述的是`react-router-dom`的常用`API`，主要是提供了一些组件：
@@ -31,8 +36,6 @@
 - Link、NavLink
 - switch
 - redirect
-
-
 
 ### BrowserRouter、HashRouter
 
@@ -46,29 +49,27 @@
 import { BrowserRouter as Router } from "react-router-dom";
 
 export default function App() {
-  return (
-    <Router>
-      <main>
-        <nav>
-          <ul>
-            <li>
-              < a href=" ">Home</ a>
-            </li>
-            <li>
-              < a href="/about">About</ a>
-            </li>
-            <li>
-              < a href="/contact">Contact</ a>
-            </li>
-          </ul>
-        </nav>
-      </main>
-    </Router>
-  );
+	return (
+		<Router>
+			<main>
+				<nav>
+					<ul>
+						<li>
+							<a href=" ">Home</a>
+						</li>
+						<li>
+							<a href="/about">About</a>
+						</li>
+						<li>
+							<a href="/contact">Contact</a>
+						</li>
+					</ul>
+				</nav>
+			</main>
+		</Router>
+	);
 }
 ```
-
-
 
 ### Route
 
@@ -83,32 +84,28 @@ export default function App() {
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default function App() {
-  return (
-    <Router>
-      <main>
-        <nav>
-          <ul>
-            <li>
-              < a href="/">Home</ a>
-            </li>
-            <li>
-              < a href="/about">About</ a>
-            </li>
-            <li>
-              < a href="/contact">Contact</ a>
-            </li>
-          </ul>
-        </nav>
-        <Route path="/" render={() => <h1>Welcome!</h1>} />
-      </main>
-    </Router>
-  );
+	return (
+		<Router>
+			<main>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">Home</a>
+						</li>
+						<li>
+							<a href="/about">About</a>
+						</li>
+						<li>
+							<a href="/contact">Contact</a>
+						</li>
+					</ul>
+				</nav>
+				<Route path="/" render={() => <h1>Welcome!</h1>} />
+			</main>
+		</Router>
+	);
 }
 ```
-
-
-
-
 
 ### Link、NavLink
 
@@ -117,7 +114,7 @@ export default function App() {
 `NavLink`是在`Link`基础之上增加了一些样式属性，例如组件被选中时，发生样式变化，则可以设置`NavLink`的一下属性：
 
 - activeStyle：活跃时（匹配时）的样式
-- activeClassName：活跃时添加的class
+- activeClassName：活跃时添加的 class
 
 如下：
 
@@ -133,17 +130,15 @@ export default function App() {
 
 ```jsx
 const Contact = ({ history }) => (
-  <Fragment>
-    <h1>Contact</h1>
-    <button onClick={() => history.push("/")}>Go to home</button>
-    <FakeText />
-  </Fragment>
+	<Fragment>
+		<h1>Contact</h1>
+		<button onClick={() => history.push("/")}>Go to home</button>
+		<FakeText />
+	</Fragment>
 );
 ```
 
 `props `中接收到的`history`对象具有一些方便的方法，如`goBack`，`goForward`,`push`
-
-
 
 ### redirect
 
@@ -151,24 +146,20 @@ const Contact = ({ history }) => (
 
 ```js
 const About = ({
-  match: {
-    params: { name },
-  },
+	match: {
+		params: { name },
+	},
 }) => (
-  // props.match.params.name
-  <Fragment>
-    {name !== "tom" ? <Redirect to="/" /> : null}
-    <h1>About {name}</h1>
-    <FakeText />
-  </Fragment>
-)
+	// props.match.params.name
+	<Fragment>
+		{name !== "tom" ? <Redirect to="/" /> : null}
+		<h1>About {name}</h1>
+		<FakeText />
+	</Fragment>
+);
 ```
 
 上述组件当接收到的路由参数`name` 不等于 `tom` 的时候，将会自动重定向到首页
-
-
-
-
 
 ### switch
 
@@ -178,27 +169,21 @@ const About = ({
 
 ```jsx
 <Switch>
-  <Route exact path="/" component={Home} />
-  <Route path="/about" component={About} />
-  <Route path="/profile" component={Profile} />
-  <Route path="/:userid" component={User} />
-  <Route component={NoMatch} />
+	<Route exact path="/" component={Home} />
+	<Route path="/about" component={About} />
+	<Route path="/profile" component={Profile} />
+	<Route path="/:userid" component={User} />
+	<Route component={NoMatch} />
 </Switch>
 ```
 
 如果不使用`switch`组件进行包裹
-
-
-
-
 
 除了一些路由相关的组件之外，`react-router`还提供一些`hooks`，如下：
 
 - useHistory
 - useParams
 - useLocation
-
-
 
 ### useHistory
 
@@ -208,37 +193,31 @@ const About = ({
 import { useHistory } from "react-router-dom";
 
 const Contact = () => {
-  const history = useHistory();
-  return (
-    <Fragment>
-      <h1>Contact</h1>
-      <button onClick={() => history.push("/")}>Go to home</button>
-    </Fragment>
-  );
+	const history = useHistory();
+	return (
+		<Fragment>
+			<h1>Contact</h1>
+			<button onClick={() => history.push("/")}>Go to home</button>
+		</Fragment>
+	);
 };
 ```
-
-
 
 ### useParams
 
-
-
 ```jsx
 const About = () => {
-  const { name } = useParams();
-  return (
-    // props.match.params.name
-    <Fragment>
-      {name !== "John Doe" ? <Redirect to="/" /> : null}
-      <h1>About {name}</h1>
-      <Route component={Contact} />
-    </Fragment>
-  );
+	const { name } = useParams();
+	return (
+		// props.match.params.name
+		<Fragment>
+			{name !== "John Doe" ? <Redirect to="/" /> : null}
+			<h1>About {name}</h1>
+			<Route component={Contact} />
+		</Fragment>
+	);
 };
 ```
-
-
 
 ### useLocation
 
@@ -248,30 +227,24 @@ const About = () => {
 import { useLocation } from "react-router-dom";
 
 const Contact = () => {
-  const { pathname } = useLocation();
+	const { pathname } = useLocation();
 
-  return (
-    <Fragment>
-      <h1>Contact</h1>
-      <p>Current URL: {pathname}</p >
-    </Fragment>
-  );
+	return (
+		<Fragment>
+			<h1>Contact</h1>
+			<p>Current URL: {pathname}</p>
+		</Fragment>
+	);
 };
 ```
-
-
-
-
 
 ## 三、参数传递
 
 这些路由传递参数主要分成了三种形式：
 
 - 动态路由的方式
-- search传递参数
-- to传入对象
-
-
+- search 传递参数
+- to 传入对象
 
 ### 动态路由
 
@@ -292,14 +265,12 @@ const Contact = () => {
 获取参数方式如下：
 
 ```jsx
-console.log(props.match.params.xxx)
+console.log(props.match.params.xxx);
 ```
 
+### search 传递参数
 
-
-### search传递参数
-
-在跳转的路径中添加了一些query参数；
+在跳转的路径中添加了一些 query 参数；
 
 ```jsx
 <NavLink to="/detail2?name=why&age=18">详情2</NavLink>
@@ -312,37 +283,30 @@ console.log(props.match.params.xxx)
 获取形式如下：
 
 ```js
-console.log(props.location.search)
+console.log(props.location.search);
 ```
 
-
-
-
-
-### to传入对象
+### to 传入对象
 
 传递方式如下：
 
 ```jsx
-<NavLink to={{
-    pathname: "/detail2", 
-    query: {name: "kobe", age: 30},
-    state: {height: 1.98, address: "洛杉矶"},
-    search: "?apikey=123"
-  }}>
-  详情2
+<NavLink
+	to={{
+		pathname: "/detail2",
+		query: { name: "kobe", age: 30 },
+		state: { height: 1.98, address: "洛杉矶" },
+		search: "?apikey=123",
+	}}>
+	详情2
 </NavLink>
 ```
 
 获取参数的形式如下：
 
 ```js
-console.log(props.location)
+console.log(props.location);
 ```
-
-
-
-
 
 ## 参考文献
 

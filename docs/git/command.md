@@ -1,24 +1,24 @@
-# 面试官：说说Git常用的命令有哪些？
+---
+title: Git常用命令
+date: 2025/03/26
+tags:
+  - git
+  - 命令
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/f66b3290-f7af-11eb-bc6f-3f06e1491664.png)
-
-
+![](https://static.vue-js.com/f66b3290-f7af-11eb-bc6f-3f06e1491664.png)
 
 ## 一、前言
 
-`git `的操作可以通过命令的形式如执行，日常使用就如下图6个命令即可
+`git `的操作可以通过命令的形式如执行，日常使用就如下图 6 个命令即可
 
- ![](https://static.vue-js.com/fe150520-f7af-11eb-991d-334fd31f0201.png)
+![](https://static.vue-js.com/fe150520-f7af-11eb-991d-334fd31f0201.png)
 
-实际上，如果想要熟练使用，超过60多个命令需要了解，下面则介绍下常见的的`git `命令
-
-
+实际上，如果想要熟练使用，超过 60 多个命令需要了解，下面则介绍下常见的的`git `命令
 
 ## 二、有哪些
-
-
-
-
 
 ## 配置
 
@@ -28,21 +28,15 @@
 
 设置提交代码时的用户信息命令如下：
 
-- git config [--global] user.name "[name]" 
+- git config [--global] user.name "[name]"
 - git config [--global] user.email "[email address]"
-
-
-
-
 
 ### 启动
 
 一个`git`项目的初始有两个途径，分别是：
 
-- git init [project-name]：创建或在当前目录初始化一个git代码库
+- git init [project-name]：创建或在当前目录初始化一个 git 代码库
 - git clone url：下载一个项目和它的整个代码历史
-
-
 
 ### 日常基本操作
 
@@ -51,14 +45,14 @@
 - git init 初始化仓库，默认为 master 分支
 - git add . 提交全部文件修改到缓存区
 - git add <具体某个文件路径+全名> 提交某些文件到缓存区
-- git diff  查看当前代码 add后，会 add 哪些内容
-- git diff --staged查看现在 commit 提交后，会提交哪些内容
+- git diff 查看当前代码 add 后，会 add 哪些内容
+- git diff --staged 查看现在 commit 提交后，会提交哪些内容
 - git status 查看当前分支状态
 - git pull <远程仓库名> <远程分支名> 拉取远程仓库的分支与本地当前分支合并
 - git pull <远程仓库名> <远程分支名>:<本地分支名> 拉取远程仓库的分支与本地某个分支合并
 - git commit -m "<注释>" 提交代码到本地仓库，并写提交注释
-- git commit -v 提交时显示所有diff信息
-- git commit --amend [file1] [file2] 重做上一次commit，并包括指定文件的新变化
+- git commit -v 提交时显示所有 diff 信息
+- git commit --amend [file1] [file2] 重做上一次 commit，并包括指定文件的新变化
 
 关于提交信息的格式，可以遵循以下的规则：
 
@@ -69,8 +63,6 @@
 - style: 代码格式修改, 注意不是 css 修改
 - test: 测试用例修改
 - chore: 其他修改, 比如构建流程, 依赖管理
-
-
 
 ### 分支操作
 
@@ -83,15 +75,11 @@
 - git checkout --orphan <新分支名> 新建一个空分支（会保留之前分支的所有文件）
 - git branch -D <分支名> 删除本地某个分支
 - git push <远程库名> :<分支名> 删除远程某个分支
-- git branch <新分支名称> <提交ID> 从提交历史恢复某个删掉的某个分支
+- git branch <新分支名称> <提交 ID> 从提交历史恢复某个删掉的某个分支
 - git branch -m <原分支名> <新分支名> 分支更名
 - git checkout <分支名> 切换到本地某个分支
 - git checkout <远程库名>/<分支名> 切换到线上某个分支
 - git checkout -b <新分支名> 把基于当前分支新建分支，并切换为这个分支
-
-
-
-
 
 ### 远程同步
 
@@ -105,24 +93,20 @@
 - git push [remote] --force 强行推送当前分支到远程仓库，即使有冲突
 - git push [remote] --all 推送所有分支到远程仓库
 
-
-
 ### 撤销
 
 - git checkout [file] 恢复暂存区的指定文件到工作区
-- git checkout [commit] [file]  恢复某个commit的指定文件到暂存区和工作区
+- git checkout [commit] [file] 恢复某个 commit 的指定文件到暂存区和工作区
 - git checkout . 恢复暂存区的所有文件到工作区
-- git reset [commit] 重置当前分支的指针为指定commit，同时重置暂存区，但工作区不变
-- git reset --hard 重置暂存区与工作区，与上一次commit保持一致
-- git reset [file] 重置暂存区的指定文件，与上一次commit保持一致，但工作区不变
+- git reset [commit] 重置当前分支的指针为指定 commit，同时重置暂存区，但工作区不变
+- git reset --hard 重置暂存区与工作区，与上一次 commit 保持一致
+- git reset [file] 重置暂存区的指定文件，与上一次 commit 保持一致，但工作区不变
 
-- git revert [commit]  后者的所有变化都将被前者抵消，并且应用到当前分支
+- git revert [commit] 后者的所有变化都将被前者抵消，并且应用到当前分支
 
 > `reset`：真实硬性回滚，目标版本后面的提交记录全部丢失了
 >
 > `revert`：同样回滚，这个回滚操作相当于一个提价，目标版本后面的提交记录也全部都有
-
-
 
 ### 存储操作
 
@@ -132,19 +116,15 @@
 - git stash pop 取出储藏中最后存入的工作状态进行恢复，会删除储藏
 
 - git stash list 查看所有储藏中的工作
-- git stash apply <储藏的名称>  取出储藏中对应的工作状态进行恢复，不会删除储藏
+- git stash apply <储藏的名称> 取出储藏中对应的工作状态进行恢复，不会删除储藏
 - git stash clear 清空所有储藏中的工作
-- git stash drop <储藏的名称>  删除对应的某个储藏
-
-
+- git stash drop <储藏的名称> 删除对应的某个储藏
 
 ## 三、总结
 
 `git`常用命令速查表如下所示：
 
- ![](https://static.vue-js.com/0a10f3c0-f7b0-11eb-991d-334fd31f0201.png)
-
-
+![](https://static.vue-js.com/0a10f3c0-f7b0-11eb-991d-334fd31f0201.png)
 
 ## 参考文献
 

@@ -1,8 +1,14 @@
-# 面试官：说说你对图的理解？相关操作有哪些？
+---
+title: 图的理解与操作
+date: 2025/03/26
+tags:
+  - algorithm
+  - graph
+categories:
+  - 前端
+---
 
-
- ![](https://static.vue-js.com/7876c2f0-2059-11ec-8e64-91fdec0f05a1.png)
-
+![](https://static.vue-js.com/7876c2f0-2059-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -24,35 +30,29 @@
 
 通过使用一个二维数组`G[N][N]`进行表示`N`个点到`N-1`编号，通过邻接矩阵可以立刻看出两顶点之间是否存在一条边，只需要检查邻接矩阵行`i`和列`j`是否是非零值，对于无向图，邻接矩阵是对称的
 
- ![](https://static.vue-js.com/881d4300-2059-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/881d4300-2059-11ec-a752-75723a64e8f5.png)
 
 ### 邻接表
 
 存储方式如下图所示：
 
- ![](https://static.vue-js.com/949fedd0-2059-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/949fedd0-2059-11ec-a752-75723a64e8f5.png)
 
 在`javascript`中，可以使用`Object`进行表示，如下：
 
 ```js
 const graph = {
-  A: [2, 3, 5],
-  B: [2],
-  C: [0, 1, 3],
-  D: [0, 2],
-  E: [6],
-  F: [0, 6],
-  G: [4, 5]
-}
+	A: [2, 3, 5],
+	B: [2],
+	C: [0, 1, 3],
+	D: [0, 2],
+	E: [6],
+	F: [0, 6],
+	G: [4, 5],
+};
 ```
 
 图的数据结构还可能包含和每条边相关联的数值（edge value），例如一个标号或一个数值（即权重，weight；表示花费、容量、长度等）
-
-
-
-
 
 ## 二、操作
 
@@ -61,27 +61,21 @@ const graph = {
 - 深度优先遍历
 - 广度优先遍历
 
-
-
 首先构建一个图的邻接矩阵表示，如下面的图：
 
- ![](https://static.vue-js.com/a1311790-2059-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/a1311790-2059-11ec-8e64-91fdec0f05a1.png)
 
 用代码表示则如下：
 
 ```js
 const graph = {
-  0: [1, 4],
-  1: [2, 4],
-  2: [2, 3],
-  3: [],
-  4: [3],
-}
+	0: [1, 4],
+	1: [2, 4],
+	2: [2, 3],
+	3: [],
+	4: [3],
+};
 ```
-
-
-
-
 
 ### 深度优先遍历
 
@@ -89,24 +83,23 @@ const graph = {
 
 实现思路是，首先应该确定一个根节点，然后对根节点的没访问过的相邻节点进行深度优先遍历
 
-确定以 0 为根节点，然后进行深度遍历，然后遍历1，接着遍历 2，然后3，此时完成一条分支`0 - 1- 2- 3`的遍历，换一条分支，也就是4，4后面因为3已经遍历过了，所以就不访问了
+确定以 0 为根节点，然后进行深度遍历，然后遍历 1，接着遍历 2，然后 3，此时完成一条分支`0 - 1- 2- 3`的遍历，换一条分支，也就是 4，4 后面因为 3 已经遍历过了，所以就不访问了
 
 用代码表示则如下：
 
 ```js
-const visited = new Set()
+const visited = new Set();
 const dfs = (n) => {
-  console.log(n)
-  visited.add(n) // 访问过添加记录
-  graph[n].forEach(c => {
-    if(!visited.has(c)){ // 判断是否访问呢过
-      dfs(c)
-    }
-  })
-}
+	console.log(n);
+	visited.add(n); // 访问过添加记录
+	graph[n].forEach((c) => {
+		if (!visited.has(c)) {
+			// 判断是否访问呢过
+			dfs(c);
+		}
+	});
+};
 ```
-
-
 
 ### 广度优先遍历
 
@@ -120,24 +113,22 @@ const dfs = (n) => {
 用代码标识则如下：
 
 ```js
-const visited = new Set()
+const visited = new Set();
 const dfs = (n) => {
-  visited.add(n)
-  const q = [n]
-  while(q.length){
-    const n = q.shift()
-    console.log(n)
-    graph[n].forEach(c => {
-      if(!visited.has(c)){
-        q.push(c)  
-        visited.add(c)
-      }
-    })
-  }
-}
+	visited.add(n);
+	const q = [n];
+	while (q.length) {
+		const n = q.shift();
+		console.log(n);
+		graph[n].forEach((c) => {
+			if (!visited.has(c)) {
+				q.push(c);
+				visited.add(c);
+			}
+		});
+	}
+};
 ```
-
-
 
 ## 三、总结
 
@@ -147,11 +138,7 @@ const dfs = (n) => {
 
 图实际是很复杂的，后续还可以延伸出无向图和带权图，对应如下图所示：
 
- ![](https://static.vue-js.com/b0d88200-2059-11ec-8e64-91fdec0f05a1.png)
-
-
-
-
+![](https://static.vue-js.com/b0d88200-2059-11ec-8e64-91fdec0f05a1.png)
 
 ## 参考文献
 

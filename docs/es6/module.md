@@ -1,8 +1,14 @@
-# 面试官：你是怎么理解ES6中Module的？使用场景？
+---
+title: ES6模块化
+date: 2025/03/26
+tags:
+  - es6
+  - module
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/b6d19be0-5adb-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/b6d19be0-5adb-11eb-ab90-d9ae814b240d.png)
 
 ## 一、介绍
 
@@ -24,16 +30,15 @@
 如果没有模块化，我们代码会怎样？
 
 - 变量和方法不容易维护，容易污染全局作用域
-- 加载资源的方式通过script标签从上到下。
+- 加载资源的方式通过 script 标签从上到下。
 - 依赖的环境主观逻辑偏重，代码较多就会比较复杂。
 - 大型项目资源难以维护，特别是多人合作的情况下，资源的引入会让人奔溃
 
-因此，需要一种将` JavaScript `程序模块化的机制，如
+因此，需要一种将`JavaScript`程序模块化的机制，如
 
-- CommonJs (典型代表：node.js早期)
+- CommonJs (典型代表：node.js 早期)
 - AMD (典型代表：require.js)
 - CMD (典型代表：sea.js)
-
 
 ### AMD
 
@@ -45,19 +50,17 @@
 /** main.js 入口文件/主模块 **/
 // 首先用config()指定各模块路径和引用名
 require.config({
-  baseUrl: "js/lib",
-  paths: {
-    "jquery": "jquery.min",  //实际路径为js/lib/jquery.min.js
-    "underscore": "underscore.min",
-  }
+	baseUrl: "js/lib",
+	paths: {
+		jquery: "jquery.min", //实际路径为js/lib/jquery.min.js
+		underscore: "underscore.min",
+	},
 });
 // 执行基本操作
-require(["jquery","underscore"],function($,_){
-  // some code here
+require(["jquery", "underscore"], function ($, _) {
+	// some code here
 });
 ```
-
-
 
 ### CommonJs
 
@@ -65,10 +68,10 @@ require(["jquery","underscore"],function($,_){
 
 ```js
 // a.js
-module.exports={ foo , bar}
+module.exports = { foo, bar };
 
 // b.js
-const { foo,bar } = require('./a.js')
+const { foo, bar } = require("./a.js");
 ```
 
 其有如下特点：
@@ -78,7 +81,6 @@ const { foo,bar } = require('./a.js')
 - 模块在首次执行后就会缓存，再次加载只返回缓存结果，如果想要再次执行，可清除缓存
 - `require`返回的值是被输出的值的拷贝，模块内部的变化也不会影响这个值
 
-
 既然存在了`AMD`以及`CommonJs`机制，`ES6`的`Module`又有什么不一样？
 
 ES6 在语言标准的层面上，实现了`Module`，即模块功能，完全可以取代 `CommonJS `和 `AMD `规范，成为浏览器和服务器通用的模块解决方案
@@ -87,10 +89,10 @@ ES6 在语言标准的层面上，实现了`Module`，即模块功能，完全�
 
 ```javascript
 // CommonJS模块
-let { stat, exists, readfile } = require('fs');
+let { stat, exists, readfile } = require("fs");
 
 // 等同于
-let _fs = require('fs');
+let _fs = require("fs");
 let stat = _fs.stat;
 let exists = _fs.exists;
 let readfile = _fs.readfile;
@@ -100,14 +102,12 @@ let readfile = _fs.readfile;
 
 ```js
 // ES6模块
-import { stat, exists, readFile } from 'fs';
+import { stat, exists, readFile } from "fs";
 ```
 
-上述代码，只加载3个方法，其他方法不加载，即 `ES6` 可以在编译时就完成模块加载
+上述代码，只加载 3 个方法，其他方法不加载，即 `ES6` 可以在编译时就完成模块加载
 
 由于编译加载，使得静态分析成为可能。包括现在流行的`typeScript`也是依靠静态分析实现功能
-
-
 
 ## 二、使用
 
@@ -118,22 +118,20 @@ import { stat, exists, readFile } from 'fs';
 - `export`：用于规定模块的对外接口
 - `import`：用于输入其他模块提供的功能
 
-
-
 ### export
 
 一个模块就是一个独立的文件，该文件内部的所有变量，外部无法获取。如果你希望外部能够读取模块内部的某个变量，就必须使用`export`关键字输出该变量
 
 ```javascript
 // profile.js
-export var firstName = 'Michael';
-export var lastName = 'Jackson';
+export var firstName = "Michael";
+export var lastName = "Jackson";
 export var year = 1958;
 
-或 
+或;
 // 建议使用下面写法，这样能瞬间确定输出了哪些变量
-var firstName = 'Michael';
-var lastName = 'Jackson';
+var firstName = "Michael";
+var lastName = "Jackson";
 var year = 1958;
 
 export { firstName, lastName, year };
@@ -143,8 +141,8 @@ export { firstName, lastName, year };
 
 ```js
 export function multiply(x, y) {
-  return x * y;
-};
+	return x * y;
+}
 ```
 
 通过`as`可以进行输出变量的重命名
@@ -160,25 +158,23 @@ export {
 };
 ```
 
-
-
 ### import
 
 使用`export`命令定义了模块的对外接口以后，其他 JS 文件就可以通过`import`命令加载这个模块
 
 ```javascript
 // main.js
-import { firstName, lastName, year } from './profile.js';
+import { firstName, lastName, year } from "./profile.js";
 
 function setName(element) {
-  element.textContent = firstName + ' ' + lastName;
+	element.textContent = firstName + " " + lastName;
 }
 ```
 
 同样如果想要输入变量起别名，通过`as`关键字
 
 ```javascript
-import { lastName as surname } from './profile.js';
+import { lastName as surname } from "./profile.js";
 ```
 
 当加载整个模块的时候，需要用到星号`*`
@@ -186,24 +182,24 @@ import { lastName as surname } from './profile.js';
 ```js
 // circle.js
 export function area(radius) {
-  return Math.PI * radius * radius;
+	return Math.PI * radius * radius;
 }
 
 export function circumference(radius) {
-  return 2 * Math.PI * radius;
+	return 2 * Math.PI * radius;
 }
 
 // main.js
-import * as circle from './circle';
-console.log(circle)   // {area:area,circumference:circumference}
+import * as circle from "./circle";
+console.log(circle); // {area:area,circumference:circumference}
 ```
 
 输入的变量都是只读的，不允许修改，但是如果是对象，允许修改属性
 
 ```js
-import {a} from './xxx.js'
+import { a } from "./xxx.js";
 
-a.foo = 'hello'; // 合法操作
+a.foo = "hello"; // 合法操作
 a = {}; // Syntax Error : 'a' is read-only;
 ```
 
@@ -212,13 +208,13 @@ a = {}; // Syntax Error : 'a' is read-only;
 `import`后面我们常接着`from`关键字，`from`指定模块文件的位置，可以是相对路径，也可以是绝对路径
 
 ```js
-import { a } from './a';
+import { a } from "./a";
 ```
 
 如果只有一个模块名，需要有配置文件，告诉引擎模块的位置
 
 ```javascript
-import { myMethod } from 'util';
+import { myMethod } from "util";
 ```
 
 在编译阶段，`import`会提升到整个模块的头部，首先执行
@@ -226,14 +222,14 @@ import { myMethod } from 'util';
 ```javascript
 foo();
 
-import { foo } from 'my_module';
+import { foo } from "my_module";
 ```
 
 多次重复执行同样的导入，只会执行一次
 
 ```js
-import 'lodash';
-import 'lodash';
+import "lodash";
+import "lodash";
 ```
 
 上面的情况，大家都能看到用户在导入模块的时候，需要知道加载的变量名和函数，否则无法加载
@@ -243,7 +239,7 @@ import 'lodash';
 ```js
 // export-default.js
 export default function () {
-    console.log('foo');
+	console.log("foo");
 }
 ```
 
@@ -251,11 +247,9 @@ export default function () {
 
 ```js
 // import-default.js
-import customName from './export-default';
+import customName from "./export-default";
 customName(); // 'foo'
 ```
-
-
 
 ### 动态加载
 
@@ -264,29 +258,24 @@ customName(); // 'foo'
 这个新功能允许您将`import()`作为函数调用，将其作为参数传递给模块的路径。 它返回一个 `promise`，它用一个模块对象来实现，让你可以访问该对象的导出
 
 ```js
-import('/modules/myModule.mjs')
-  .then((module) => {
-    // Do something with the module.
-  });
+import("/modules/myModule.mjs").then((module) => {
+	// Do something with the module.
+});
 ```
-
-
 
 ### 复合写法
 
 如果在一个模块之中，先输入后输出同一个模块，`import`语句可以与`export`语句写在一起
 
 ```javascript
-export { foo, bar } from 'my_module';
+export { foo, bar } from "my_module";
 
 // 可以简单理解为
-import { foo, bar } from 'my_module';
+import { foo, bar } from "my_module";
 export { foo, bar };
 ```
 
 同理能够搭配`as`、`*`搭配使用
-
-
 
 ## 三、使用场景
 
@@ -315,11 +304,7 @@ export default {
 
 ```js
 function App() {
-  return (
-    <div className="App">
-		组件化开发 ---- 模块化
-    </div>
-  );
+	return <div className="App">组件化开发 ---- 模块化</div>;
 }
 
 export default App;
@@ -328,5 +313,6 @@ export default App;
 包括完成一些复杂应用的时候，我们也可以拆分成各个模块
 
 ## 参考文献
+
 - https://macsalvation.net/the-history-of-js-module/
 - https://es6.ruanyifeng.com/#docs/module

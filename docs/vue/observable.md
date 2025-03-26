@@ -1,6 +1,14 @@
-# 面试官：Vue.observable你有了解过吗？说说看 
+---
+title: Vue.observable
+date: 2025/03/26
+tags:
+  - vue
+  - observable
+categories:
+  - 前端
+---
 
-![](https://static.vue-js.com/193782e0-3e7b-11eb-ab90-d9ae814b240d.png)  
+![](https://static.vue-js.com/193782e0-3e7b-11eb-ab90-d9ae814b240d.png)
 
 ## 一、Observable 是什么
 
@@ -13,13 +21,13 @@
 返回的对象可以直接用于渲染函数和计算属性内，并且会在发生变更时触发相应的更新。也可以作为最小化的跨组件状态存储器
 
 ```js
-Vue.observable({ count : 1})
+Vue.observable({ count: 1 });
 ```
 
 其作用等同于
 
 ```js
-new vue({ count : 1})
+new vue({ count: 1 });
 ```
 
 在 `Vue 2.x` 中，被传入的对象会直接被 `Vue.observable` 变更，它和被返回的对象是同一个对象
@@ -86,28 +94,22 @@ export default {
 源码位置：src\core\observer\index.js
 
 ```js
-export function observe (value: any, asRootData: ?boolean): Observer | void {
-  if (!isObject(value) || value instanceof VNode) {
-    return
-  }
-  let ob: Observer | void
-  // 判断是否存在__ob__响应式属性
-  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
-    ob = value.__ob__
-  } else if (
-    shouldObserve &&
-    !isServerRendering() &&
-    (Array.isArray(value) || isPlainObject(value)) &&
-    Object.isExtensible(value) &&
-    !value._isVue
-  ) {
-    // 实例化Observer响应式对象
-    ob = new Observer(value)
-  }
-  if (asRootData && ob) {
-    ob.vmCount++
-  }
-  return ob
+export function observe(value: any, asRootData: ?boolean): Observer | void {
+	if (!isObject(value) || value instanceof VNode) {
+		return;
+	}
+	let ob: Observer | void;
+	// 判断是否存在__ob__响应式属性
+	if (hasOwn(value, "__ob__") && value.__ob__ instanceof Observer) {
+		ob = value.__ob__;
+	} else if (shouldObserve && !isServerRendering() && (Array.isArray(value) || isPlainObject(value)) && Object.isExtensible(value) && !value._isVue) {
+		// 实例化Observer响应式对象
+		ob = new Observer(value);
+	}
+	if (asRootData && ob) {
+		ob.vmCount++;
+	}
+	return ob;
 }
 ```
 
@@ -153,71 +155,63 @@ walk (obj: Object) {
 `defineReactive`方法
 
 ```js
-export function defineReactive (
-  obj: Object,
-  key: string,
-  val: any,
-  customSetter?: ?Function,
-  shallow?: boolean
-) {
-  const dep = new Dep()
+export function defineReactive(obj: Object, key: string, val: any, customSetter?: ?Function, shallow?: boolean) {
+	const dep = new Dep();
 
-  const property = Object.getOwnPropertyDescriptor(obj, key)
-  if (property && property.configurable === false) {
-    return
-  }
+	const property = Object.getOwnPropertyDescriptor(obj, key);
+	if (property && property.configurable === false) {
+		return;
+	}
 
-  // cater for pre-defined getter/setters
-  const getter = property && property.get
-  const setter = property && property.set
-  if ((!getter || setter) && arguments.length === 2) {
-    val = obj[key]
-  }
+	// cater for pre-defined getter/setters
+	const getter = property && property.get;
+	const setter = property && property.set;
+	if ((!getter || setter) && arguments.length === 2) {
+		val = obj[key];
+	}
 
-  let childOb = !shallow && observe(val)
-  // 接下来调用Object.defineProperty()给对象定义响应式属性
-  Object.defineProperty(obj, key, {
-    enumerable: true,
-    configurable: true,
-    get: function reactiveGetter () {
-      const value = getter ? getter.call(obj) : val
-      if (Dep.target) {
-        dep.depend()
-        if (childOb) {
-          childOb.dep.depend()
-          if (Array.isArray(value)) {
-            dependArray(value)
-          }
-        }
-      }
-      return value
-    },
-    set: function reactiveSetter (newVal) {
-      const value = getter ? getter.call(obj) : val
-      /* eslint-disable no-self-compare */
-      if (newVal === value || (newVal !== newVal && value !== value)) {
-        return
-      }
-      /* eslint-enable no-self-compare */
-      if (process.env.NODE_ENV !== 'production' && customSetter) {
-        customSetter()
-      }
-      // #7981: for accessor properties without setter
-      if (getter && !setter) return
-      if (setter) {
-        setter.call(obj, newVal)
-      } else {
-        val = newVal
-      }
-      childOb = !shallow && observe(newVal)
-      // 对观察者watchers进行通知,state就成了全局响应式对象
-      dep.notify()
-    }
-  })
+	let childOb = !shallow && observe(val);
+	// 接下来调用Object.defineProperty()给对象定义响应式属性
+	Object.defineProperty(obj, key, {
+		enumerable: true,
+		configurable: true,
+		get: function reactiveGetter() {
+			const value = getter ? getter.call(obj) : val;
+			if (Dep.target) {
+				dep.depend();
+				if (childOb) {
+					childOb.dep.depend();
+					if (Array.isArray(value)) {
+						dependArray(value);
+					}
+				}
+			}
+			return value;
+		},
+		set: function reactiveSetter(newVal) {
+			const value = getter ? getter.call(obj) : val;
+			/* eslint-disable no-self-compare */
+			if (newVal === value || (newVal !== newVal && value !== value)) {
+				return;
+			}
+			/* eslint-enable no-self-compare */
+			if (process.env.NODE_ENV !== "production" && customSetter) {
+				customSetter();
+			}
+			// #7981: for accessor properties without setter
+			if (getter && !setter) return;
+			if (setter) {
+				setter.call(obj, newVal);
+			} else {
+				val = newVal;
+			}
+			childOb = !shallow && observe(newVal);
+			// 对观察者watchers进行通知,state就成了全局响应式对象
+			dep.notify();
+		},
+	});
 }
 ```
-
-
 
 ## 参考文献
 

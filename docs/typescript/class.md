@@ -1,10 +1,19 @@
-# 面试官：说说你对 TypeScript 中类的理解？应用场景？
+---
+title: 类
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+  - class
+  - 类
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/e4c19060-0cb4-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/e4c19060-0cb4-11ec-a752-75723a64e8f5.png)
 
 ## 一、是什么
+
 类（Class）是面向对象程序设计（OOP，Object-Oriented Programming）实现信息封装的基础
 
 > 类是一种用户定义的引用数据类型，也称类类型
@@ -13,11 +22,9 @@
 
 在 `ES6` 之后，`JavaScript` 拥有了 `class` 关键字，虽然本质依然是构造函数，但是使用起来已经方便了许多
 
-但是` JavaScript` 的` class `依然有一些特性还没有加入，比如修饰符和抽象类
+但是` JavaScript` 的`class`依然有一些特性还没有加入，比如修饰符和抽象类
 
-`TypeScript` 的 `class`  支持面向对象的所有特性，比如 类、接口等
-
-
+`TypeScript` 的 `class` 支持面向对象的所有特性，比如 类、接口等
 
 ## 二、使用方式
 
@@ -31,18 +38,18 @@
 
 ```ts
 class Car {
-    // 字段
-    engine:string;
+	// 字段
+	engine: string;
 
-    // 构造函数
-    constructor(engine:string) {
-        this.engine = engine
-    }
+	// 构造函数
+	constructor(engine: string) {
+		this.engine = engine;
+	}
 
-    // 方法
-    disp():void {
-        console.log("发动机为 :   "+this.engine)
-    }
+	// 方法
+	disp(): void {
+		console.log("发动机为 :   " + this.engine);
+	}
 }
 ```
 
@@ -52,15 +59,15 @@ class Car {
 
 ```ts
 class Animal {
-    move(distanceInMeters: number = 0) {
-        console.log(`Animal moved ${distanceInMeters}m.`);
-    }
+	move(distanceInMeters: number = 0) {
+		console.log(`Animal moved ${distanceInMeters}m.`);
+	}
 }
 
 class Dog extends Animal {
-    bark() {
-        console.log('Woof! Woof!');
-    }
+	bark() {
+		console.log("Woof! Woof!");
+	}
 }
 
 const dog = new Dog();
@@ -73,30 +80,22 @@ dog.bark();
 
 `Dog`类继承了`Animal`类，因此实例`dog`也能够使用`Animal`类`move`方法
 
-
-
 同样，类继承后，子类可以对父类的方法重新定义，这个过程称之为方法的重写，通过`super`关键字是对父类的直接引用，该关键字可以引用父类的属性和方法，如下：
 
 ```ts
 class PrinterClass {
-   doPrint():void {
-      console.log("父类的 doPrint() 方法。")
-   }
+	doPrint(): void {
+		console.log("父类的 doPrint() 方法。");
+	}
 }
 
 class StringPrinter extends PrinterClass {
-   doPrint():void {
-      super.doPrint() // 调用父类的函数
-      console.log("子类的 doPrint()方法。")
-   }
+	doPrint(): void {
+		super.doPrint(); // 调用父类的函数
+		console.log("子类的 doPrint()方法。");
+	}
 }
 ```
-
-
-
-
-
-
 
 ### 修饰符
 
@@ -106,33 +105,25 @@ class StringPrinter extends PrinterClass {
 - 私有 private：只能够在该类的内部进行访问
 - 受保护 protect：除了在该类的内部可以访问，还可以在子类中仍然可以访问
 
-
-
 ### 私有修饰符
 
 只能够在该类的内部进行访问，实例对象并不能够访问
 
- ![](https://static.vue-js.com/f57365f0-0cb4-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/f57365f0-0cb4-11ec-a752-75723a64e8f5.png)
 
 并且继承该类的子类并不能访问，如下图所示：
 
- ![](https://static.vue-js.com/0072cc20-0cb5-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/0072cc20-0cb5-11ec-8e64-91fdec0f05a1.png)
 
 ### 受保护修饰符
 
 跟私有修饰符很相似，实例对象同样不能访问受保护的属性，如下：
 
- ![](https://static.vue-js.com/09e72580-0cb5-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/09e72580-0cb5-11ec-a752-75723a64e8f5.png)
 
 有一点不同的是 `protected` 成员在子类中仍然可以访问
 
- ![](https://static.vue-js.com/137f81a0-0cb5-11ec-8e64-91fdec0f05a1.png)
-
-
-
-
+![](https://static.vue-js.com/137f81a0-0cb5-11ec-8e64-91fdec0f05a1.png)
 
 除了上述修饰符之外，还有只读**修饰符**
 
@@ -140,9 +131,7 @@ class StringPrinter extends PrinterClass {
 
 通过`readonly`关键字进行声明，只读属性必须在声明时或构造函数里被初始化，如下：
 
- ![](https://static.vue-js.com/1e848d20-0cb5-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/1e848d20-0cb5-11ec-8e64-91fdec0f05a1.png)
 
 除了实例属性之外，同样存在静态属性
 
@@ -152,17 +141,13 @@ class StringPrinter extends PrinterClass {
 
 ```ts
 class Square {
-    static width = '100px'
+	static width = "100px";
 }
 
-console.log(Square.width) // 100px
+console.log(Square.width); // 100px
 ```
 
-
-
 上述的类都能发现一个特点就是，都能够被实例化，在 `typescript`中，还存在一种抽象类
-
-
 
 ### 抽象类
 
@@ -172,10 +157,10 @@ console.log(Square.width) // 100px
 
 ```ts
 abstract class Animal {
-    abstract makeSound(): void;
-    move(): void {
-        console.log('roaming the earch...');
-    }
+	abstract makeSound(): void;
+	move(): void {
+		console.log("roaming the earch...");
+	}
 }
 ```
 
@@ -183,19 +168,16 @@ abstract class Animal {
 
 ```ts
 class Cat extends Animal {
-
-    makeSound() {
-        console.log('miao miao')
-    }
+	makeSound() {
+		console.log("miao miao");
+	}
 }
 
-const cat = new Cat()
+const cat = new Cat();
 
-cat.makeSound() // miao miao
-cat.move() // roaming the earch...
+cat.makeSound(); // miao miao
+cat.move(); // roaming the earch...
 ```
-
-
 
 ## 三、应用场景
 
@@ -212,16 +194,16 @@ export default class Carousel extends React.Component<Props, State> {}
 ```ts
 // props的类型
 export default class Props {
-  public children: Array<React.ReactElement<any>> | React.ReactElement<any> | never[] = []
-  public speed: number = 500
-  public height: number = 160
-  public animation: string = 'easeInOutQuad'
-  public isAuto: boolean = true
-  public autoPlayInterval: number = 4500
-  public afterChange: () => {}
-  public beforeChange: () => {}
-  public selesctedColor: string
-  public showDots: boolean = true
+	public children: Array<React.ReactElement<any>> | React.ReactElement<any> | never[] = [];
+	public speed: number = 500;
+	public height: number = 160;
+	public animation: string = "easeInOutQuad";
+	public isAuto: boolean = true;
+	public autoPlayInterval: number = 4500;
+	public afterChange: () => {};
+	public beforeChange: () => {};
+	public selesctedColor: string;
+	public showDots: boolean = true;
 }
 ```
 
@@ -232,8 +214,6 @@ public static defaultProps = new Props()
 ```
 
 `Props` 的实例就是 `defaultProps` 的初始值，这就是 `class `作为接口的实际应用，我们用一个 `class` 起到了接口和设置初始值两个作用，方便统一管理，减少了代码量
-
-
 
 ## 参考文献
 

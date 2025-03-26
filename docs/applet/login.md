@@ -1,9 +1,13 @@
-# 面试官：说说微信小程序的登录流程？
+---
+title: 登录流程
+date: 2025/03/26
+tags:
+  - 微信小程序
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/aa3ccbd0-3428-11ec-8e64-91fdec0f05a1.png)
-
+![](https://static.vue-js.com/aa3ccbd0-3428-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、背景
 
@@ -19,34 +23,26 @@
 
 对于每个小程序，微信都会将用户的微信`ID`映射出一个小程序 `openid`，作为这个用户在这个小程序的唯一标识
 
-
-
-
-
 ## 二、流程
 
 微信小程序登陆具体实现的逻辑如下图所示：
 
- ![](https://static.vue-js.com/b60638c0-3428-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/b60638c0-3428-11ec-a752-75723a64e8f5.png)
 
-- 通过  wx.login()  获取到用户的code判断用户是否授权读取用户信息，调用wx.getUserInfo 读取用户数据
+- 通过 wx.login() 获取到用户的 code 判断用户是否授权读取用户信息，调用 wx.getUserInfo 读取用户数据
 - 由于小程序后台授权域名无法授权微信的域名，所以需要自身后端调用微信服务器获取用户信息
-- 通过 wx.request() 方法请求业务方服务器，后端把 appid , appsecret  和 code 一起发送到微信服务器。 appid 和 appsecret 都是微信提供的，可以在管理员后台找到
+- 通过 wx.request() 方法请求业务方服务器，后端把 appid , appsecret 和 code 一起发送到微信服务器。 appid 和 appsecret 都是微信提供的，可以在管理员后台找到
 - 微信服务器返回了 openid 及本次登录的会话密钥 session_key
 - 后端从数据库中查找 openid ，如果没有查到记录，说明该用户没有注册，如果有记录，则继续往下走
 - session_key 是对用户数据进行加密签名的密钥。为了自身应用安全，session_key 不应该在网络上传输
-- 然后生成 session并返回给小程序
-- 小程序把 session 存到  storage 里面
+- 然后生成 session 并返回给小程序
+- 小程序把 session 存到 storage 里面
 - 下次请求时，先从 storage 里面读取，然后带给服务端
 - 服务端对比 session 对应的记录，然后校验有效期
 
 更加详细的功能图如下所示：
 
- ![](https://static.vue-js.com/c3cfbb70-3428-11ec-8e64-91fdec0f05a1.png)
-
-
-
-
+![](https://static.vue-js.com/c3cfbb70-3428-11ec-8e64-91fdec0f05a1.png)
 
 ## 三、扩展
 
@@ -59,11 +55,9 @@
 - 如果过期，则发起完整的登录流程
 - 如果不过期，则继续使用本地保存的自定义登录态
 
-这种方式的好处是不需要小程序服务端来参与校验，而是在小程序端调用AP，流程如下所示：
+这种方式的好处是不需要小程序服务端来参与校验，而是在小程序端调用 AP，流程如下所示：
 
- ![](https://static.vue-js.com/8b446d30-349d-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/8b446d30-349d-11ec-a752-75723a64e8f5.png)
 
 ## 参考文献
 

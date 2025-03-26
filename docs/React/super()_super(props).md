@@ -1,4 +1,12 @@
-# 面试官：super() 和 super(props) 有什么区别？
+---
+title: super() 和 super(props) 有什么区别？
+date: 2025/03/26
+tags:
+  - react
+  - JavaScript
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/618abaf0-d71c-11eb-85f6-6fac77c0c9b3.png)
 
@@ -8,24 +16,24 @@
 
 ```js
 class sup {
-  constructor(name) {
-    this.name = name;
-  }
+	constructor(name) {
+		this.name = name;
+	}
 
-  printName() {
-    console.log(this.name);
-  }
+	printName() {
+		console.log(this.name);
+	}
 }
 
 class sub extends sup {
-  constructor(name, age) {
-    super(name); // super代表的事父类的构造函数
-    this.age = age;
-  }
+	constructor(name, age) {
+		super(name); // super代表的事父类的构造函数
+		this.age = age;
+	}
 
-  printAge() {
-    console.log(this.age);
-  }
+	printAge() {
+		console.log(this.age);
+	}
 }
 
 let jack = new sub("jack", 20);
@@ -47,10 +55,10 @@ jack.printAge(); //输出 : 20
 
 ```js
 class sub extends sup {
-  constructor(name, age) {
-    this.age = age;
-    super(name); // super代表的事父类的构造函数
-  }
+	constructor(name, age) {
+		this.age = age;
+		super(name); // super代表的事父类的构造函数
+	}
 }
 ```
 
@@ -72,9 +80,9 @@ instance.props = props;
 
 ```jsx
 class HelloMessage extends React.Component {
-  render() {
-    return <div>nice to meet you! {this.props.name}</div>;
-  }
+	render() {
+		return <div>nice to meet you! {this.props.name}</div>;
+	}
 }
 ```
 
@@ -84,12 +92,12 @@ class HelloMessage extends React.Component {
 
 ```jsx
 class Button extends React.Component {
-  constructor(props) {
-    super(); // 没传入 props
-    console.log(props);      //  {}
-    console.log(this.props); //  undefined
-    // ...
-  }
+	constructor(props) {
+		super(); // 没传入 props
+		console.log(props); //  {}
+		console.log(this.props); //  undefined
+		// ...
+	}
 }
 ```
 
@@ -97,12 +105,12 @@ class Button extends React.Component {
 
 ```jsx
 class Button extends React.Component {
-  constructor(props) {
-    super(props); // 没传入 props
-    console.log(props);      //  {}
-    console.log(this.props); //  {}
-    // ...
-  }
+	constructor(props) {
+		super(props); // 没传入 props
+		console.log(props); //  {}
+		console.log(this.props); //  {}
+		// ...
+	}
 }
 ```
 

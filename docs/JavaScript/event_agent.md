@@ -1,4 +1,13 @@
-# 面试官：解释下什么是事件代理？应用场景？
+---
+title: 事件代理
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+  - 事件代理
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/a33f0ab0-797e-11eb-ab90-d9ae814b240d.png)
 
@@ -22,19 +31,17 @@
 
 所以真正绑定事件的是这个元素，按照收件人分发快递的过程就是在事件执行中，需要判断当前响应的事件应该匹配到被代理元素中的哪一个或者哪几个
 
-
-
 ## 二、应用场景
 
 如果我们有一个列表，列表之中有大量的列表项，我们需要在点击列表项的时候响应一个事件
 
 ```js
 <ul id="list">
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
-  ......
-  <li>item n</li>
+	<li>item 1</li>
+	<li>item 2</li>
+	<li>item 3</li>
+	......
+	<li>item n</li>
 </ul>
 ```
 
@@ -42,12 +49,12 @@
 
 ```js
 // 获取目标元素
-const lis = document.getElementsByTagName("li")
+const lis = document.getElementsByTagName("li");
 // 循环遍历绑定事件
 for (let i = 0; i < lis.length; i++) {
-    lis[i].onclick = function(e){
-        console.log(e.target.innerHTML)
-    }
+	lis[i].onclick = function (e) {
+		console.log(e.target.innerHTML);
+	};
 }
 ```
 
@@ -55,14 +62,14 @@ for (let i = 0; i < lis.length; i++) {
 
 ```js
 // 给父层元素绑定事件
-document.getElementById('list').addEventListener('click', function (e) {
-    // 兼容性处理
-    var event = e || window.event;
-    var target = event.target || event.srcElement;
-    // 判断是否匹配目标元素
-    if (target.nodeName.toLocaleLowerCase === 'li') {
-        console.log('the content is: ', target.innerHTML);
-    }
+document.getElementById("list").addEventListener("click", function (e) {
+	// 兼容性处理
+	var event = e || window.event;
+	var target = event.target || event.srcElement;
+	// 判断是否匹配目标元素
+	if (target.nodeName.toLocaleLowerCase === "li") {
+		console.log("the content is: ", target.innerHTML);
+	}
 });
 ```
 
@@ -79,10 +86,10 @@ document.getElementById('list').addEventListener('click', function (e) {
 ```html
 <input type="button" name="" id="btn" value="添加" />
 <ul id="ul1">
-    <li>item 1</li>
-    <li>item 2</li>
-    <li>item 3</li>
-    <li>item 4</li>
+	<li>item 1</li>
+	<li>item 2</li>
+	<li>item 3</li>
+	<li>item 4</li>
 </ul>
 ```
 
@@ -95,26 +102,23 @@ const num = 4;
 
 //事件委托，添加的子元素也有事件
 oUl.onclick = function (ev) {
-    ev = ev || window.event;
-    const target = ev.target || ev.srcElement;
-    if (target.nodeName.toLowerCase() == 'li') {
-        console.log('the content is: ', target.innerHTML);
-    }
-
+	ev = ev || window.event;
+	const target = ev.target || ev.srcElement;
+	if (target.nodeName.toLowerCase() == "li") {
+		console.log("the content is: ", target.innerHTML);
+	}
 };
 
 //添加新节点
 oBtn.onclick = function () {
-    num++;
-    const oLi = document.createElement('li');
-    oLi.innerHTML = `item ${num}`;
-    oUl.appendChild(oLi);
+	num++;
+	const oLi = document.createElement("li");
+	oLi.innerHTML = `item ${num}`;
+	oUl.appendChild(oLi);
 };
 ```
 
 可以看到，使用事件委托，在动态绑定事件的情况下是可以减少很多重复工作的
-
-
 
 ## 三、总结
 

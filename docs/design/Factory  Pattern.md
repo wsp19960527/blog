@@ -1,7 +1,14 @@
-# 面试官：说说你对工厂模式的理解？应用场景？
+---
+title: 工厂模式
+date: 2025/03/26
+tags:
+  - design
+  - 设计模式
+categories:
+  - 前端
+---
 
-
- ![](https://static.vue-js.com/27a84d10-3bea-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/27a84d10-3bea-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -13,9 +20,7 @@
 
 - 编程中，在一个 A 类中通过 new 的方式实例化了类 B，那么 A 类和 B 类之间就存在关联（耦合）
 - 后期因为需要修改了 B 类的代码和使用方式，比如构造函数中传入参数，那么 A 类也要跟着修改，一个类的依赖可能影响不大，但若有多个类依赖了 B 类，那么这个工作量将会相当的大，容易出现修改错误，也会产生很多的重复代码，这无疑是件非常痛苦的事；
-- 这种情况下，就需要将创建实例的工作从调用方（A类）中分离，与调用方**解耦**，也就是使用工厂方法创建实例的工作封装起来（**减少代码重复**），由工厂管理对象的创建逻辑，调用方不需要知道具体的创建过程，只管使用，**而降低调用者因为创建逻辑导致的错误**；
-
-
+- 这种情况下，就需要将创建实例的工作从调用方（A 类）中分离，与调用方**解耦**，也就是使用工厂方法创建实例的工作封装起来（**减少代码重复**），由工厂管理对象的创建逻辑，调用方不需要知道具体的创建过程，只管使用，**而降低调用者因为创建逻辑导致的错误**；
 
 ## 二、实现
 
@@ -24,8 +29,6 @@
 - 简单工厂模式（Simple Factory）
 - 工厂方法模式（Factory Method）
 - 抽象工厂模式（Abstract Factory）
-
-
 
 ### 简单工厂模式
 
@@ -37,39 +40,37 @@
 
 ```js
 function Factory(career) {
-    function User(career, work) {
-        this.career = career 
-        this.work = work
-    }
-    let work
-    switch(career) {
-        case 'coder':
-            work =  ['写代码', '修Bug'] 
-            return new User(career, work)
-            break
-        case 'hr':
-            work = ['招聘', '员工信息管理']
-            return new User(career, work)
-            break
-        case 'driver':
-            work = ['开车']
-            return new User(career, work)
-            break
-        case 'boss':
-            work = ['喝茶', '开会', '审批文件']
-            return new User(career, work)
-            break
-    }
+	function User(career, work) {
+		this.career = career;
+		this.work = work;
+	}
+	let work;
+	switch (career) {
+		case "coder":
+			work = ["写代码", "修Bug"];
+			return new User(career, work);
+			break;
+		case "hr":
+			work = ["招聘", "员工信息管理"];
+			return new User(career, work);
+			break;
+		case "driver":
+			work = ["开车"];
+			return new User(career, work);
+			break;
+		case "boss":
+			work = ["喝茶", "开会", "审批文件"];
+			return new User(career, work);
+			break;
+	}
 }
-let coder = new Factory('coder')
-console.log(coder)
-let boss = new Factory('boss')
-console.log(boss)
+let coder = new Factory("coder");
+console.log(coder);
+let boss = new Factory("boss");
+console.log(boss);
 ```
 
-`Factory`就是一个简单工厂。当我们调用工厂函数时，只需要传递name、age、career就可以获取到包含用户工作内容的实例对象
-
-
+`Factory`就是一个简单工厂。当我们调用工厂函数时，只需要传递 name、age、career 就可以获取到包含用户工作内容的实例对象
 
 ### 工厂方法模式
 
@@ -83,42 +84,40 @@ console.log(boss)
 
 ```js
 // 工厂方法
-function Factory(career){
-    if(this instanceof Factory){
-        var a = new this[career]();
-        return a;
-    }else{
-        return new Factory(career);
-    }
+function Factory(career) {
+	if (this instanceof Factory) {
+		var a = new this[career]();
+		return a;
+	} else {
+		return new Factory(career);
+	}
 }
 // 工厂方法函数的原型中设置所有对象的构造函数
-Factory.prototype={
-    'coder': function(){
-        this.careerName = '程序员'
-        this.work = ['写代码', '修Bug'] 
-    },
-    'hr': function(){
-        this.careerName = 'HR'
-        this.work = ['招聘', '员工信息管理']
-    },
-    'driver': function () {
-        this.careerName = '司机'
-        this.work = ['开车']
-    },
-    'boss': function(){
-        this.careerName = '老板'
-        this.work = ['喝茶', '开会', '审批文件']
-    }
-}
-let coder = new Factory('coder')
-console.log(coder)
-let hr = new Factory('hr')
-console.log(hr)
+Factory.prototype = {
+	coder: function () {
+		this.careerName = "程序员";
+		this.work = ["写代码", "修Bug"];
+	},
+	hr: function () {
+		this.careerName = "HR";
+		this.work = ["招聘", "员工信息管理"];
+	},
+	driver: function () {
+		this.careerName = "司机";
+		this.work = ["开车"];
+	},
+	boss: function () {
+		this.careerName = "老板";
+		this.work = ["喝茶", "开会", "审批文件"];
+	},
+};
+let coder = new Factory("coder");
+console.log(coder);
+let hr = new Factory("hr");
+console.log(hr);
 ```
 
-工厂方法关键核心代码是工厂里面的判断this是否属于工厂，也就是做了分支判断，这个工厂只做我能做的产品
-
-
+工厂方法关键核心代码是工厂里面的判断 this 是否属于工厂，也就是做了分支判断，这个工厂只做我能做的产品
 
 ### 抽象工厂模式
 
@@ -138,26 +137,24 @@ console.log(hr)
 示例代码如下：
 
 ```js
-let CareerAbstractFactory = function(subType, superType) {
-  // 判断抽象工厂中是否有该抽象类
-  if (typeof CareerAbstractFactory[superType] === 'function') {
-    // 缓存类
-    function F() {}
-    // 继承父类属性和方法
-    F.prototype = new CareerAbstractFactory[superType]()
-    // 将子类的constructor指向父类
-    subType.constructor = subType;
-    // 子类原型继承父类
-    subType.prototype = new F()
-  } else {
-    throw new Error('抽象类不存在')
-  }
-}
+let CareerAbstractFactory = function (subType, superType) {
+	// 判断抽象工厂中是否有该抽象类
+	if (typeof CareerAbstractFactory[superType] === "function") {
+		// 缓存类
+		function F() {}
+		// 继承父类属性和方法
+		F.prototype = new CareerAbstractFactory[superType]();
+		// 将子类的constructor指向父类
+		subType.constructor = subType;
+		// 子类原型继承父类
+		subType.prototype = new F();
+	} else {
+		throw new Error("抽象类不存在");
+	}
+};
 ```
 
 上面代码中`CareerAbstractFactory`就是一个抽象工厂方法，该方法在参数中传递子类和父类，在方法体内部实现了子类对父类的继承
-
-
 
 ## 三、应用场景
 
@@ -170,10 +167,8 @@ let CareerAbstractFactory = function(subType, superType) {
 综上，工厂模式适用场景如下：
 
 - 如果你不想让某个子系统与较大的那个对象之间形成强耦合，而是想运行时从许多子系统中进行挑选的话，那么工厂模式是一个理想的选择
-- 将new操作简单封装，遇到new的时候就应该考虑是否用工厂模式；
+- 将 new 操作简单封装，遇到 new 的时候就应该考虑是否用工厂模式；
 - 需要依赖具体环境创建不同实例，这些实例都有相同的行为,这时候我们可以使用工厂模式，简化实现的过程，同时也可以减少每种对象所需的代码量，有利于消除对象间的耦合，提供更大的灵活性
-
-
 
 ## 参考文献
 

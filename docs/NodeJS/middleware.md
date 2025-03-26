@@ -1,6 +1,14 @@
-# 面试官：说说对中间件概念的理解，如何封装 node 中间件？
+---
+title: NodeJS中间件
+date: 2025/03/26
+tags:
+  - nodejs
+  - 中间件
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/614ae480-cce4-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/614ae480-cce4-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -10,11 +18,9 @@
 
 例如在`express`、`koa`等`web`框架中，中间件的本质为一个回调函数，参数包含请求对象、响应对象和执行下一个中间件的函数
 
- ![](https://static.vue-js.com/6a6ed3f0-cce4-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/6a6ed3f0-cce4-11eb-85f6-6fac77c0c9b3.png)
 
 在这些中间件函数中，我们可以执行业务逻辑代码，修改请求和响应对象、返回响应数据等操作
-
-
 
 ## 二、封装
 
@@ -22,12 +28,10 @@
 
 `Koa` 中间件采用的是洋葱圈模型，每次执行下一个中间件传入两个参数：
 
-- ctx ：封装了request 和  response 的变量
+- ctx ：封装了 request 和 response 的变量
 - next ：进入下一个要执行的中间件的函数
 
- ![](https://static.vue-js.com/7507b020-cce4-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/7507b020-cce4-11eb-ab90-d9ae814b240d.png)
 
 下面就针对`koa`进行中间件的封装：
 
@@ -36,25 +40,25 @@
 ```js
 // async 函数
 app.use(async (ctx, next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+	const start = Date.now();
+	await next();
+	const ms = Date.now() - start;
+	console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
 // 普通函数
 app.use((ctx, next) => {
-  const start = Date.now();
-  return next().then(() => {
-    const ms = Date.now() - start;
-    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
-  });
+	const start = Date.now();
+	return next().then(() => {
+		const ms = Date.now() - start;
+		console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+	});
 });
 ```
 
 下面则通过中间件封装`http`请求过程中几个常用的功能：
 
-### token校验
+### token 校验
 
 ```js
 module.exports = (options) => async (ctx, next) {
@@ -80,16 +84,16 @@ module.exports = (options) => async (ctx, next) {
 ### 日志模块
 
 ```js
-const fs = require('fs')
+const fs = require("fs");
 module.exports = (options) => async (ctx, next) => {
-  const startTime = Date.now()
-  const requestTime = new Date()
-  await next()
-  const ms = Date.now() - startTime;
-  let logout = `${ctx.request.ip} -- ${requestTime} -- ${ctx.method} -- ${ctx.url} -- ${ms}ms`;
-  // 输出日志文件
-  fs.appendFileSync('./log.txt', logout + '\n')
-}
+	const startTime = Date.now();
+	const requestTime = new Date();
+	await next();
+	const ms = Date.now() - startTime;
+	let logout = `${ctx.request.ip} -- ${requestTime} -- ${ctx.method} -- ${ctx.url} -- ${ms}ms`;
+	// 输出日志文件
+	fs.appendFileSync("./log.txt", logout + "\n");
+};
 ```
 
 `Koa`存在很多第三方的中间件，如`koa-bodyparser`、`koa-static`等
@@ -105,46 +109,44 @@ module.exports = (options) => async (ctx, next) => {
 const querystring = require("querystring");
 
 module.exports = function bodyParser() {
-    return async (ctx, next) => {
-        await new Promise((resolve, reject) => {
-            // 存储数据的数组
-            let dataArr = [];
+	return async (ctx, next) => {
+		await new Promise((resolve, reject) => {
+			// 存储数据的数组
+			let dataArr = [];
 
-            // 接收数据
-            ctx.req.on("data", data => dataArr.push(data));
+			// 接收数据
+			ctx.req.on("data", (data) => dataArr.push(data));
 
-            // 整合数据并使用 Promise 成功
-            ctx.req.on("end", () => {
-                // 获取请求数据的类型 json 或表单
-                let contentType = ctx.get("Content-Type");
+			// 整合数据并使用 Promise 成功
+			ctx.req.on("end", () => {
+				// 获取请求数据的类型 json 或表单
+				let contentType = ctx.get("Content-Type");
 
-                // 获取数据 Buffer 格式
-                let data = Buffer.concat(dataArr).toString();
+				// 获取数据 Buffer 格式
+				let data = Buffer.concat(dataArr).toString();
 
-                if (contentType === "application/x-www-form-urlencoded") {
-                    // 如果是表单提交，则将查询字符串转换成对象赋值给 ctx.request.body
-                    ctx.request.body = querystring.parse(data);
-                } else if (contentType === "applaction/json") {
-                    // 如果是 json，则将字符串格式的对象转换成对象赋值给 ctx.request.body
-                    ctx.request.body = JSON.parse(data);
-                }
+				if (contentType === "application/x-www-form-urlencoded") {
+					// 如果是表单提交，则将查询字符串转换成对象赋值给 ctx.request.body
+					ctx.request.body = querystring.parse(data);
+				} else if (contentType === "applaction/json") {
+					// 如果是 json，则将字符串格式的对象转换成对象赋值给 ctx.request.body
+					ctx.request.body = JSON.parse(data);
+				}
 
-                // 执行成功的回调
-                resolve();
-            });
-        });
+				// 执行成功的回调
+				resolve();
+			});
+		});
 
-        // 继续向下执行
-        await next();
-    };
+		// 继续向下执行
+		await next();
+	};
 };
 ```
 
-
-
 ### koa-static
 
- `koa-static` 中间件的作用是在服务器接到请求时，帮我们处理静态文件
+`koa-static` 中间件的作用是在服务器接到请求时，帮我们处理静态文件
 
 ```js
 const fs = require("fs");
@@ -154,41 +156,37 @@ const { promisify } = require("util");
 
 // 将 stat 和 access 转换成 Promise
 const stat = promisify(fs.stat);
-const access = promisify(fs.access)
+const access = promisify(fs.access);
 
 module.exports = function (dir) {
-    return async (ctx, next) => {
-        // 将访问的路由处理成绝对路径，这里要使用 join 因为有可能是 /
-        let realPath = path.join(dir, ctx.path);
+	return async (ctx, next) => {
+		// 将访问的路由处理成绝对路径，这里要使用 join 因为有可能是 /
+		let realPath = path.join(dir, ctx.path);
 
-        try {
-            // 获取 stat 对象
-            let statObj = await stat(realPath);
+		try {
+			// 获取 stat 对象
+			let statObj = await stat(realPath);
 
-            // 如果是文件，则设置文件类型并直接响应内容，否则当作文件夹寻找 index.html
-            if (statObj.isFile()) {
-                ctx.set("Content-Type", `${mime.getType()};charset=utf8`);
-                ctx.body = fs.createReadStream(realPath);
-            } else {
-                let filename = path.join(realPath, "index.html");
+			// 如果是文件，则设置文件类型并直接响应内容，否则当作文件夹寻找 index.html
+			if (statObj.isFile()) {
+				ctx.set("Content-Type", `${mime.getType()};charset=utf8`);
+				ctx.body = fs.createReadStream(realPath);
+			} else {
+				let filename = path.join(realPath, "index.html");
 
-                // 如果不存在该文件则执行 catch 中的 next 交给其他中间件处理
-                await access(filename);
+				// 如果不存在该文件则执行 catch 中的 next 交给其他中间件处理
+				await access(filename);
 
-                // 存在设置文件类型并响应内容
-                ctx.set("Content-Type", "text/html;charset=utf8");
-                ctx.body = fs.createReadStream(filename);
-            }
-        } catch (e) {
-            await next();
-        }
-    }
-}
+				// 存在设置文件类型并响应内容
+				ctx.set("Content-Type", "text/html;charset=utf8");
+				ctx.body = fs.createReadStream(filename);
+			}
+		} catch (e) {
+			await next();
+		}
+	};
+};
 ```
-
-
-
-
 
 ## 三、总结
 
@@ -197,7 +195,6 @@ module.exports = function (dir) {
 `koa`本身比较简洁，但是通过中间件的机制能够实现各种所需要的功能，使得`web`应用具备良好的可拓展性和组合性
 
 通过将公共逻辑的处理编写在中间件中，可以不用在每一个接口回调中做相同的代码编写，减少了冗杂代码，过程就如装饰者模式
-
 
 ## 参考文献
 

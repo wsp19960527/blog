@@ -1,4 +1,12 @@
-# 面试官：说说你对 TypeScript 的理解？与 JavaScript 的区别？
+---
+title: TypeScript与 JavaScript 的区别
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/58cd3580-0950-11ec-8e64-91fdec0f05a1.png)
 
@@ -51,7 +59,7 @@ console.log(hello);
 
 ```tsx
 function Add(left: number, right: number): number {
-  return left + right;
+	return left + right;
 }
 ```
 
@@ -75,13 +83,13 @@ let str = "string";
 
 ```tsx
 interface Person {
-  name: string;
-  age: number;
+	name: string;
+	age: number;
 }
 
 let tom: Person = {
-  name: "Tom",
-  age: 25,
+	name: "Tom",
+	age: 25,
 };
 ```
 

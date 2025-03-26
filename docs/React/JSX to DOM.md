@@ -1,7 +1,15 @@
-# 面试官：说说React Jsx转换成真实DOM过程？
+---
+title: React Jsx转换成真实DOM过程
+date: 2025/03/26
+tags:
+  - react
+  - JSX
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/1d340620-f00a-11eb-ab90-d9ae814b240d.png)
-
+![](https://static.vue-js.com/1d340620-f00a-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -11,8 +19,8 @@
 
 ```jsx
 <div>
-  < img src="avatar.png" className="profile" />
-  <Hello />
+	<img src="avatar.png" className="profile" />
+	<Hello />
 </div>
 ```
 
@@ -20,13 +28,13 @@
 
 ```jsx
 React.createElement(
-  "div",
-  null,
-  React.createElement("img", {
-    src: "avatar.png",
-    className: "profile"
-  }),
-  React.createElement(Hello, null)
+	"div",
+	null,
+	React.createElement("img", {
+		src: "avatar.png",
+		className: "profile",
+	}),
+	React.createElement(Hello, null)
 );
 ```
 
@@ -39,10 +47,8 @@ React.createElement(
 最终都会通过`RenderDOM.render(...)`方法进行挂载，如下：
 
 ```jsx
-ReactDOM.render(<App />,  document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
-
-
 
 ## 二、过程
 
@@ -57,35 +63,35 @@ ReactDOM.render(<App />,  document.getElementById("root"));
 
 ```jsx
 class ClassComponent extends Component {
-  static defaultProps = {
-    color: "pink"
-  };
-  render() {
-    return (
-      <div className="border">
-        <h3>ClassComponent</h3>
-        <p className={this.props.color}>{this.props.name}</p >
-      </div>
-    );
-  }
+	static defaultProps = {
+		color: "pink",
+	};
+	render() {
+		return (
+			<div className="border">
+				<h3>ClassComponent</h3>
+				<p className={this.props.color}>{this.props.name}</p>
+			</div>
+		);
+	}
 }
 
 function FunctionComponent(props) {
-  return (
-    <div className="border">
-      FunctionComponent
-      <p>{props.name}</p >
-    </div>
-  );
+	return (
+		<div className="border">
+			FunctionComponent
+			<p>{props.name}</p>
+		</div>
+	);
 }
 
 const jsx = (
-  <div className="border">
-    <p>xx</p >
-    < a href=" ">xxx</ a>
-    <FunctionComponent name="函数组件" />
-    <ClassComponent name="类组件" color="red" />
-  </div>
+	<div className="border">
+		<p>xx</p>
+		<a href=" ">xxx</a>
+		<FunctionComponent name="函数组件" />
+		<ClassComponent name="类组件" color="red" />
+	</div>
 );
 ```
 
@@ -95,40 +101,38 @@ const jsx = (
 
 ```js
 function createElement(type, config, ...children) {
-    if (config) {
-        delete config.__self;
-        delete config.__source;
-    }
-    // ! 源码中做了详细处理，⽐如过滤掉key、ref等
-    const props = {
-        ...config,
-        children: children.map(child =>
-   typeof child === "object" ? child : createTextNode(child)
-  )
-    };
-    return {
-        type,
-        props
-    };
+	if (config) {
+		delete config.__self;
+		delete config.__source;
+	}
+	// ! 源码中做了详细处理，⽐如过滤掉key、ref等
+	const props = {
+		...config,
+		children: children.map((child) => (typeof child === "object" ? child : createTextNode(child))),
+	};
+	return {
+		type,
+		props,
+	};
 }
 function createTextNode(text) {
-    return {
-        type: TEXT,
-        props: {
-            children: [],
-            nodeValue: text
-        }
-    };
+	return {
+		type: TEXT,
+		props: {
+			children: [],
+			nodeValue: text,
+		},
+	};
 }
 export default {
-    createElement
+	createElement,
 };
 ```
 
 `createElement`会根据传入的节点信息进行一个判断：
 
-- 如果是原生标签节点， type 是字符串，如div、span
-- 如果是文本节点， type就没有，这里是 TEXT
+- 如果是原生标签节点， type 是字符串，如 div、span
+- 如果是文本节点， type 就没有，这里是 TEXT
 - 如果是函数组件，type 是函数名
 - 如果是类组件，type 是类名
 
@@ -146,100 +150,90 @@ ReactDOM.render(element, container[, callback])
 
 ```js
 function render(vnode, container) {
-    console.log("vnode", vnode); // 虚拟DOM对象
-    // vnode _> node
-    const node = createNode(vnode, container);
-    container.appendChild(node);
+	console.log("vnode", vnode); // 虚拟DOM对象
+	// vnode _> node
+	const node = createNode(vnode, container);
+	container.appendChild(node);
 }
 
 // 创建真实DOM节点
 function createNode(vnode, parentNode) {
-    let node = null;
-    const {type, props} = vnode;
-    if (type === TEXT) {
-        node = document.createTextNode("");
-    } else if (typeof type === "string") {
-        node = document.createElement(type);
-    } else if (typeof type === "function") {
-        node = type.isReactComponent
-            ? updateClassComponent(vnode, parentNode)
-        : updateFunctionComponent(vnode, parentNode);
-    } else {
-        node = document.createDocumentFragment();
-    }
-    reconcileChildren(props.children, node);
-    updateNode(node, props);
-    return node;
+	let node = null;
+	const { type, props } = vnode;
+	if (type === TEXT) {
+		node = document.createTextNode("");
+	} else if (typeof type === "string") {
+		node = document.createElement(type);
+	} else if (typeof type === "function") {
+		node = type.isReactComponent ? updateClassComponent(vnode, parentNode) : updateFunctionComponent(vnode, parentNode);
+	} else {
+		node = document.createDocumentFragment();
+	}
+	reconcileChildren(props.children, node);
+	updateNode(node, props);
+	return node;
 }
 
 // 遍历下子vnode，然后把子vnode->真实DOM节点，再插入父node中
 function reconcileChildren(children, node) {
-    for (let i = 0; i < children.length; i++) {
-        let child = children[i];
-        if (Array.isArray(child)) {
-            for (let j = 0; j < child.length; j++) {
-                render(child[j], node);
-            }
-        } else {
-            render(child, node);
-        }
-    }
+	for (let i = 0; i < children.length; i++) {
+		let child = children[i];
+		if (Array.isArray(child)) {
+			for (let j = 0; j < child.length; j++) {
+				render(child[j], node);
+			}
+		} else {
+			render(child, node);
+		}
+	}
 }
 function updateNode(node, nextVal) {
-    Object.keys(nextVal)
-        .filter(k => k !== "children")
-        .forEach(k => {
-        if (k.slice(0, 2) === "on") {
-            let eventName = k.slice(2).toLocaleLowerCase();
-            node.addEventListener(eventName, nextVal[k]);
-        } else {
-            node[k] = nextVal[k];
-        }
-    });
+	Object.keys(nextVal)
+		.filter((k) => k !== "children")
+		.forEach((k) => {
+			if (k.slice(0, 2) === "on") {
+				let eventName = k.slice(2).toLocaleLowerCase();
+				node.addEventListener(eventName, nextVal[k]);
+			} else {
+				node[k] = nextVal[k];
+			}
+		});
 }
 
 // 返回真实dom节点
 // 执行函数
 function updateFunctionComponent(vnode, parentNode) {
-    const {type, props} = vnode;
-    let vvnode = type(props);
-    const node = createNode(vvnode, parentNode);
-    return node;
+	const { type, props } = vnode;
+	let vvnode = type(props);
+	const node = createNode(vvnode, parentNode);
+	return node;
 }
 
 // 返回真实dom节点
 // 先实例化，再执行render函数
 function updateClassComponent(vnode, parentNode) {
-    const {type, props} = vnode;
-    let cmp = new type(props);
-    const vvnode = cmp.render();
-    const node = createNode(vvnode, parentNode);
-    return node;
+	const { type, props } = vnode;
+	let cmp = new type(props);
+	const vvnode = cmp.render();
+	const node = createNode(vvnode, parentNode);
+	return node;
 }
 export default {
-    render
+	render,
 };
 ```
-
-
-
-
 
 ## 三、总结
 
 在`react`源码中，虚拟`Dom`转化成真实`Dom`整体流程如下图所示：
 
- ![](https://static.vue-js.com/28824fa0-f00a-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/28824fa0-f00a-11eb-ab90-d9ae814b240d.png)
 
 其渲染流程如下所示：
 
-- 使用React.createElement或JSX编写React组件，实际上所有的 JSX 代码最后都会转换成React.createElement(...) ，Babel帮助我们完成了这个转换的过程。
-- createElement函数对key和ref等特殊的props进行处理，并获取defaultProps对默认props进行赋值，并且对传入的孩子节点进行处理，最终构造成一个虚拟DOM对象
-- ReactDOM.render将生成好的虚拟DOM渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实DOM
-
-
-
-
+- 使用 React.createElement 或 JSX 编写 React 组件，实际上所有的 JSX 代码最后都会转换成 React.createElement(...) ，Babel 帮助我们完成了这个转换的过程。
+- createElement 函数对 key 和 ref 等特殊的 props 进行处理，并获取 defaultProps 对默认 props 进行赋值，并且对传入的孩子节点进行处理，最终构造成一个虚拟 DOM 对象
+- ReactDOM.render 将生成好的虚拟 DOM 渲染到指定容器上，其中采用了批处理、事务等机制并且对特定浏览器进行了性能优化，最终转换为真实 DOM
 
 ## 参考文献
 

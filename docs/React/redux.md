@@ -1,6 +1,14 @@
-# 说说你对Redux的理解？其工作原理？
+---
+title: Redux
+date: 2025/03/26
+tags:
+  - react
+  - redux
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/52394be0-e2a5-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/52394be0-e2a5-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -20,7 +28,6 @@
 
 注意的是，`redux`并不是只应用在`react`中，还与其他界面库一起使用，如`Vue`
 
-
 ## 二、工作原理
 
 `redux `要求我们把数据都放在 `store `公共存储空间
@@ -29,7 +36,7 @@
 
 工作流程图如下所示：
 
- ![](https://static.vue-js.com/27b2e930-e56b-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/27b2e930-e56b-11eb-85f6-6fac77c0c9b3.png)
 
 根据流程图，可以想象，`React Components` 是借书的用户， `Action Creactor` 是借书时说的话(借什么书)， `Store` 是图书馆管理员，`Reducer` 是记录本(借什么书，还什么书，在哪儿，需要查一下)， `state` 是书籍信息
 
@@ -37,15 +44,13 @@
 
 转换为代码是，`React Components` 需要获取一些数据, 然后它就告知 `Store` 需要获取数据，这就是就是 `Action Creactor` , `Store` 接收到之后去 `Reducer` 查一下， `Reducer` 会告诉 `Store` 应该给这个组件什么数据
 
-
-
 ## 三、如何使用
 
 创建一个`store`的公共数据区域
 
 ```js
-import { createStore } from 'redux' // 引入一个第三方的方法
-const store = createStore() // 创建数据的公共存储区域（管理员）
+import { createStore } from "redux"; // 引入一个第三方的方法
+const store = createStore(); // 创建数据的公共存储区域（管理员）
 ```
 
 还需要创建一个记录本去辅助管理数据，也就是`reduecer`，本质就是一个函数，接收两个参数`state`，`action`，返回`state`
@@ -53,17 +58,16 @@ const store = createStore() // 创建数据的公共存储区域（管理员）
 ```js
 // 设置默认值
 const initialState = {
-  counter: 0
-}
+	counter: 0,
+};
 
-const reducer = (state = initialState, action) => {
-}
+const reducer = (state = initialState, action) => {};
 ```
 
 然后就可以将记录本传递给`store`，两者建立连接。如下：
 
 ```js
-const store = createStore(reducer)
+const store = createStore(reducer);
 ```
 
 如果想要获取`store`里面的数据，则通过`store.getState()`来获取当前`state`
@@ -76,34 +80,34 @@ console.log(store.getState());
 
 ```js
 store.dispatch({
-  type: "INCREMENT"
-})
+	type: "INCREMENT",
+});
 
 store.dispath({
-  type: "DECREMENT"
-})
+	type: "DECREMENT",
+});
 
 store.dispatch({
-  type: "ADD_NUMBER",
-  number: 5
-})
+	type: "ADD_NUMBER",
+	number: 5,
+});
 ```
 
 下面再来看看修改`reducer`中的处理逻辑：
 
 ```js
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "INCREMENT":
-      return {...state, counter: state.counter + 1};
-    case "DECREMENT":
-      return {...state, counter: state.counter - 1};
-    case "ADD_NUMBER":
-      return {...state, counter: state.counter + action.number}
-    default: 
-      return state;
-  }
-}
+	switch (action.type) {
+		case "INCREMENT":
+			return { ...state, counter: state.counter + 1 };
+		case "DECREMENT":
+			return { ...state, counter: state.counter - 1 };
+		case "ADD_NUMBER":
+			return { ...state, counter: state.counter + action.number };
+		default:
+			return state;
+	}
+};
 ```
 
 注意，`reducer`是一个纯函数，不需要直接修改`state`
@@ -112,8 +116,8 @@ const reducer = (state = initialState, action) => {
 
 ```js
 store.subscribe(() => {
-  console.log(store.getState());
-})
+	console.log(store.getState());
+});
 ```
 
 在`React`项目中，会搭配`react-redux`进行使用
@@ -121,60 +125,57 @@ store.subscribe(() => {
 完整代码如下：
 
 ```js
-const redux = require('redux');
+const redux = require("redux");
 
 const initialState = {
-  counter: 0
-}
+	counter: 0,
+};
 
 // 创建reducer
 const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "INCREMENT":
-      return {...state, counter: state.counter + 1};
-    case "DECREMENT":
-      return {...state, counter: state.counter - 1};
-    case "ADD_NUMBER":
-      return {...state, counter: state.counter + action.number}
-    default: 
-      return state;
-  }
-}
+	switch (action.type) {
+		case "INCREMENT":
+			return { ...state, counter: state.counter + 1 };
+		case "DECREMENT":
+			return { ...state, counter: state.counter - 1 };
+		case "ADD_NUMBER":
+			return { ...state, counter: state.counter + action.number };
+		default:
+			return state;
+	}
+};
 
 // 根据reducer创建store
 const store = redux.createStore(reducer);
 
 store.subscribe(() => {
-  console.log(store.getState());
-})
+	console.log(store.getState());
+});
 
 // 修改store中的state
 store.dispatch({
-  type: "INCREMENT"
-})
+	type: "INCREMENT",
+});
 // console.log(store.getState());
 
 store.dispatch({
-  type: "DECREMENT"
-})
+	type: "DECREMENT",
+});
 // console.log(store.getState());
 
 store.dispatch({
-  type: "ADD_NUMBER",
-  number: 5
-})
+	type: "ADD_NUMBER",
+	number: 5,
+});
 // console.log(store.getState());
 ```
 
-
-
 ### 小结
 
-- createStore可以帮助创建 store
+- createStore 可以帮助创建 store
 - store.dispatch 帮助派发 action , action 会传递给 store
 - store.getState 这个方法可以帮助获取 store 里边所有的数据内容
 - store.subscrible 方法订阅 store 的改变，只要 store 发生改变， store.subscrible 这个函数接收的这个回调函数就会被执行
-
 
 ## 参考文献
 

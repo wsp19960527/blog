@@ -1,10 +1,15 @@
-# 面试官：说说你对 TypeScript 中接口的理解？应用场景？
+---
+title: interface
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+  - interface
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/193389b0-0b2b-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/193389b0-0b2b-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -14,44 +19,41 @@
 
 `typescript`的核心功能之一就是对类型做检测，虽然这种检测方式是“鸭式辨型法”，而接口的作用就是为为这些类型命名和为你的代码或第三方代码定义一个约定
 
-
-
 ## 二、使用方式
 
 接口定义如下：
 
 ```ts
-interface interface_name {
-}
+interface interface_name {}
 ```
 
 例如有一个函数，这个函数接受一个 `User` 对象，然后返回这个 `User` 对象的 `name` 属性:
 
 ```ts
-const getUserName = (user) => user.name
+const getUserName = (user) => user.name;
 ```
 
 可以看到，参数需要有一个`user`的`name`属性，可以通过接口描述`user`参数的结构
 
 ```ts
 interface User {
-    name: string
-    age: number
+	name: string;
+	age: number;
 }
 
-const getUserName = (user: User) => user.name
+const getUserName = (user: User) => user.name;
 ```
 
 这些属性并不一定全部实现，上述传入的对象必须拥有`name`和`age`属性，否则`typescript`在编译阶段会报错，如下图：
 
- ![](https://static.vue-js.com/25d3a790-0b2b-11ec-a752-75723a64e8f5.png)
+![](https://static.vue-js.com/25d3a790-0b2b-11ec-a752-75723a64e8f5.png)
 
 如果不想要`age`属性的话，这时候可以采用**可选属性**，如下表示：
 
 ```ts
 interface User {
-    name: string
-    age?: number
+	name: string;
+	age?: number;
 }
 ```
 
@@ -61,24 +63,24 @@ interface User {
 
 ```ts
 interface User {
-    name: string
-    age?: number
-    readonly isMale: boolean
+	name: string;
+	age?: number;
+	readonly isMale: boolean;
 }
 ```
 
 当我们修改属性的时候，就会出现警告，如下所示：
 
- ![](https://static.vue-js.com/2f6d3c30-0b2b-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/2f6d3c30-0b2b-11ec-8e64-91fdec0f05a1.png)
 
 这是属性中有一个函数，可以如下表示：
 
 ```ts
 interface User {
-    name: string
-    age?: number
-    readonly isMale: boolean
-    say: (words: string) => string
+	name: string;
+	age?: number;
+	readonly isMale: boolean;
+	say: (words: string) => string;
 }
 ```
 
@@ -100,34 +102,32 @@ getUserName({color: 'yellow'} as User)
 
 ```ts
 interface User {
-    name: string
-    age: number
-    [propName: string]: any;
+	name: string;
+	age: number;
+	[propName: string]: any;
 }
 ```
 
 接口还能实现继承，如下图：
 
- ![](https://static.vue-js.com/38a41760-0b2b-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/38a41760-0b2b-11ec-8e64-91fdec0f05a1.png)
 
 也可以继承多个，父类通过逗号隔开，如下：
 
 ```ts
 interface Father {
-    color: String
+	color: String;
 }
 
 interface Mother {
-    height: Number
+	height: Number;
 }
 
-interface Son extends Father,Mother{
-    name: string
-    age: Number
+interface Son extends Father, Mother {
+	name: string;
+	age: Number;
 }
 ```
-
-
 
 ## 三、应用场景
 
@@ -145,19 +145,19 @@ const getUserInfo = function(user) {
 ```ts
 // 先定义一个接口
 interface IUser {
-  name: string;
-  age: number;
+	name: string;
+	age: number;
 }
 
 const getUserInfo = (user: IUser): string => {
-  return `name: ${user.name}, age: ${user.age}`;
+	return `name: ${user.name}, age: ${user.age}`;
 };
 
 // 正确的调用
-getUserInfo({name: "koala", age: 18});
+getUserInfo({ name: "koala", age: 18 });
 ```
-包括后面讲到类的时候也会应用到接口
 
+包括后面讲到类的时候也会应用到接口
 
 ## 参考文献
 

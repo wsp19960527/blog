@@ -1,53 +1,59 @@
-#  面试官：对象新增了哪些扩展？
+---
+title: 对象新增了哪些扩展？
+date: 2025/03/26
+tags:
+  - es6
+  - function
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/54a04a10-5569-11eb-85f6-6fac77c0c9b3.png)
-
-
 
 ## 一、参数
 
 `ES6`允许为函数的参数设置默认值
 
 ```js
-function log(x, y = 'World') {
-  console.log(x, y);
+function log(x, y = "World") {
+	console.log(x, y);
 }
 
-console.log('Hello') // Hello World
-console.log('Hello', 'China') // Hello China
-console.log('Hello', '') // Hello
+console.log("Hello"); // Hello World
+console.log("Hello", "China"); // Hello China
+console.log("Hello", ""); // Hello
 ```
 
 函数的形参是默认声明的，不能使用`let`或`const`再次声明
 
 ```js
 function foo(x = 5) {
-    let x = 1; // error
-    const x = 2; // error
+	let x = 1; // error
+	const x = 2; // error
 }
 ```
 
 参数默认值可以与解构赋值的默认值结合起来使用
 
 ```js
-function foo({x, y = 5}) {
-  console.log(x, y);
+function foo({ x, y = 5 }) {
+	console.log(x, y);
 }
 
-foo({}) // undefined 5
-foo({x: 1}) // 1 5
-foo({x: 1, y: 2}) // 1 2
-foo() // TypeError: Cannot read property 'x' of undefined
+foo({}); // undefined 5
+foo({ x: 1 }); // 1 5
+foo({ x: 1, y: 2 }); // 1 2
+foo(); // TypeError: Cannot read property 'x' of undefined
 ```
 
 上面的`foo`函数，当参数为对象的时候才能进行解构，如果没有提供参数的时候，变量`x`和`y`就不会生成，从而报错，这里设置默认值避免
 
 ```js
-function foo({x, y = 5} = {}) {
-  console.log(x, y);
+function foo({ x, y = 5 } = {}) {
+	console.log(x, y);
 }
 
-foo() // undefined 5
+foo(); // undefined 5
 ```
 
 参数默认值应该是函数的尾参数，如果不是非尾部的参数设置默认值，实际上这个参数是没发省略的
@@ -63,36 +69,40 @@ f(, 1) // 报错
 f(undefined, 1) // [1, 1]
 ```
 
-
-
 ## 二、属性
 
-### 函数的length属性
+### 函数的 length 属性
 
 `length`将返回没有指定默认值的参数个数
 
 ```js
-(function (a) {}).length // 1
-(function (a = 5) {}).length // 0
-(function (a, b, c = 5) {}).length // 2
+(function (a) {})
+	.length(
+		// 1
+		function (a = 5) {}
+	)
+	.length(
+		// 0
+		function (a, b, c = 5) {}
+	).length; // 2
 ```
 
 `rest` 参数也不会计入`length`属性
 
 ```js
-(function(...args) {}).length // 0
+(function (...args) {}).length; // 0
 ```
 
 如果设置了默认值的参数不是尾参数，那么`length`属性也不再计入后面的参数了
 
 ```js
-(function (a = 0, b, c) {}).length // 0
-(function (a, b = 1, c) {}).length // 1
+(function (a = 0, b, c) {}).length(
+	// 0
+	function (a, b = 1, c) {}
+).length; // 1
 ```
 
-
-
-### name属性
+### name 属性
 
 返回该函数的函数名
 
@@ -100,35 +110,38 @@ f(undefined, 1) // [1, 1]
 var f = function () {};
 
 // ES5
-f.name // ""
+f.name; // ""
 
 // ES6
-f.name // "f"
+f.name; // "f"
 ```
 
 如果将一个具名函数赋值给一个变量，则 `name`属性都返回这个具名函数原本的名字
 
 ```js
 const bar = function baz() {};
-bar.name // "baz"
+bar.name; // "baz"
 ```
 
 `Function`构造函数返回的函数实例，`name`属性的值为`anonymous`
 
 ```javascript
-(new Function).name // "anonymous"
+new Function().name; // "anonymous"
 ```
 
 `bind`返回的函数，`name`属性值会加上`bound`前缀
 
 ```javascript
-function foo() {};
-foo.bind({}).name // "bound foo"
+function foo() {}
+foo
+	.bind({})
+	.name(
+		// "bound foo"
 
-(function(){}).bind({}).name // "bound "
+		function () {}
+	)
+	.bind({}).name; // "bound "
 ```
-
-
 
 ## 三、作用域
 
@@ -141,16 +154,14 @@ foo.bind({}).name // "bound foo"
 ```js
 let x = 1;
 
-function f(y = x) { 
-  // 等同于 let y = x  
-  let x = 2; 
-  console.log(y);
+function f(y = x) {
+	// 等同于 let y = x
+	let x = 2;
+	console.log(y);
 }
 
-f() // 1
+f(); // 1
 ```
-
-
 
 ## 四、严格模式
 
@@ -184,18 +195,16 @@ const obj = {
 };
 ```
 
-
-
 ## 五、箭头函数
 
 使用“箭头”（`=>`）定义函数
 
 ```js
-var f = v => v;
+var f = (v) => v;
 
 // 等同于
 var f = function (v) {
-  return v;
+	return v;
 };
 ```
 
@@ -204,25 +213,29 @@ var f = function (v) {
 ```js
 var f = () => 5;
 // 等同于
-var f = function () { return 5 };
+var f = function () {
+	return 5;
+};
 
 var sum = (num1, num2) => num1 + num2;
 // 等同于
-var sum = function(num1, num2) {
-  return num1 + num2;
+var sum = function (num1, num2) {
+	return num1 + num2;
 };
 ```
 
 如果箭头函数的代码块部分多于一条语句，就要使用大括号将它们括起来，并且使用`return`语句返回
 
 ```js
-var sum = (num1, num2) => { return num1 + num2; }
+var sum = (num1, num2) => {
+	return num1 + num2;
+};
 ```
 
 如果返回对象，需要加括号将对象包裹
 
 ```js
-let getTempItem = id => ({ id: id, name: "Temp" });
+let getTempItem = (id) => ({ id: id, name: "Temp" });
 ```
 
 注意点：
@@ -233,4 +246,5 @@ let getTempItem = id => ({ id: id, name: "Temp" });
 - 不可以使用`yield`命令，因此箭头函数不能用作 Generator 函数
 
 ## 参考文献
+
 - https://es6.ruanyifeng.com/#docs/function

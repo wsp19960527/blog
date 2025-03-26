@@ -1,8 +1,14 @@
-# 面试官：说说你对快速排序的理解？如何实现？应用场景？
+---
+title: 快速排序
+date: 2025/03/26
+tags:
+  - algorithm
+  - sort
+categories:
+  - 前端
+---
 
-
-
- ![](https://static.vue-js.com/bafae570-268a-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/bafae570-268a-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
 
@@ -12,7 +18,7 @@
 
 然后继续沿用此方法分别对两部分进行同样的操作，直到每一个小部分不可再分，所得到的整个序列就变成有序序列
 
-例如，对无序表49，38，65，97，76，13，27，49进行快速排序，大致过程为：
+例如，对无序表 49，38，65，97，76，13，27，49 进行快速排序，大致过程为：
 
 - 首先从表中选取一个记录的关键字作为分割点（称为“枢轴”或者支点，一般选择第一个关键字），例如选取 49
 
@@ -26,8 +32,6 @@
 
 - 通过以上几步的排序，最后由子表{13，27，38}、{49}、{49}、{65}、{76，97}构成有序表：{13，27，38，49，49，65，76，97}
 
-  
-
 ## 二、如何实现
 
 可以分成以下步骤：
@@ -40,23 +44,25 @@
 用代码表示则如下：
 
 ```js
-function quickSort (arr) {
-  const rec = (arr) => {
-    if (arr.length <= 1) { return arr; }
-    const left = [];
-    const right = [];
-    const mid = arr[0]; // 基准元素
-    for (let i = 1; i < arr.length; i++){
-      if (arr[i] < mid) {
-        left.push(arr[i]);
-      } else {
-        right.push(arr[i]);
-      }
-    }
-    return [...rec(left), mid, ...rec(right)]
-  }
-  return res(arr)
-};
+function quickSort(arr) {
+	const rec = (arr) => {
+		if (arr.length <= 1) {
+			return arr;
+		}
+		const left = [];
+		const right = [];
+		const mid = arr[0]; // 基准元素
+		for (let i = 1; i < arr.length; i++) {
+			if (arr[i] < mid) {
+				left.push(arr[i]);
+			} else {
+				right.push(arr[i]);
+			}
+		}
+		return [...rec(left), mid, ...rec(right)];
+	};
+	return res(arr);
+}
 ```
 
 快速排序是冒泡排序的升级版，最坏情况下每一次基准元素都是数组中最小或者最大的元素，则快速排序就是冒泡排序
@@ -65,10 +71,9 @@ function quickSort (arr) {
 
 最好情况下是`O(nlogn)`，其中递归算法的时间复杂度公式：`T[n] = aT[n/b] + f(n)`，推导如下所示：
 
- ![](https://static.vue-js.com/b6019540-2b5e-11ec-8e64-91fdec0f05a1.png)
+![](https://static.vue-js.com/b6019540-2b5e-11ec-8e64-91fdec0f05a1.png)
 
 关于上述代码实现的快速排序，可以看到是稳定的
-
 
 ## 三、应用场景
 

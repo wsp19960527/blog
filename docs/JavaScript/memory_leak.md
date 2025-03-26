@@ -1,6 +1,15 @@
-# 面试官：说说 JavaScript 中内存泄漏的几种情况？
+---
+title: JavaScript 内存泄漏
+date: 2025/03/26
+tags:
+  - js
+  - javascript
+  - 内存泄漏
+categories:
+  - 前端
+---
 
-  ![](https://static.vue-js.com/19f76b30-824d-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/19f76b30-824d-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -12,7 +21,7 @@
 
 对于持续运行的服务进程，必须及时释放不再用到的内存。否则，内存占用越来越高，轻则影响系统性能，重则导致进程崩溃
 
- ![](https://static.vue-js.com/56d4bd90-821c-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/56d4bd90-821c-11eb-ab90-d9ae814b240d.png)
 
 在`C`语言中，因为是手动管理内存，内存泄露是经常出现的事情。
 
@@ -29,7 +38,6 @@ free(buffer);
 
 这很麻烦，所以大多数语言提供自动内存管理，减轻程序员的负担，这被称为"垃圾回收机制"
 
-
 ## 二、垃圾回收机制
 
 Javascript 具有自动垃圾回收机制（GC：Garbage Collecation），也就是说，执行环境会负责管理代码执行过程中使用的内存
@@ -40,8 +48,6 @@ Javascript 具有自动垃圾回收机制（GC：Garbage Collecation），也就
 
 - 标记清除
 - 引用计数
-
-
 
 ### 标记清除
 
@@ -58,17 +64,16 @@ Javascript 具有自动垃圾回收机制（GC：Garbage Collecation），也就
 举个例子：
 
 ```js
-var m = 0,n = 19 // 把 m,n,add() 标记为进入环境。
-add(m, n) // 把 a, b, c标记为进入环境。
-console.log(n) // a,b,c标记为离开环境，等待垃圾回收。
+var m = 0,
+	n = 19; // 把 m,n,add() 标记为进入环境。
+add(m, n); // 把 a, b, c标记为进入环境。
+console.log(n); // a,b,c标记为离开环境，等待垃圾回收。
 function add(a, b) {
-  a++
-  var c = a + b
-  return c
+	a++;
+	var c = a + b;
+	return c;
 }
 ```
-
-
 
 ### 引用计数
 
@@ -78,7 +83,7 @@ function add(a, b) {
 
 ```javascript
 const arr = [1, 2, 3, 4];
-console.log('hello world');
+console.log("hello world");
 ```
 
 上面代码中，数组`[1, 2, 3, 4]`是一个值，会占用内存。变量`arr`是仅有的对这个值的引用，因此引用次数为`1`。尽管后面的代码没有用到`arr`，它还是会持续占用内存
@@ -86,18 +91,14 @@ console.log('hello world');
 如果需要这块内存被垃圾回收机制释放，只需要设置如下：
 
 ```js
-arr = null
+arr = null;
 ```
 
 通过设置`arr`为`null`，就解除了对数组`[1,2,3,4]`的引用，引用次数变为 0，就被垃圾回收了
 
-
-
 ### 小结
 
 有了垃圾回收机制，不代表不用关注内存泄露。那些很占空间的值，一旦不再用到，需要检查是否还存在对它们的引用。如果是的话，就必须手动解除引用
-
-
 
 ## 三、常见内存泄露情况
 
@@ -105,7 +106,7 @@ arr = null
 
 ```js
 function foo(arg) {
-    bar = "this is a hidden global variable";
+	bar = "this is a hidden global variable";
 }
 ```
 
@@ -113,7 +114,7 @@ function foo(arg) {
 
 ```js
 function foo() {
-    this.variable = "potential accidental global";
+	this.variable = "potential accidental global";
 }
 // foo 调用自己，this 指向了全局对象（window）
 foo();
@@ -134,32 +135,31 @@ setInterval(function() {
 }, 1000);
 ```
 
-如果`id`为Node的元素从`DOM`中移除，该定时器仍会存在，同时，因为回调函数中包含对`someResource`的引用，定时器外面的`someResource`也不会被释放
+如果`id`为 Node 的元素从`DOM`中移除，该定时器仍会存在，同时，因为回调函数中包含对`someResource`的引用，定时器外面的`someResource`也不会被释放
 
 包括我们之前所说的闭包，维持函数内局部变量，使其得不到释放
 
 ```js
 function bindEvent() {
-  var obj = document.createElement('XXX');
-  var unused = function () {
-    console.log(obj, '闭包内引用obj obj不会被释放');
-  };
-  obj = null; // 解决方法
+	var obj = document.createElement("XXX");
+	var unused = function () {
+		console.log(obj, "闭包内引用obj obj不会被释放");
+	};
+	obj = null; // 解决方法
 }
 ```
 
 没有清理对`DOM`元素的引用同样造成内存泄露
 
 ```js
-const refA = document.getElementById('refA');
+const refA = document.getElementById("refA");
 document.body.removeChild(refA); // dom删除了
-console.log(refA, 'refA'); // 但是还存在引用能console出整个div 没有被回收
+console.log(refA, "refA"); // 但是还存在引用能console出整个div 没有被回收
 refA = null;
-console.log(refA, 'refA'); // 解除引用
+console.log(refA, "refA"); // 解除引用
 ```
 
 包括使用事件监听`addEventListener`监听的时候，在不监听的情况下使用`removeEventListener`取消对事件监听
-
 
 ## 参考文献
 

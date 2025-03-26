@@ -1,10 +1,18 @@
-# 面试官：说说你对 TypeScript 装饰器的理解？应用场景？
+---
+title: 装饰器
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+  - 装饰器
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/f8905dd0-111c-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/f8905dd0-111c-11ec-8e64-91fdec0f05a1.png)
 
 ## 一、是什么
+
 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上
 
 是一种在不改变原类和使用继承的情况下，动态地扩展对象功能
@@ -12,7 +20,6 @@
 同样的，本质也不是什么高大上的结构，就是一个普通的函数，`@expression` 的形式其实是`Object.defineProperty`的语法糖
 
 `expression `求值后必须也是一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入
-
 
 ## 二、使用方式
 
@@ -29,8 +36,6 @@
 
 `typescript`装饰器的使用和`javascript`基本一致
 
-
-
 类的装饰器可以装饰：
 
 - 类
@@ -40,24 +45,22 @@
 
 - 访问器
 
-
-
 ### 类装饰
 
 例如声明一个函数 `addAge` 去给 Class 的属性 `age` 添加年龄.
 
 ```ts
 function addAge(constructor: Function) {
-  constructor.prototype.age = 18;
+	constructor.prototype.age = 18;
 }
 
 @addAge
-class Person{
-  name: string;
-  age!: number;
-  constructor() {
-    this.name = 'huihui';
-  }
+class Person {
+	name: string;
+	age!: number;
+	constructor() {
+		this.name = "huihui";
+	}
 }
 
 let person = new Person();
@@ -72,8 +75,6 @@ Person = addAge(function Person() { ... });
 ```
 
 上述可以看到，当装饰器作为修饰类的时候，会把构造器传递进去。 `constructor.prototype.age` 就是在每一个实例化对象上面添加一个 `age` 属性
-
-
 
 ### 方法/属性装饰
 
@@ -90,52 +91,50 @@ Person = addAge(function Person() { ... });
 ```ts
 // 声明装饰器修饰方法/属性
 function method(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-  console.log(target);
-  console.log("prop " + propertyKey);
-  console.log("desc " + JSON.stringify(descriptor) + "\n\n");
-  descriptor.writable = false;
-};
-
-function property(target: any, propertyKey: string) {
-  console.log("target", target)
-  console.log("propertyKey", propertyKey)
+	console.log(target);
+	console.log("prop " + propertyKey);
+	console.log("desc " + JSON.stringify(descriptor) + "\n\n");
+	descriptor.writable = false;
 }
 
-class Person{
- @property
- name: string;
- constructor() {
-   this.name = 'huihui';
- }
+function property(target: any, propertyKey: string) {
+	console.log("target", target);
+	console.log("propertyKey", propertyKey);
+}
 
- @method
- say(){
-   return 'instance method';
- }
+class Person {
+	@property
+	name: string;
+	constructor() {
+		this.name = "huihui";
+	}
 
- @method
- static run(){
-   return 'static method';
- }
+	@method
+	say() {
+		return "instance method";
+	}
+
+	@method
+	static run() {
+		return "static method";
+	}
 }
 
 const xmz = new Person();
 
 // 修改实例方法say
-xmz.say = function() {
- return 'edit'
-}
+xmz.say = function () {
+	return "edit";
+};
 ```
 
 输出如下图所示：
 
- ![](https://static.vue-js.com/e96bc1b0-114d-11ec-8e64-91fdec0f05a1.png)
-
-
+![](https://static.vue-js.com/e96bc1b0-114d-11ec-8e64-91fdec0f05a1.png)
 
 ### 参数装饰
 
-接收3个参数，分别是：
+接收 3 个参数，分别是：
 
 - target ：当前对象的原型
 - propertyKey ：参数的名称
@@ -143,54 +142,47 @@ xmz.say = function() {
 
 ```ts
 function logParameter(target: Object, propertyName: string, index: number) {
-  console.log(target);
-  console.log(propertyName);
-  console.log(index);
+	console.log(target);
+	console.log(propertyName);
+	console.log(index);
 }
 
 class Employee {
-  greet(@logParameter message: string): string {
-      return `hello ${message}`;
-  }
+	greet(@logParameter message: string): string {
+		return `hello ${message}`;
+	}
 }
 const emp = new Employee();
-emp.greet('hello');
+emp.greet("hello");
 ```
 
 输入如下图：
 
- ![](https://static.vue-js.com/f2f32de0-114d-11ec-a752-75723a64e8f5.png)
-
-
+![](https://static.vue-js.com/f2f32de0-114d-11ec-a752-75723a64e8f5.png)
 
 ### 访问器装饰
 
 使用起来方式与方法装饰一致，如下：
 
 ```ts
-
 function modification(target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
-  console.log(target);
-  console.log("prop " + propertyKey);
-  console.log("desc " + JSON.stringify(descriptor) + "\n\n");
-};
+	console.log(target);
+	console.log("prop " + propertyKey);
+	console.log("desc " + JSON.stringify(descriptor) + "\n\n");
+}
 
-class Person{
- _name: string;
- constructor() {
-   this._name = 'huihui';
- }
+class Person {
+	_name: string;
+	constructor() {
+		this._name = "huihui";
+	}
 
- @modification
- get name() {
-   return this._name
- }
+	@modification
+	get name() {
+		return this._name;
+	}
 }
 ```
-
-
-
-
 
 ### 装饰器工厂
 
@@ -198,24 +190,22 @@ class Person{
 
 ```ts
 function addAge(age: number) {
-  return function(constructor: Function) {
-    constructor.prototype.age = age
-  }
+	return function (constructor: Function) {
+		constructor.prototype.age = age;
+	};
 }
 
 @addAge(10)
-class Person{
-  name: string;
-  age!: number;
-  constructor() {
-    this.name = 'huihui';
-  }
+class Person {
+	name: string;
+	age!: number;
+	constructor() {
+		this.name = "huihui";
+	}
 }
 
 let person = new Person();
 ```
-
-
 
 ### 执行顺序
 
@@ -249,10 +239,6 @@ g(): called
 f(): called
 ```
 
-
-
-
-
 ## 三、应用场景
 
 可以看到，使用装饰器存在两个显著的优点：
@@ -261,8 +247,6 @@ f(): called
 - 在不改变原有代码情况下，对原来功能进行扩展
 
 后面的使用场景中，借助装饰器的特性，除了提高可读性之后，针对已经存在的类，可以通过装饰器的特性，在不改变原有代码情况下，对原来功能进行扩展
-
-
 
 ## 参考文献
 

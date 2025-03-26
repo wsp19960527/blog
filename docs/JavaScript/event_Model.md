@@ -1,4 +1,13 @@
-# 面试官：说说JavaScript中的事件模型
+---
+title: JavaScript中的事件模型
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+  - 事件模型
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/32a182f0-74cf-11eb-85f6-6fac77c0c9b3.png)
 
@@ -14,39 +23,39 @@
 - 处于目标阶段(target phase)
 - 事件冒泡阶段(bubbling phase)
 
- ![](https://static.vue-js.com/3e9a6450-74cf-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/3e9a6450-74cf-11eb-85f6-6fac77c0c9b3.png)
 
 事件冒泡是一种从下往上的传播方式，由最具体的元素（触发节点）然后逐渐向上传播到最不具体的那个节点，也就是`DOM`中最高层的父节点
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Event Bubbling</title>
-    </head>
-    <body>
-        <button id="clickMe">Click Me</button>
-    </body>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Event Bubbling</title>
+	</head>
+	<body>
+		<button id="clickMe">Click Me</button>
+	</body>
 </html>
 ```
 
 然后，我们给`button`和它的父元素，加入点击事件
 
 ```js
-var button = document.getElementById('clickMe');
+var button = document.getElementById("clickMe");
 
-button.onclick = function() {
-  console.log('1.Button');
+button.onclick = function () {
+	console.log("1.Button");
 };
-document.body.onclick = function() {
-  console.log('2.body');
+document.body.onclick = function () {
+	console.log("2.body");
 };
-document.onclick = function() {
-  console.log('3.document');
+document.onclick = function () {
+	console.log("3.document");
 };
-window.onclick = function() {
-  console.log('4.window');
+window.onclick = function () {
+	console.log("4.window");
 };
 ```
 
@@ -63,23 +72,19 @@ window.onclick = function() {
 
 事件捕获与事件冒泡相反，事件最开始由不太具体的节点最早接受事件, 而最具体的节点（触发节点）最后接受事件
 
-
-
 ## 二、事件模型
 
 事件模型可以分为三种：
 
-- 原始事件模型（DOM0级）
-- 标准事件模型（DOM2级）
-- IE事件模型（基本不用）
-
-
+- 原始事件模型（DOM0 级）
+- 标准事件模型（DOM2 级）
+- IE 事件模型（基本不用）
 
 ### 原始事件模型
 
 事件绑定监听函数比较简单, 有两种方式：
 
-- HTML代码中直接绑定
+- HTML 代码中直接绑定
 
 ```js
 <input type="button" onclick="fun()">
@@ -88,7 +93,7 @@ window.onclick = function() {
 - 通过`JS`代码绑定
 
 ```js
-var btn = document.getElementById('.btn');
+var btn = document.getElementById(".btn");
 btn.onclick = fun;
 ```
 
@@ -109,17 +114,13 @@ var btn = document.getElementById('.btn');
 btn.onclick = fun2;
 ```
 
-如上，当希望为同一个元素绑定多个同类型事件的时候（上面的这个`btn`元素绑定2个点击事件），是不被允许的，后绑定的事件会覆盖之前的事件
+如上，当希望为同一个元素绑定多个同类型事件的时候（上面的这个`btn`元素绑定 2 个点击事件），是不被允许的，后绑定的事件会覆盖之前的事件
 
 删除 `DOM0` 级事件处理程序只要将对应事件属性置为`null`即可
 
 ```js
 btn.onclick = null;
 ```
-
-
-
-
 
 ### 标准事件模型
 
@@ -143,9 +144,9 @@ removeEventListener(eventType, handler, useCapture)
 
 参数如下：
 
-- `eventType`指定事件类型(不要加on)
+- `eventType`指定事件类型(不要加 on)
 - `handler`是事件处理函数
-- `useCapture`是一个`boolean`用于指定是否在捕获阶段进行处理，一般设置为`false`与IE浏览器保持一致
+- `useCapture`是一个`boolean`用于指定是否在捕获阶段进行处理，一般设置为`false`与 IE 浏览器保持一致
 
 举个例子：
 
@@ -172,30 +173,30 @@ btn.addEventListener(‘click’, showMessage3, false);
 下面举个例子：
 
 ```js
-<div id='div'>
-    <p id='p'>
-        <span id='span'>Click Me!</span>
-    </p >
+<div id="div">
+	<p id="p">
+		<span id="span">Click Me!</span>
+	</p>
 </div>
 ```
 
 设置点击事件
 
 ```js
-var div = document.getElementById('div');
-var p = document.getElementById('p');
+var div = document.getElementById("div");
+var p = document.getElementById("p");
 
-function onClickFn (event) {
-    var tagName = event.currentTarget.tagName;
-    var phase = event.eventPhase;
-    console.log(tagName, phase);
+function onClickFn(event) {
+	var tagName = event.currentTarget.tagName;
+	var phase = event.eventPhase;
+	console.log(tagName, phase);
 }
 
-div.addEventListener('click', onClickFn, false);
-p.addEventListener('click', onClickFn, false);
+div.addEventListener("click", onClickFn, false);
+p.addEventListener("click", onClickFn, false);
 ```
 
-上述使用了`eventPhase`，返回一个代表当前执行阶段的整数值。1为捕获阶段、2为事件对象触发阶段、3为冒泡阶段
+上述使用了`eventPhase`，返回一个代表当前执行阶段的整数值。1 为捕获阶段、2 为事件对象触发阶段、3 为冒泡阶段
 
 点击`Click Me!`，输出如下
 
@@ -209,8 +210,8 @@ DIV 3
 如果把第三个参数都改为`true`
 
 ```js
-div.addEventListener('click', onClickFn, true);
-p.addEventListener('click', onClickFn, true);
+div.addEventListener("click", onClickFn, true);
+p.addEventListener("click", onClickFn, true);
 ```
 
 输出如下
@@ -222,11 +223,9 @@ P 1
 
 两者都是在捕获阶段响应事件，所以`div`比`p`标签先做出响应
 
+### IE 事件模型
 
-
-### IE事件模型
-
-IE事件模型共有两个过程:
+IE 事件模型共有两个过程:
 
 - 事件处理阶段：事件到达目标元素, 触发目标元素的监听函数。
 - 事件冒泡阶段：事件从目标元素冒泡到`document`, 依次检查经过的节点是否绑定了事件监听函数，如果有则执行

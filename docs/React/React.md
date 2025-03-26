@@ -1,4 +1,12 @@
-# 面试官：说说对 React 的理解？有哪些特性？
+---
+title: React
+date: 2025/03/26
+tags:
+  - react
+  - 前端
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/671f5a90-d265-11eb-85f6-6fac77c0c9b3.png)
 
@@ -16,15 +24,12 @@ React，用于构建用户界面的 JavaScript 库，只提供了 UI 层面的�
 
 ```jsx
 class HelloMessage extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
+	render() {
+		return <div>Hello {this.props.name}</div>;
+	}
 }
 
-ReactDOM.render(
-  <HelloMessage name="Taylor" />,
-  document.getElementById("hello-example")
-);
+ReactDOM.render(<HelloMessage name="Taylor" />, document.getElementById("hello-example"));
 ```
 
 上述这种类似 `XML` 形式就是 `JSX`，最终会被 `babel` 编译为合法的 `JS` 语句调用
@@ -56,14 +61,14 @@ ReactDOM.render(
 ```js
 // 创建地图
 const map = new Map.map(document.getElementById("map"), {
-  zoom: 4,
-  center: { lat, lng },
+	zoom: 4,
+	center: { lat, lng },
 });
 
 // 创建标记
 const marker = new Map.marker({
-  position: { lat, lng },
-  title: "Hello Marker",
+	position: { lat, lng },
+	title: "Hello Marker",
 });
 
 // 地图上添加标记
@@ -74,7 +79,7 @@ marker.setMap(map);
 
 ```jsx
 <Map zoom={4} center={(lat, lng)}>
-  <Marker position={(lat, lng)} title={"Hello Marker"} />
+	<Marker position={(lat, lng)} title={"Hello Marker"} />
 </Map>
 ```
 
@@ -90,11 +95,11 @@ marker.setMap(map);
 
 ```jsx
 const Header = () => {
-  return (
-    <Jumbotron style={{ backgroundColor: "orange" }}>
-      <h1>TODO App</h1>
-    </Jumbotron>
-  );
+	return (
+		<Jumbotron style={{ backgroundColor: "orange" }}>
+			<h1>TODO App</h1>
+		</Jumbotron>
+	);
 };
 ```
 
@@ -102,19 +107,19 @@ const Header = () => {
 
 ```jsx
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {};
-  }
-  render() {
-    return (
-      <div className="dashboard">
-        <ToDoForm />
-        <ToDolist />
-      </div>
-    );
-  }
+		this.state = {};
+	}
+	render() {
+		return (
+			<div className="dashboard">
+				<ToDoForm />
+				<ToDolist />
+			</div>
+		);
+	}
 }
 ```
 

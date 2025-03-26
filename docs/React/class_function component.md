@@ -1,6 +1,15 @@
-# 面试官：说说对React中类组件和函数组件的理解？有什么区别？
+---
+title: 类组件和函数组件
+date: 2025/03/26
+tags:
+  - react
+  - 组件
+  - JavaScript
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/6c196d80-de39-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/6c196d80-de39-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、类组件
 
@@ -12,18 +21,14 @@
 
 ```jsx
 class Welcome extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return <h1>Hello, {this.props.name}</h1>
-  }
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return <h1>Hello, {this.props.name}</h1>;
+	}
 }
 ```
-
-
-
-
 
 ## 二、函数组件
 
@@ -31,13 +36,11 @@ class Welcome extends React.Component {
 
 ```jsx
 function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>;
+	return <h1>Hello, {props.name}</h1>;
 }
 ```
 
 函数第一个参数为`props`用于接收父组件传递过来的参数
-
-
 
 ## 三、区别
 
@@ -51,8 +54,6 @@ function Welcome(props) {
 
 - 获取渲染的值
 
-
-
 ### 编写形式
 
 两者最明显的区别在于编写形式的不同，同一种功能的实现可以分别对应类组件和函数组件的编写形式
@@ -61,7 +62,7 @@ function Welcome(props) {
 
 ```jsx
 function Welcome(props) {
-  return <h1>Hello, {props.name}</h1>;
+	return <h1>Hello, {props.name}</h1>;
 }
 ```
 
@@ -69,16 +70,14 @@ function Welcome(props) {
 
 ```jsx
 class Welcome extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return <h1>Hello, {this.props.name}</h1>
-  }
+	constructor(props) {
+		super(props);
+	}
+	render() {
+		return <h1>Hello, {this.props.name}</h1>;
+	}
 }
 ```
-
-
 
 ### 状态管理
 
@@ -88,21 +87,18 @@ class Welcome extends React.Component {
 
 ```jsx
 const FunctionalComponent = () => {
-    const [count, setCount] = React.useState(0);
+	const [count, setCount] = React.useState(0);
 
-    return (
-        <div>
-            <p>count: {count}</p >
-            <button onClick={() => setCount(count + 1)}>Click</button>
-        </div>
-    );
+	return (
+		<div>
+			<p>count: {count}</p>
+			<button onClick={() => setCount(count + 1)}>Click</button>
+		</div>
+	);
 };
-
 ```
 
 在使用`hooks`情况下，一般如果函数组件调用`state`，则需要创建一个类组件或者`state`提升到你的父组件中，然后通过`props`对象传递到子组件
-
-
 
 ### 生命周期
 
@@ -114,10 +110,10 @@ const FunctionalComponent = () => {
 
 ```jsx
 const FunctionalComponent = () => {
-    useEffect(() => {
-        console.log("Hello");
-    }, []);
-    return <h1>Hello, World</h1>;
+	useEffect(() => {
+		console.log("Hello");
+	}, []);
+	return <h1>Hello, World</h1>;
 };
 ```
 
@@ -127,48 +123,41 @@ const FunctionalComponent = () => {
 
 ```jsx
 const FunctionalComponent = () => {
- React.useEffect(() => {
-   return () => {
-     console.log("Bye");
-   };
- }, []);
- return <h1>Bye, World</h1>;
+	React.useEffect(() => {
+		return () => {
+			console.log("Bye");
+		};
+	}, []);
+	return <h1>Bye, World</h1>;
 };
-
 ```
-
-
-
-
 
 ### 调用方式
 
 如果是一个函数组件，调用则是执行函数即可：
 
 ```jsx
-// 你的代码 
-function SayHi() { 
-    return <p>Hello, React</p > 
-} 
-// React内部 
-const result = SayHi(props) // » <p>Hello, React</p >
+// 你的代码
+function SayHi() {
+	return <p>Hello, React</p>;
+}
+// React内部
+const result = SayHi(props); // » <p>Hello, React</p >
 ```
 
 如果是一个类组件，则需要将组件进行实例化，然后调用实例对象的`render`方法：
 
 ```jsx
-// 你的代码 
-class SayHi extends React.Component { 
-    render() { 
-        return <p>Hello, React</p > 
-    } 
-} 
-// React内部 
-const instance = new SayHi(props) // » SayHi {} 
-const result = instance.render() // » <p>Hello, React</p >
+// 你的代码
+class SayHi extends React.Component {
+	render() {
+		return <p>Hello, React</p>;
+	}
+}
+// React内部
+const instance = new SayHi(props); // » SayHi {}
+const result = instance.render(); // » <p>Hello, React</p >
 ```
-
-
 
 ### 获取渲染的值
 
@@ -178,17 +167,15 @@ const result = instance.render() // » <p>Hello, React</p >
 
 ```jsx
 function ProfilePage(props) {
-  const showMessage = () => {
-    alert('Followed ' + props.user);
-  }
+	const showMessage = () => {
+		alert("Followed " + props.user);
+	};
 
-  const handleClick = () => {
-    setTimeout(showMessage, 3000);
-  }
+	const handleClick = () => {
+		setTimeout(showMessage, 3000);
+	};
 
-  return (
-    <button onClick={handleClick}>Follow</button>
-  )
+	return <button onClick={handleClick}>Follow</button>;
 }
 ```
 
@@ -196,17 +183,17 @@ function ProfilePage(props) {
 
 ```jsx
 class ProfilePage extends React.Component {
-  showMessage() {
-    alert('Followed ' + this.props.user);
-  }
+	showMessage() {
+		alert("Followed " + this.props.user);
+	}
 
-  handleClick() {
-    setTimeout(this.showMessage.bind(this), 3000);
-  }
+	handleClick() {
+		setTimeout(this.showMessage.bind(this), 3000);
+	}
 
-  render() {
-    return <button onClick={this.handleClick.bind(this)}>Follow</button>
-  }
+	render() {
+		return <button onClick={this.handleClick.bind(this)}>Follow</button>;
+	}
 }
 ```
 
@@ -216,8 +203,6 @@ class ProfilePage extends React.Component {
 
 而函数组件，本身就不存在`this`，`props`并不发生改变，因此同样是点击，`alert`的内容仍旧是之前的内容
 
-
-
 ### 小结
 
 两种组件都有各自的优缺点
@@ -225,8 +210,6 @@ class ProfilePage extends React.Component {
 函数组件语法更短、更简单，这使得它更容易开发、理解和测试
 
 而类组件也会因大量使用 `this `而让人感到困惑
-
-
 
 ## 参考文献
 

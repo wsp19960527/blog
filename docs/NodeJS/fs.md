@@ -1,8 +1,14 @@
-# 面试官：说说对 Node 中的 fs模块的理解? 有哪些常用方法
+---
+title: Node 中的 fs模块
+date: 2025/03/26
+tags:
+  - Node
+  - fs
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/a141e5c0-c46a-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/a141e5c0-c46a-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -13,12 +19,10 @@ fs（filesystem），该模块提供本地文件的读写能力，基本上是`P
 导入模块如下：
 
 ```js
-const fs = require('fs');
+const fs = require("fs");
 ```
 
 这个模块对所有文件系统操作提供异步（不具有`sync` 后缀）和同步（具有 `sync` 后缀）两种操作方式，而供开发者选择
-
-
 
 ### 二、文件知识
 
@@ -28,13 +32,11 @@ const fs = require('fs');
 - 标识位 flag
 - 文件描述为 fd
 
-
-
 ### 权限位 mode
 
- ![](https://static.vue-js.com/4f4d41a0-c46b-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/4f4d41a0-c46b-11eb-ab90-d9ae814b240d.png)
 
-针对文件所有者、文件所属组、其他用户进行权限分配，其中类型又分成读、写和执行，具备权限位4、2、1，不具备权限为0
+针对文件所有者、文件所属组、其他用户进行权限分配，其中类型又分成读、写和执行，具备权限位 4、2、1，不具备权限为 0
 
 如在`linux`查看文件权限位：
 
@@ -44,8 +46,6 @@ drwxr-xr-x 1 PandaShen 197121 0 Jun 28 14:41 core
 ```
 
 在开头前十位中，`d`为文件夹，`-`为文件，后九位就代表当前用户、用户所属组和其他用户的权限位，按每三位划分，分别代表读（r）、写（w）和执行（x），- 代表没有当前位对应的权限
-
-
 
 ### 标识位
 
@@ -65,8 +65,6 @@ drwxr-xr-x 1 PandaShen 197121 0 Jun 28 14:41 core
 | a+   | 读取并追加写入，不存在则创建。                           |
 | ax+  | 与 a+ 类似，排他方式打开。                               |
 
-
-
 ### 文件描述为 fd
 
 操作系统会为每个打开的文件分配一个名为文件描述符的数值标识，文件操作使用这些文件描述符来识别与追踪每个特定的文件
@@ -74,8 +72,6 @@ drwxr-xr-x 1 PandaShen 197121 0 Jun 28 14:41 core
 `Window `系统使用了一个不同但概念类似的机制来追踪资源，为方便用户，`NodeJS `抽象了不同操作系统间的差异，为所有打开的文件分配了数值的文件描述符
 
 在 `NodeJS `中，每操作一个文件，文件描述符是递增的，文件描述符一般从 `3` 开始，因为前面有 `0`、`1`、`2`三个比较特殊的描述符，分别代表 `process.stdin`（标准输入）、`process.stdout`（标准输出）和 `process.stderr`（错误输出）
-
-
 
 ## 三、方法
 
@@ -87,11 +83,9 @@ drwxr-xr-x 1 PandaShen 197121 0 Jun 28 14:41 core
 - 文件拷贝
 - 创建目录
 
-
-
 ### 文件读取
 
-####  fs.readFileSync
+#### fs.readFileSync
 
 同步读取，参数如下：
 
@@ -110,8 +104,6 @@ console.log(buf); // <Buffer 48 65 6c 6c 6f>
 console.log(data); // Hello
 ```
 
-
-
 #### fs.readFile
 
 异步读取方法 `readFile` 与 `readFileSync` 的前两个参数相同，最后一个参数为回调函数，函数内有两个参数 `err`（错误）和 `data`（数据），该方法没有返回值，回调函数在读取文件成功后执行
@@ -120,13 +112,11 @@ console.log(data); // Hello
 const fs = require("fs");
 
 fs.readFile("1.txt", "utf8", (err, data) => {
-   if(!err){
-       console.log(data); // Hello
-   }
+	if (!err) {
+		console.log(data); // Hello
+	}
 });
 ```
-
-
 
 ### 文件写入
 
@@ -149,8 +139,6 @@ let data = fs.readFileSync("2.txt", "utf8");
 console.log(data); // Hello world
 ```
 
-
-
 #### writeFile
 
 异步写入，`writeFile` 与 `writeFileSync` 的前三个参数相同，最后一个参数为回调函数，函数内有一个参数 `err`（错误），回调函数在文件写入数据成功后执行
@@ -158,16 +146,14 @@ console.log(data); // Hello world
 ```js
 const fs = require("fs");
 
-fs.writeFile("2.txt", "Hello world", err => {
-    if (!err) {
-        fs.readFile("2.txt", "utf8", (err, data) => {
-            console.log(data); // Hello world
-        });
-    }
+fs.writeFile("2.txt", "Hello world", (err) => {
+	if (!err) {
+		fs.readFile("2.txt", "utf8", (err, data) => {
+			console.log(data); // Hello world
+		});
+	}
 });
 ```
-
-
 
 ### 文件追加写入
 
@@ -186,8 +172,6 @@ fs.appendFileSync("3.txt", " world");
 let data = fs.readFileSync("3.txt", "utf8");
 ```
 
-
-
 #### appendFile
 
 异步追加写入方法 `appendFile` 与 `appendFileSync` 的前三个参数相同，最后一个参数为回调函数，函数内有一个参数 `err`（错误），回调函数在文件追加写入数据成功后执行
@@ -195,16 +179,14 @@ let data = fs.readFileSync("3.txt", "utf8");
 ```js
 const fs = require("fs");
 
-fs.appendFile("3.txt", " world", err => {
-    if (!err) {
-        fs.readFile("3.txt", "utf8", (err, data) => {
-            console.log(data); // Hello world
-        });
-    }
+fs.appendFile("3.txt", " world", (err) => {
+	if (!err) {
+		fs.readFile("3.txt", "utf8", (err, data) => {
+			console.log(data); // Hello world
+		});
+	}
 });
 ```
-
-
 
 ### 文件拷贝
 
@@ -221,8 +203,6 @@ let data = fs.readFileSync("4.txt", "utf8");
 console.log(data); // Hello world
 ```
 
-
-
 #### copyFile
 
 异步拷贝
@@ -231,13 +211,11 @@ console.log(data); // Hello world
 const fs = require("fs");
 
 fs.copyFile("3.txt", "4.txt", () => {
-    fs.readFile("4.txt", "utf8", (err, data) => {
-        console.log(data); // Hello world
-    });
+	fs.readFile("4.txt", "utf8", (err, data) => {
+		console.log(data); // Hello world
+	});
 });
 ```
-
-
 
 ### 创建目录
 
@@ -247,24 +225,18 @@ fs.copyFile("3.txt", "4.txt", () => {
 
 ```js
 // 假设已经有了 a 文件夹和 a 下的 b 文件夹
-fs.mkdirSync("a/b/c")
+fs.mkdirSync("a/b/c");
 ```
-
-
 
 #### mkdir
 
 异步创建，第二个参数为回调函数
 
 ```js
-fs.mkdir("a/b/c", err => {
-    if (!err) console.log("创建成功");
+fs.mkdir("a/b/c", (err) => {
+	if (!err) console.log("创建成功");
 });
 ```
-
-
-
-
 
 ## 参考文献
 

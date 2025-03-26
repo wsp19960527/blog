@@ -1,6 +1,14 @@
-# 面试官：ajax原理是什么？如何实现？
+---
+title: ajax原理是什么？如何实现？
+date: 2025/03/26
+tags:
+  - js
+  - ajax
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/a35a2950-7b2a-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/a35a2950-7b2a-11eb-ab90-d9ae814b240d.png)
 
 ## 一、是什么
 
@@ -12,7 +20,7 @@
 
 流程图如下：
 
- ![](https://static.vue-js.com/af42de10-7b2a-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/af42de10-7b2a-11eb-85f6-6fac77c0c9b3.png)
 
 下面举个例子：
 
@@ -21,8 +29,6 @@
 `Ajax`请求数据流程与“领导想找小李汇报一下工作”类似，上述秘书就相当于`XMLHttpRequest`对象，领导相当于浏览器，响应数据相当于小李
 
 浏览器可以发送`HTTP`请求后，接着做其他事情，等收到`XHR`返回来的数据再进行操作
-
-
 
 ## 二、实现过程
 
@@ -40,17 +46,13 @@
 
 - 将处理结果更新到 `HTML `页面中
 
-
-
-### 创建XMLHttpRequest对象
+### 创建 XMLHttpRequest 对象
 
 通过`XMLHttpRequest()` 构造函数用于初始化一个 `XMLHttpRequest` 实例对象
 
 ```js
 const xhr = new XMLHttpRequest();
 ```
-
-
 
 ### 与服务器建立连接
 
@@ -68,19 +70,16 @@ xhr.open(method, url, [async][, user][, password])
 
 - `async`：布尔值，表示是否异步执行操作，默认为`true`
 
--  `user`: 可选的用户名用于认证用途；默认为`null
-
+- `user`: 可选的用户名用于认证用途；默认为`null
 
 - `password`: 可选的密码用于认证用途，默认为`null
-
-
 
 ### 给服务端发送数据
 
 通过 `XMLHttpRequest` 对象的 `send()` 方法，将客户端页面的数据发送给服务端
 
 ```js
-xhr.send([body])
+xhr.send([body]);
 ```
 
 `body`: 在 `XHR` 请求中要发送的数据体，如果不传递数据则为 `null`
@@ -90,9 +89,7 @@ xhr.send([body])
 - 将请求数据添加到`open()`方法中的`url`地址中
 - 发送请求数据中的`send()`方法中参数设置为`null`
 
-
-
-### 绑定onreadystatechange事件
+### 绑定 onreadystatechange 事件
 
 `onreadystatechange` 事件用于监听服务器端的通信状态，主要监听的属性为`XMLHttpRequest.readyState` ,
 
@@ -107,23 +104,20 @@ xhr.send([body])
 举个例子：
 
 ```js
-const request = new XMLHttpRequest()
-request.onreadystatechange = function(e){
-    if(request.readyState === 4){ // 整个请求过程完毕
-        if(request.status >= 200 && request.status <= 300){
-            console.log(request.responseText) // 服务端返回的结果
-        }else if(request.status >=400){
-            console.log("错误信息：" + request.status)
-        }
-    }
-}
-request.open('POST','http://xxxx')
-request.send()
+const request = new XMLHttpRequest();
+request.onreadystatechange = function (e) {
+	if (request.readyState === 4) {
+		// 整个请求过程完毕
+		if (request.status >= 200 && request.status <= 300) {
+			console.log(request.responseText); // 服务端返回的结果
+		} else if (request.status >= 400) {
+			console.log("错误信息：" + request.status);
+		}
+	}
+};
+request.open("POST", "http://xxxx");
+request.send();
 ```
-
-
-
-
 
 ## 三、封装
 
@@ -168,15 +162,17 @@ function ajax(options) {
 
 ```js
 ajax({
-    type: 'post',
-    dataType: 'json',
-    data: {},
-    url: 'https://xxxx',
-    success: function(text,xml){//请求成功后的回调函数
-        console.log(text)
-    },
-    fail: function(status){////请求失败后的回调函数
-        console.log(status)
-    }
-})
+	type: "post",
+	dataType: "json",
+	data: {},
+	url: "https://xxxx",
+	success: function (text, xml) {
+		//请求成功后的回调函数
+		console.log(text);
+	},
+	fail: function (status) {
+		////请求失败后的回调函数
+		console.log(status);
+	},
+});
 ```

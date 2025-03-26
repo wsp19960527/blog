@@ -1,4 +1,13 @@
-# 面试官：说说如何在 React 项目中应用 TypeScript？
+---
+title: React 项目中应用 TypeScript
+date: 2025/03/26
+tags:
+  - ts
+  - typescript
+  - React
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/a98974e0-13bc-11ec-a752-75723a64e8f5.png)
 
@@ -38,9 +47,9 @@ npm i @types/react-dom -s
 import * as React from "React";
 
 export const Logo = (props) => {
-  const { logo, className, alt } = props;
+	const { logo, className, alt } = props;
 
-  return <img src={logo} className={className} alt={alt} />;
+	return <img src={logo} className={className} alt={alt} />;
 };
 ```
 
@@ -50,15 +59,15 @@ export const Logo = (props) => {
 import * as React from "React";
 
 interface IProps {
-  logo?: string;
-  className?: string;
-  alt?: string;
+	logo?: string;
+	className?: string;
+	alt?: string;
 }
 
 export const Logo = (props: IProps) => {
-  const { logo, className, alt } = props;
+	const { logo, className, alt } = props;
 
-  return <img src={logo} className={className} alt={alt} />;
+	return <img src={logo} className={className} alt={alt} />;
 };
 ```
 
@@ -66,10 +75,10 @@ export const Logo = (props: IProps) => {
 
 ```ts
 interface IProps {
-  logo?: string;
-  className?: string;
-  alt?: string;
-  children?: ReactNode;
+	logo?: string;
+	className?: string;
+	alt?: string;
+	children?: ReactNode;
 }
 ```
 
@@ -77,9 +86,9 @@ interface IProps {
 
 ```tsx
 export const Logo: React.FC<IProps> = (props) => {
-  const { logo, className, alt } = props;
+	const { logo, className, alt } = props;
 
-  return <img src={logo} className={className} alt={alt} />;
+	return <img src={logo} className={className} alt={alt} />;
 };
 ```
 
@@ -98,19 +107,19 @@ export const Logo: React.FC<IProps> = (props) => {
 import * as React from "React";
 
 interface IProps {
-  color: string;
-  size?: string;
+	color: string;
+	size?: string;
 }
 interface IState {
-  count: number;
+	count: number;
 }
 class App extends React.Component<IProps, IState> {
-  public state = {
-    count: 1,
-  };
-  public render() {
-    return <div>Hello world</div>;
-  }
+	public state = {
+		count: 1,
+	};
+	public render() {
+		return <div>Hello world</div>;
+	}
 }
 ```
 
@@ -120,9 +129,9 @@ class App extends React.Component<IProps, IState> {
 
 ```ts
 class Component<P, S> {
-  readonly props: Readonly<{ children?: ReactNode }> & Readonly<P>;
+	readonly props: Readonly<{ children?: ReactNode }> & Readonly<P>;
 
-  state: Readonly<S>;
+	state: Readonly<S>;
 }
 ```
 

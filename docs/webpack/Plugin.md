@@ -1,10 +1,17 @@
-# 面试官：说说webpack中常见的Plugin？解决了什么问题？
+---
+title: webpack中常见的Plugin
+date: 2025/03/26
+tags:
+  - webpack
+  - plugin
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/8d3978a0-a7c2-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/8d3978a0-a7c2-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
+
 `Plugin`（Plug-in）是一种计算机应用程序，它和主应用程序互相交互，以提供特定的功能
 
 是一种遵循一定规范的应用程序接口编写出来的程序，只能运行在程序规定的系统下，因为其需要调用原纯净系统提供的函数库或者数据
@@ -31,8 +38,6 @@ module.exports = {
 };
 ```
 
-
-
 ## 二、特性
 
 其本质是一个具有`apply`方法`javascript`对象
@@ -40,14 +45,14 @@ module.exports = {
 `apply` 方法会被 `webpack compiler `调用，并且在整个编译生命周期都可以访问 `compiler `对象
 
 ```javascript
-const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+const pluginName = "ConsoleLogOnBuildWebpackPlugin";
 
 class ConsoleLogOnBuildWebpackPlugin {
-  apply(compiler) {
-    compiler.hooks.run.tap(pluginName, (compilation) => {
-      console.log('webpack 构建过程开始！');
-    });
-  }
+	apply(compiler) {
+		compiler.hooks.run.tap(pluginName, (compilation) => {
+			console.log("webpack 构建过程开始！");
+		});
+	}
 }
 
 module.exports = ConsoleLogOnBuildWebpackPlugin;
@@ -68,15 +73,11 @@ module.exports = ConsoleLogOnBuildWebpackPlugin;
 - done： 完成所有的编译过程
 - failed： 编译失败的时候
 
-
-
-## 三、常见的Plugin
+## 三、常见的 Plugin
 
 常见的`plugin`有如图所示：
 
 ![](https://static.vue-js.com/bd749400-a7c2-11eb-85f6-6fac77c0c9b3.png)
-
-
 
 下面介绍几个常用的插件用法：
 
@@ -98,7 +99,7 @@ module.exports = {
        title: "My App",
        filename: "app.html",
        template: "./src/html/index.html"
-     }) 
+     })
   ]
 };
 ```
@@ -107,23 +108,21 @@ module.exports = {
 <!--./src/html/index.html-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%=htmlWebpackPlugin.options.title%></title>
-</head>
-<body>
-    <h1>html-webpack-plugin</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title><%=htmlWebpackPlugin.options.title%></title>
+	</head>
+	<body>
+		<h1>html-webpack-plugin</h1>
+	</body>
 </html>
 ```
 
 在 `html` 模板中，可以通过 `<%=htmlWebpackPlugin.options.XXX%>` 的方式获取配置的值
 
 更多的配置可以自寻查找
-
-
 
 ### clean-webpack-plugin
 
@@ -144,8 +143,6 @@ module.exports = {
   ]
 }
 ```
-
-
 
 ### mini-css-extract-plugin
 
@@ -183,8 +180,6 @@ module.exports = {
 }
 ```
 
-
-
 ### DefinePlugin
 
 允许在编译时创建配置的全局对象，是一个`webpack`内置的插件，不需要安装
@@ -208,10 +203,6 @@ module.exports = {
 <link rel="icon" href="<%= BASE_URL%>favicon.ico>"
 ```
 
-
-
-
-
 ### copy-webpack-plugin
 
 复制文件或目录到执行区域，如`vue`的打包过程中，如果我们将一些文件放到`public`的目录下，那么这个目录会被复制到`dist`文件夹中
@@ -222,17 +213,15 @@ npm install copy-webpack-plugin -D
 
 ```js
 new CopyWebpackPlugin({
-    parrerns:[
-        {
-            from:"public",
-            globOptions:{
-                ignore:[
-                    '**/index.html'
-                ]
-            }
-        }
-    ]
-})
+	parrerns: [
+		{
+			from: "public",
+			globOptions: {
+				ignore: ["**/index.html"],
+			},
+		},
+	],
+});
 ```
 
 复制的规则在`patterns`属性中设置：
@@ -242,9 +231,8 @@ new CopyWebpackPlugin({
 
 - globOptions：设置一些额外的选项，其中可以编写需要忽略的文件
 
-
-
 ## 参考文献
+
 - https://webpack.docschina.org/concepts/plugins/
 - https://baike.baidu.com/item/Plugin
 - https://segmentfault.com/a/1190000018695134

@@ -1,6 +1,15 @@
-# 面试官：你是怎么理解ES6新增Set、Map两种数据结构的？
+---
+title: Set、Map
+date: 2025/03/26
+tags:
+  - es6
+  - set
+  - map
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/2b947d00-560c-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/2b947d00-560c-11eb-85f6-6fac77c0c9b3.png)
 
 如果要用一句来描述，我们可以说
 
@@ -9,10 +18,10 @@
 什么是集合？什么又是字典？
 
 - 集合  
-是由一堆无序的、相关联的，且不重复的内存结构【数学中称为元素】组成的组合
+  是由一堆无序的、相关联的，且不重复的内存结构【数学中称为元素】组成的组合
 
-- 字典   
-是一些元素的集合。每个元素有一个称作key 的域，不同元素的key 各不相同
+- 字典  
+  是一些元素的集合。每个元素有一个称作 key 的域，不同元素的 key 各不相同
 
 区别？
 
@@ -28,8 +37,6 @@
 ```js
 const s = new Set();
 ```
-
-
 
 ### 增删改查
 
@@ -56,7 +63,7 @@ s.add(1).add(2).add(2); // 2只被添加了一次
 删除某个值，返回一个布尔值，表示删除是否成功
 
 ```js
-s.delete(1)
+s.delete(1);
 ```
 
 ### has()
@@ -64,7 +71,7 @@ s.delete(1)
 返回一个布尔值，判断该值是否为`Set`的成员
 
 ```js
-s.has(2)
+s.has(2);
 ```
 
 ### clear()
@@ -72,10 +79,8 @@ s.has(2)
 清除所有成员，没有返回值
 
 ```js
-s.clear()
+s.clear();
 ```
-
-
 
 ### 遍历
 
@@ -93,24 +98,24 @@ s.clear()
 `keys`方法、`values`方法、`entries`方法返回的都是遍历器对象
 
 ```javascript
-let set = new Set(['red', 'green', 'blue']);
+let set = new Set(["red", "green", "blue"]);
 
 for (let item of set.keys()) {
-  console.log(item);
+	console.log(item);
 }
 // red
 // green
 // blue
 
 for (let item of set.values()) {
-  console.log(item);
+	console.log(item);
 }
 // red
 // green
 // blue
 
 for (let item of set.entries()) {
-  console.log(item);
+	console.log(item);
 }
 // ["red", "red"]
 // ["green", "green"]
@@ -121,7 +126,7 @@ for (let item of set.entries()) {
 
 ```javascript
 let set = new Set([1, 4, 9]);
-set.forEach((value, key) => console.log(key + ' : ' + value))
+set.forEach((value, key) => console.log(key + " : " + value));
 // 1 : 1
 // 4 : 4
 // 9 : 9
@@ -150,15 +155,13 @@ let union = new Set([...a, ...b]);
 // Set {1, 2, 3, 4}
 
 // 交集
-let intersect = new Set([...a].filter(x => b.has(x)));
+let intersect = new Set([...a].filter((x) => b.has(x)));
 // set {2, 3}
 
 // （a 相对于 b 的）差集
-let difference = new Set([...a].filter(x => !b.has(x)));
+let difference = new Set([...a].filter((x) => !b.has(x)));
 // Set {1}
 ```
-
-
 
 ## 二、Map
 
@@ -167,10 +170,8 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 `Map`本身是一个构造函数，用来生成 `Map` 数据结构
 
 ```js
-const m = new Map()
+const m = new Map();
 ```
-
-
 
 ### 增删改查
 
@@ -189,13 +190,11 @@ const m = new Map()
 
 ```javascript
 const map = new Map();
-map.set('foo', true);
-map.set('bar', false);
+map.set("foo", true);
+map.set("bar", false);
 
-map.size // 2
+map.size; // 2
 ```
-
-
 
 ### set()
 
@@ -208,13 +207,11 @@ map.size // 2
 ```javascript
 const m = new Map();
 
-m.set('edition', 6)        // 键是字符串
-m.set(262, 'standard')     // 键是数值
-m.set(undefined, 'nah')    // 键是 undefined
-m.set(1, 'a').set(2, 'b').set(3, 'c') // 链式操作
+m.set("edition", 6); // 键是字符串
+m.set(262, "standard"); // 键是数值
+m.set(undefined, "nah"); // 键是 undefined
+m.set(1, "a").set(2, "b").set(3, "c"); // 链式操作
 ```
-
-
 
 ### get()
 
@@ -223,13 +220,13 @@ m.set(1, 'a').set(2, 'b').set(3, 'c') // 链式操作
 ```javascript
 const m = new Map();
 
-const hello = function() {console.log('hello');};
-m.set(hello, 'Hello ES6!') // 键是函数
+const hello = function () {
+	console.log("hello");
+};
+m.set(hello, "Hello ES6!"); // 键是函数
 
-m.get(hello)  // Hello ES6!
+m.get(hello); // Hello ES6!
 ```
-
-
 
 ### has()
 
@@ -238,17 +235,15 @@ m.get(hello)  // Hello ES6!
 ```javascript
 const m = new Map();
 
-m.set('edition', 6);
-m.set(262, 'standard');
-m.set(undefined, 'nah');
+m.set("edition", 6);
+m.set(262, "standard");
+m.set(undefined, "nah");
 
-m.has('edition')     // true
-m.has('years')       // false
-m.has(262)           // true
-m.has(undefined)     // true
+m.has("edition"); // true
+m.has("years"); // false
+m.has(262); // true
+m.has(undefined); // true
 ```
-
-
 
 ### delete()
 
@@ -256,11 +251,11 @@ m.has(undefined)     // true
 
 ```javascript
 const m = new Map();
-m.set(undefined, 'nah');
-m.has(undefined)     // true
+m.set(undefined, "nah");
+m.has(undefined); // true
 
-m.delete(undefined)
-m.has(undefined)       // false
+m.delete(undefined);
+m.has(undefined); // false
 ```
 
 ### clear()
@@ -269,15 +264,13 @@ m.has(undefined)       // false
 
 ```javascript
 let map = new Map();
-map.set('foo', true);
-map.set('bar', false);
+map.set("foo", true);
+map.set("bar", false);
 
-map.size // 2
-map.clear()
-map.size // 0
+map.size; // 2
+map.clear();
+map.size; // 0
 ```
-
-
 
 ### 遍历
 
@@ -292,44 +285,44 @@ map.size // 0
 
 ```javascript
 const map = new Map([
-  ['F', 'no'],
-  ['T',  'yes'],
+	["F", "no"],
+	["T", "yes"],
 ]);
 
 for (let key of map.keys()) {
-  console.log(key);
+	console.log(key);
 }
 // "F"
 // "T"
 
 for (let value of map.values()) {
-  console.log(value);
+	console.log(value);
 }
 // "no"
 // "yes"
 
 for (let item of map.entries()) {
-  console.log(item[0], item[1]);
+	console.log(item[0], item[1]);
 }
 // "F" "no"
 // "T" "yes"
 
 // 或者
 for (let [key, value] of map.entries()) {
-  console.log(key, value);
+	console.log(key, value);
 }
 // "F" "no"
 // "T" "yes"
 
 // 等同于使用map.entries()
 for (let [key, value] of map) {
-  console.log(key, value);
+	console.log(key, value);
 }
 // "F" "no"
 // "T" "yes"
 
-map.forEach(function(value, key, map) {
-  console.log("Key: %s, Value: %s", key, value);
+map.forEach(function (value, key, map) {
+	console.log("Key: %s, Value: %s", key, value);
 });
 ```
 
@@ -346,7 +339,10 @@ const ws = new WeakSet();
 `WeakSet `可以接受一个具有 `Iterable `接口的对象作为参数
 
 ```js
-const a = [[1, 2], [3, 4]];
+const a = [
+	[1, 2],
+	[3, 4],
+];
 const ws = new WeakSet(a);
 // WeakSet {[1, 2], [3, 4]}
 ```
@@ -359,22 +355,20 @@ const ws = new WeakSet(a);
 `WeakSet`只能成员只能是引用类型，而不能是其他类型的值
 
 ```js
-let ws=new WeakSet();
+let ws = new WeakSet();
 
 // 成员不是引用类型
-let weakSet=new WeakSet([2,3]);
-console.log(weakSet) // 报错
+let weakSet = new WeakSet([2, 3]);
+console.log(weakSet); // 报错
 
 // 成员为引用类型
-let obj1={name:1}
-let obj2={name:1}
-let ws=new WeakSet([obj1,obj2]); 
-console.log(ws) //WeakSet {{…}, {…}}
+let obj1 = { name: 1 };
+let obj2 = { name: 1 };
+let ws = new WeakSet([obj1, obj2]);
+console.log(ws); //WeakSet {{…}, {…}}
 ```
 
 `WeakSet `里面的引用只要在外部消失，它在 `WeakSet `里面的引用就会自动消失
-
-
 
 ### WeakMap
 
@@ -388,27 +382,30 @@ console.log(ws) //WeakSet {{…}, {…}}
 ```javascript
 // WeakMap 可以使用 set 方法添加成员
 const wm1 = new WeakMap();
-const key = {foo: 1};
+const key = { foo: 1 };
 wm1.set(key, 2);
-wm1.get(key) // 2
+wm1.get(key); // 2
 
 // WeakMap 也可以接受一个数组，
 // 作为构造函数的参数
 const k1 = [1, 2, 3];
 const k2 = [4, 5, 6];
-const wm2 = new WeakMap([[k1, 'foo'], [k2, 'bar']]);
-wm2.get(k2) // "bar"
+const wm2 = new WeakMap([
+	[k1, "foo"],
+	[k2, "bar"],
+]);
+wm2.get(k2); // "bar"
 ```
 
 `WeakMap`只接受对象作为键名（`null`除外），不接受其他类型的值作为键名
 
 ```javascript
 const map = new WeakMap();
-map.set(1, 2)
+map.set(1, 2);
 // TypeError: 1 is not an object!
-map.set(Symbol(), 2)
+map.set(Symbol(), 2);
 // TypeError: Invalid value used as weak map key
-map.set(null, 2)
+map.set(null, 2);
 // TypeError: Invalid value used as weak map key
 ```
 
@@ -421,10 +418,10 @@ map.set(null, 2)
 ```javascript
 const wm = new WeakMap();
 
-const element = document.getElementById('example');
+const element = document.getElementById("example");
 
-wm.set(element, 'some information');
-wm.get(element) // "some information"
+wm.set(element, "some information");
+wm.get(element); // "some information"
 ```
 
 注意：`WeakMap` 弱引用的只是键名，而不是键值。键值依然是正常引用
@@ -434,15 +431,13 @@ wm.get(element) // "some information"
 ```js
 const wm = new WeakMap();
 let key = {};
-let obj = {foo: 1};
+let obj = { foo: 1 };
 
 wm.set(key, obj);
 obj = null;
-wm.get(key)
+wm.get(key);
 // Object {foo: 1}
 ```
-
-
 
 ## 参考文献
 

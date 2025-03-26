@@ -1,8 +1,20 @@
-# 面试官：与webpack类似的工具还有哪些？区别？
+---
+title: Rollup、Parcel、Snowpack、Vite
+date: 2025/03/26
+tags:
+  - webpack
+  - Rollup
+  - Parcel
+  - Snowpack
+  - Vite
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/8ed8d520-b1a4-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、模块化工具
+
 模块化是一种处理复杂系统分解为更好的可管理模块的方式
 
 可以用来分割，组织和打包应用。每个模块完成一个特定的子功能，所有的模块按某种方法组装起来，成为一个整体(`bundle`)
@@ -24,26 +36,26 @@
 ```js
 // ./src/messages.js
 export default {
-  hi: 'Hey Guys, I am zce~'
-}
+	hi: "Hey Guys, I am zce~",
+};
 
 // ./src/logger.js
-export const log = msg => {
-  console.log('---------- INFO ----------')
-  console.log(msg)
-  console.log('--------------------------')
-}
+export const log = (msg) => {
+	console.log("---------- INFO ----------");
+	console.log(msg);
+	console.log("--------------------------");
+};
 
-export const error = msg => {
-  console.error('---------- ERROR ----------')
-  console.error(msg)
-  console.error('---------------------------')
-}
+export const error = (msg) => {
+	console.error("---------- ERROR ----------");
+	console.error(msg);
+	console.error("---------------------------");
+};
 
 // ./src/index.js
-import { log } from './logger'
-import messages from './messages'
-log(messages.hi)
+import { log } from "./logger";
+import messages from "./messages";
+log(messages.hi);
 ```
 
 然后通过`rollup`进行打包
@@ -69,10 +81,6 @@ $ npx rollup ./src/index.js --file ./dist/bundle.js
 
 但是在用于打包` JavaScript` 库时，`rollup`比 `webpack` 更有优势，因为其打包出来的代码更小、更快，其存在的缺点可以忽略
 
-
-
-
-
 ### Parcel
 
 Parcel ，是一款完全零配置的前端打包器，它提供了 “傻瓜式” 的使用体验，只需了解简单的命令，就能构建前端应用程序
@@ -93,17 +101,17 @@ Parcel ，是一款完全零配置的前端打包器，它提供了 “傻瓜式
 </html>
 ```
 
-main.js文件通过`ES Moudle`方法导入其他模块成员
+main.js 文件通过`ES Moudle`方法导入其他模块成员
 
 ```js
 // ./src/main.js
-import { log } from './logger'
-log('hello parcel')
+import { log } from "./logger";
+log("hello parcel");
 // ./src/logger.js
-export const log = msg => {
-  console.log('---------- INFO ----------')
-  console.log(msg)
-}
+export const log = (msg) => {
+	console.log("---------- INFO ----------");
+	console.log(msg);
+};
 ```
 
 运行之后，使用命令打包
@@ -132,8 +140,6 @@ npx parcel src/index.html
 
 可以感受到，`Parcel `给开发者一种很大的自由度，只管去实现业务代码，其他事情用`Parcel`解决
 
-
-
 ### Snowpack
 
 Snowpack，是一种闪电般快速的前端构建工具，专为现代`Web`设计，较复杂的打包工具（如`Webpack`或`Parcel`）的替代方案，利用`JavaScript`的本机模块系统，避免不必要的工作并保持流畅的开发体验
@@ -142,9 +148,9 @@ Snowpack，是一种闪电般快速的前端构建工具，专为现代`Web`设�
 
 下图给出`webpack`与`snowpack`打包区别：
 
- ![](https://static.vue-js.com/79197830-b1a3-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/79197830-b1a3-11eb-85f6-6fac77c0c9b3.png)
 
-在重新构建每次变更时没有任何的时间浪费，只需要在浏览器中进行HMR更新
+在重新构建每次变更时没有任何的时间浪费，只需要在浏览器中进行 HMR 更新
 
 ### Vite
 
@@ -152,8 +158,8 @@ vite ，是一种新型前端构建工具，能够显著提升前端开发体验
 
 它主要由两部分组成：
 
-- 一个开发服务器，它基于 原生 ES 模块 提供了丰富的内建功能，如速度快到惊人的 [模块热更新HMR
-- 一套构建指令，它使用 Rollup打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源
+- 一个开发服务器，它基于 原生 ES 模块 提供了丰富的内建功能，如速度快到惊人的 [模块热更新 HMR
+- 一套构建指令，它使用 Rollup 打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源
 
 其作用类似`webpack `+ `webpack-dev-server`，其特点如下：
 
@@ -167,11 +173,9 @@ vite ，是一种新型前端构建工具，能够显著提升前端开发体验
 
 原理图如下所示：
 
- ![](https://static.vue-js.com/9f2eed30-b143-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/9f2eed30-b143-11eb-85f6-6fac77c0c9b3.png)
 
 在热模块`HMR`方面，当修改一个模块的时候，仅需让浏览器重新请求该模块即可，无须像`webpack`那样需要把该模块的相关依赖模块全部编译一次，效率更高
-
-
 
 ### webpack
 
@@ -181,14 +185,12 @@ vite ，是一种新型前端构建工具，能够显著提升前端开发体验
 
 - 智能解析：对 CommonJS 、 AMD 、ES6 的语法做了兼容
 - 万物模块：对 js、css、图片等资源文件都支持打包
-- 开箱即用：HRM、Tree-shaking等功能
+- 开箱即用：HRM、Tree-shaking 等功能
 - 代码分割：可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
 - 插件系统，具有强大的 Plugin 接口，具有更好的灵活性和扩展性
 - 易于调试：支持 SourceUrls 和 SourceMaps
 - 快速运行：webpack 使用异步 IO 并具有多级缓存，这使得 webpack 很快且在增量编译上更加快
 - 生态环境好：社区更丰富，出现的问题更容易解决
-
-
 
 ## 参考文献
 

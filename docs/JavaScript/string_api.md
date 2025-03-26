@@ -1,12 +1,19 @@
-# 面试官：JavaScript字符串的常用方法有哪些？
+---
+title: JavaScript字符串的常用方法
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+  - string
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/ceb6ebc0-65c1-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/ceb6ebc0-65c1-11eb-ab90-d9ae814b240d.png)
 
 ## 一、操作方法
 
 我们也可将字符串常用的操作方法归纳为增、删、改、查，需要知道字符串的特点是一旦创建了，就不可变
-
-
 
 ### 增
 
@@ -24,8 +31,6 @@ let result = stringValue.concat("world");
 console.log(result); // "hello world"
 console.log(stringValue); // "hello"
 ```
-
-
 
 ### 删
 
@@ -45,11 +50,9 @@ console.log(stringValue.slice(3)); // "lo world"
 console.log(stringValue.substring(3)); // "lo world"
 console.log(stringValue.substr(3)); // "lo world"
 console.log(stringValue.slice(3, 7)); // "lo w"
-console.log(stringValue.substring(3,7)); // "lo w"
+console.log(stringValue.substring(3, 7)); // "lo w"
 console.log(stringValue.substr(3, 7)); // "lo worl"
 ```
-
-
 
 ### 改
 
@@ -63,8 +66,6 @@ console.log(stringValue.substr(3, 7)); // "lo worl"
 - padStart()、padEnd()
 - toLowerCase()、 toUpperCase()
 
-
-
 #### trim()、trimLeft()、trimRight()
 
 删除前、后或前后所有空格符，再返回新的字符串
@@ -76,18 +77,14 @@ console.log(stringValue); // " hello world "
 console.log(trimmedStringValue); // "hello world"
 ```
 
-
-
 #### repeat()
 
 接收一个整数参数，表示要将字符串复制多少次，然后返回拼接所有副本后的结果
 
 ```js
 let stringValue = "na ";
-let copyResult = stringValue.repeat(2) // na na 
+let copyResult = stringValue.repeat(2); // na na
 ```
-
-
 
 #### padEnd()
 
@@ -99,8 +96,6 @@ console.log(stringValue.padStart(6)); // " foo"
 console.log(stringValue.padStart(9, ".")); // "......foo"
 ```
 
-
-
 ### toLowerCase()、 toUpperCase()
 
 大小写转化
@@ -110,8 +105,6 @@ let stringValue = "hello world";
 console.log(stringValue.toUpperCase()); // "HELLO WORLD"
 console.log(stringValue.toLowerCase()); // "hello world"
 ```
-
-
 
 ### 查
 
@@ -125,8 +118,6 @@ console.log(stringValue.toLowerCase()); // "hello world"
 
 - includes()
 
-  
-
 #### charAt()
 
 返回给定索引位置的字符，由传给方法的整数参数指定
@@ -136,8 +127,6 @@ let message = "abcde";
 console.log(message.charAt(2)); // "c"
 ```
 
-
-
 #### indexOf()
 
 从字符串开头去搜索传入的字符串，并返回位置（如果没找到，则返回 -1 ）
@@ -146,8 +135,6 @@ console.log(message.charAt(2)); // "c"
 let stringValue = "hello world";
 console.log(stringValue.indexOf("o")); // 4
 ```
-
-
 
 #### startWith()、includes()
 
@@ -161,10 +148,6 @@ console.log(message.includes("bar")); // true
 console.log(message.includes("qux")); // false
 ```
 
-
-
-
-
 ## 二、转换方法
 
 ### split
@@ -172,11 +155,9 @@ console.log(message.includes("qux")); // false
 把字符串按照指定的分割符，拆分成数组中的每一项
 
 ```js
-let str = "12+23+34"
-let arr = str.split("+") // [12,23,34]
+let str = "12+23+34";
+let arr = str.split("+"); // [12,23,34]
 ```
-
-
 
 ## 三、模板匹配方法
 
@@ -186,11 +167,9 @@ let arr = str.split("+") // [12,23,34]
 - search()
 - replace()
 
-
-
 ### match()
 
-接收一个参数，可以是一个正则表达式字符串，也可以是一个` RegExp `对象，返回数组
+接收一个参数，可以是一个正则表达式字符串，也可以是一个`RegExp`对象，返回数组
 
 ```js
 let text = "cat, bat, sat, fat";
@@ -199,19 +178,15 @@ let matches = text.match(pattern);
 console.log(matches[0]); // "cat"
 ```
 
-
-
 ### search()
 
-接收一个参数，可以是一个正则表达式字符串，也可以是一个` RegExp `对象，找到则返回匹配索引，否则返回 -1
+接收一个参数，可以是一个正则表达式字符串，也可以是一个`RegExp`对象，找到则返回匹配索引，否则返回 -1
 
 ```js
 let text = "cat, bat, sat, fat";
 let pos = text.search(/at/);
 console.log(pos); // 1
 ```
-
-
 
 ### replace()
 

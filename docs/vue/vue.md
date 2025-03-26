@@ -1,4 +1,11 @@
-# 面试官：有使用过 vue 吗？说说你对 vue 的理解
+---
+title: vue
+date: 2025/03/26
+tags:
+  - vue
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/02ac1620-3ac6-11eb-85f6-6fac77c0c9b3.png)
 

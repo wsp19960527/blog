@@ -2,12 +2,11 @@
 title: webpack
 date: 2024/03/03
 tags:
- - 模块化
- - webpack
+  - 模块化
+  - webpack
 categories:
- - fontend
+  - fontend
 ---
-
 
 ### 概念
 
@@ -16,22 +15,25 @@ categories:
 入口起点(entry point) 指示 webpack 应该使用哪个模块，来作为构建其内部 依赖图(dependency graph) 的开始。进入入口起点后，webpack 会找出有哪些模块和库是入口起点（直接和间接）依赖的。
 
 #### 输出
+
 output 属性告诉 webpack 在哪里输出它所创建的 bundle，以及如何命名这些文件。主要输出文件的默认值是 ./dist/main.js，其他生成文件默认放置在 ./dist 文件夹中。
 
 你可以通过在配置中指定一个 output 字段，来配置这些处理过程：
+
 ```js
-const path = require('path');
+const path = require("path");
 
 module.exports = {
-  entry: './path/to/my/entry/file.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'my-first-webpack.bundle.js',
-  },
+	entry: "./path/to/my/entry/file.js",
+	output: {
+		path: path.resolve(__dirname, "dist"),
+		filename: "my-first-webpack.bundle.js",
+	},
 };
 ```
 
 #### loader
+
 webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的自带能力。loader 让 webpack 能够去处理其他类型的文件，并将它们转换为有效 模块，以供应用程序使用，以及被添加到依赖图中。
 
 #### 插件(plugin)
@@ -39,121 +41,126 @@ webpack 只能理解 JavaScript 和 JSON 文件，这是 webpack 开箱可用的
 loader 用于转换某些类型的模块，而插件则可以用于执行范围更广的任务。包括：打包优化，资源管理，注入环境变量。
 
 想要使用一个插件，你只需要 require() 它，然后把它添加到 plugins 数组中。多数插件可以通过选项(option)自定义。你也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用 new 操作符来创建一个插件实例。
+
 ```js
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack'); // 用于访问内置插件
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack"); // 用于访问内置插件
 
 module.exports = {
-  module: {
-    rules: [{ test: /\.txt$/, use: 'raw-loader' }],
-  },
-  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+	module: {
+		rules: [{ test: /\.txt$/, use: "raw-loader" }],
+	},
+	plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
 };
 ```
 
 #### 模式(mode)
+
 通过选择 development, production 或 none 之中的一个，来设置 mode 参数，你可以启用 webpack 内置在相应环境下的优化。其默认值为 production。
+
 ```js
 module.exports = {
-  mode: 'production', //development, production, none
+	mode: "production", //development, production, none
 };
 ```
 
-#### 处理css 
+#### 处理 css
 
-如果需要处理css文件，需要的webpack加载器是 css-loader 和 style-loader 
+如果需要处理 css 文件，需要的 webpack 加载器是 css-loader 和 style-loader
 
-- css-loader：css-loader 用于解析处理CSS文件，将其转换为模块，并解析其中的@import和url()等语句。它使得在JavaScript中可以引入CSS文件，并可以处理CSS文件中的各种语法。
-- style-loader：style-loader 用于将CSS模块转换为 `<style>` 标签，并将其插入到页面的`<head>`中，使得样式能够通过JavaScript动态地加载到页面中。
+- css-loader：css-loader 用于解析处理 CSS 文件，将其转换为模块，并解析其中的@import 和 url()等语句。它使得在 JavaScript 中可以引入 CSS 文件，并可以处理 CSS 文件中的各种语法。
+- style-loader：style-loader 用于将 CSS 模块转换为 `<style>` 标签，并将其插入到页面的`<head>`中，使得样式能够通过 JavaScript 动态地加载到页面中。
 
-webpack配置如下：
+webpack 配置如下：
 
-``` js 
+```js
 //webpack.config.js
-const path = require('path');
+const path = require("path");
 module.exports = {
-  mode:"none",
-  entry:'./src/main.css',
-  output:{
-    filename:'bundle.js',
-    // path: path.join(__dirname, 'output') //指定输出目录
-  },
-  module:{
-    rules:[
-      {
-        test:/\.css$/, //匹配css文件
-        use:['style-loader','css-loader']
-      }
-    ]
-  }
-}
+	mode: "none",
+	entry: "./src/main.css",
+	output: {
+		filename: "bundle.js",
+		// path: path.join(__dirname, 'output') //指定输出目录
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/, //匹配css文件
+				use: ["style-loader", "css-loader"],
+			},
+		],
+	},
+};
 ```
+
 ::: tip
 loader 的执行顺序是从后往前执行
 :::
 
 #### 处理图片
 
-如果需要处理图片文件，需要的webpack加载器是 file-loader 
+如果需要处理图片文件，需要的 webpack 加载器是 file-loader
 
-- file-loader：用于处理文件模块，主要用于将文件复制到输出目录，并返回文件的URL。它可以处理各种类型的文件，例如图片、字体等，并根据配置将这些文件复制到输出目录，并返回文件在输出目录中的相对路径
+- file-loader：用于处理文件模块，主要用于将文件复制到输出目录，并返回文件的 URL。它可以处理各种类型的文件，例如图片、字体等，并根据配置将这些文件复制到输出目录，并返回文件在输出目录中的相对路径
 
-webpack配置如下：
+webpack 配置如下：
 
-``` js 
+```js
 //webpack.config.js
-const path = require('path');
+const path = require("path");
 module.exports = {
-  mode:"none",
-  entry:'./src/main.css',
-  output:{
-    filename:'bundle.js',
-    // path: path.join(__dirname, 'output') //指定输出目录
-  },
-  module:{
-    rules:[
-      {
-        test:/\.css$/, //匹配css文件
-        use:['style-loader','css-loader']
-      },
-      {
-        test: /\.(png|jpg|gif)$/i,
-        // use: [
-          // {
-          //   loader: 'file-loader',
-          //   options: {
-          //     name: '[name].[ext]',
-          //     outputPath: 'images/'
-          //   }
-          // }
-        // ]
-        // 最佳实践一般是小于10kb的文件使用 url-loader处理 大于的图片依然使用file-loader单独打包
-        use:{
-          loader:'url-loader',
-          options:{
-            limit: 10 * 1024
-          }
-        }
-      }
-    ]
-  }
-}
+	mode: "none",
+	entry: "./src/main.css",
+	output: {
+		filename: "bundle.js",
+		// path: path.join(__dirname, 'output') //指定输出目录
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/, //匹配css文件
+				use: ["style-loader", "css-loader"],
+			},
+			{
+				test: /\.(png|jpg|gif)$/i,
+				// use: [
+				// {
+				//   loader: 'file-loader',
+				//   options: {
+				//     name: '[name].[ext]',
+				//     outputPath: 'images/'
+				//   }
+				// }
+				// ]
+				// 最佳实践一般是小于10kb的文件使用 url-loader处理 大于的图片依然使用file-loader单独打包
+				use: {
+					loader: "url-loader",
+					options: {
+						limit: 10 * 1024,
+					},
+				},
+			},
+		],
+	},
+};
 ```
+
 ::: tip
 loader 的执行顺序是从后往前执行
 :::
 
 #### pugin
 
+#### webpack-merge
 
-#### webpack-merge 
 合并多个配置文件
 
 webpack.definePlugin 可以注入全局变量
 
-### 说说你对webpack的理解？解决了什么问题？
+### 说说你对 webpack 的理解？解决了什么问题？
 
- ![](https://static.vue-js.com/898ed570-a578-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/898ed570-a578-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、背景
 
@@ -178,10 +185,10 @@ webpack.definePlugin 可以注入全局变量
 
 ```js
 window.moduleA = {
-  method1: function () {
-    console.log('moduleA#method1')
-  }
-}
+	method1: function () {
+		console.log("moduleA#method1");
+	},
+};
 ```
 
 这种方式也并没有解决第一种方式的依赖等问题
@@ -191,25 +198,24 @@ window.moduleA = {
 ```js
 // module-a.js
 (function ($) {
-  var name = 'module-a'
+	var name = "module-a";
 
-  function method1 () {
-    console.log(name + '#method1')
-    $('body').animate({ margin: '200px' })
-  }
+	function method1() {
+		console.log(name + "#method1");
+		$("body").animate({ margin: "200px" });
+	}
 
-  window.moduleA = {
-    method1: method1
-  }
-})(jQuery)
+	window.moduleA = {
+		method1: method1,
+	};
+})(jQuery);
 ```
 
 上述的方式都是早期解决模块的方式，但是仍然存在一些没有解决的问题。例如，我们是用过`script`标签在页面引入这些模块的，这些模块的加载并不受代码的控制，时间一久维护起来也十分的麻烦
 
-理想的解决方式是，在页面中引入一个` JS `入口文件，其余用到的模块可以通过代码控制，按需加载进来
+理想的解决方式是，在页面中引入一个`JS`入口文件，其余用到的模块可以通过代码控制，按需加载进来
 
 除了模块加载的问题以外，还需要规定模块化的规范，如今流行的则是`CommonJS `、`ES Modules`
-
 
 ### 二、问题
 
@@ -220,17 +226,16 @@ window.moduleA = {
 现代前端开发已经变得十分的复杂，所以我们开发过程中会遇到如下的问题：
 
 - 需要通过模块化的方式来开发
-- 使用一些高级的特性来加快我们的开发效率或者安全性，比如通过ES6+、TypeScript开发脚本逻辑，通过sass、less等方式来编写css样式代码
+- 使用一些高级的特性来加快我们的开发效率或者安全性，比如通过 ES6+、TypeScript 开发脚本逻辑，通过 sass、less 等方式来编写 css 样式代码
 - 监听文件的变化来并且反映到浏览器上，提高开发的效率
 - JavaScript 代码需要模块化，HTML 和 CSS 这些资源文件也会面临需要被模块化的问题
 - 开发完成后我们还需要将代码进行压缩、合并以及其他相关的优化
 
 而`webpack`恰巧可以解决以上问题
 
-
 ### 三、是什么
 
-`webpack` 是一个用于现代` JavaScript `应用程序的静态模块打包工具
+`webpack` 是一个用于现代`JavaScript`应用程序的静态模块打包工具
 
 - 静态模块
 
@@ -238,7 +243,7 @@ window.moduleA = {
 
 当 `webpack `处理应用程序时，它会在内部构建一个依赖图，此依赖图对应映射到项目所需的每个模块（不再局限`js`文件），并生成一个或多个 `bundle`
 
- ![](https://static.vue-js.com/9ce194a0-a578-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/9ce194a0-a578-11eb-85f6-6fac77c0c9b3.png)
 
 ###### `webpack`的能力：
 
@@ -249,9 +254,7 @@ window.moduleA = {
 **万物皆可模块能力**，项目维护性增强，支持不同种类的前端模块类型，统一的模块化方案，所有资源文件的加载都可以通过代码控制
 ![](https://static.vue-js.com/e3c5a040-a592-11eb-ab90-d9ae814b240d.png)
 
-
-
-### 说说webpack的构建流程?
+### 说说 webpack 的构建流程?
 
 ![](https://static.vue-js.com/96cf6840-a658-11eb-85f6-6fac77c0c9b3.png)
 
@@ -267,8 +270,7 @@ window.moduleA = {
 - 编译构建流程：从 Entry 发出，针对每个 Module 串行调用对应的 Loader 去翻译文件内容，再找到该 Module 依赖的 Module，递归地进行编译处理
 - 输出流程：对编译后的 Module 组合成 Chunk，把 Chunk 转换成文件，输出到文件系统
 
- ![](https://static.vue-js.com/b566d400-a658-11eb-85f6-6fac77c0c9b3.png)
-
+![](https://static.vue-js.com/b566d400-a658-11eb-85f6-6fac77c0c9b3.png)
 
 #### 初始化流程
 
@@ -347,16 +349,14 @@ function webpack(options) {
 
 `Compiler` 对象继承自 `Tapable`，初始化时定义了很多钩子函数
 
-
-
 #### 编译构建流程
 
 根据配置中的 `entry` 找出所有的入口文件
 
 ```js
 module.exports = {
-  entry: './src/file.js'
-}
+	entry: "./src/file.js",
+};
 ```
 
 初始化完成后会调用`Compiler`的`run`来真正启动`webpack`编译构建流程，主要流程如下：
@@ -365,17 +365,13 @@ module.exports = {
 - `make` 从入口点分析模块及其依赖的模块，创建这些模块对象
 - `build-module` 构建模块
 - `seal` 封装构建结果
-- `emit` 把各个chunk输出到结果文件
-
-
+- `emit` 把各个 chunk 输出到结果文件
 
 ###### compile 编译
 
 执行了`run`方法后，首先会触发`compile`，主要是构建一个`Compilation`对象
 
 该对象是编译阶段的主要执行者，主要会依次执行下述流程：执行模块创建、依赖收集、分块、打包等主要任务的对象
-
-
 
 ###### make 编译模块
 
@@ -387,7 +383,7 @@ _addModuleChain(context, dependency, onModule, callback) {
    // 根据依赖查找对应的工厂函数
    const Dep = /** @type {DepConstructor} */ (dependency.constructor);
    const moduleFactory = this.dependencyFactories.get(Dep);
-   
+
    // 调用工厂函数NormalModuleFactory的create来生成一个空的NormalModule对象
    moduleFactory.create({
        dependencies: [dependency]
@@ -400,7 +396,7 @@ _addModuleChain(context, dependency, onModule, callback) {
          callback(null, module);
            });
     };
-       
+
        this.buildModule(module, false, null, null, err => {
            ...
            afterBuild();
@@ -417,17 +413,13 @@ _addModuleChain(context, dependency, onModule, callback) {
 
 随后执行`buildModule`进入真正的构建模块`module`内容的过程
 
-
-
 ###### build module 完成模块编译
 
 这里主要调用配置的`loaders`，将我们的模块转成标准的`JS`模块
 
 在用` Loader` 对一个模块转换完后，使用 `acorn` 解析转换后的内容，输出对应的抽象语法树（`AST`），以方便 `Webpack `后面对代码的分析
 
-从配置的入口模块开始，分析其 `AST`，当遇到` require `等导入其它模块语句时，便将其加入到依赖的模块列表，同时对新找出的依赖模块递归分析，最终搞清所有模块的依赖关系
-
-
+从配置的入口模块开始，分析其 `AST`，当遇到`require`等导入其它模块语句时，便将其加入到依赖的模块列表，同时对新找出的依赖模块递归分析，最终搞清所有模块的依赖关系
 
 #### 输出流程
 
@@ -438,8 +430,6 @@ _addModuleChain(context, dependency, onModule, callback) {
 `webpack` 中的 `chunk` ，可以理解为配置在 `entry` 中的模块，或者是动态引入的模块
 
 根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 `Chunk`，再把每个 `Chunk` 转换成一个单独的文件加入到输出列表
-
-
 
 ###### emit 输出完成
 
@@ -456,23 +446,21 @@ output: {
 
 从而`webpack`整个打包过程则结束了
 
-
-
 #### 小结
 
- ![](https://static.vue-js.com/d77fc560-a658-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/d77fc560-a658-11eb-85f6-6fac77c0c9b3.png)
 
+## 说说 webpack 中常见的 Loader？解决了什么问题？
 
-## 说说webpack中常见的Loader？解决了什么问题？
-
- ![](https://static.vue-js.com/5660fc40-a6ff-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/5660fc40-a6ff-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、是什么
+
 `loader` 用于对模块的"源代码"进行转换，在 `import` 或"加载"模块时预处理文件
 
 `webpack`做的事情，仅仅是分析出各种模块的依赖关系，然后形成资源列表，最终打包生成到指定的文件中。如下图所示：
 
- ![](https://static.vue-js.com/7b8d9640-a6ff-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/7b8d9640-a6ff-11eb-ab90-d9ae814b240d.png)
 
 在`webpack`内部中，任何文件都是模块，不仅仅只是`js`文件
 
@@ -482,20 +470,15 @@ output: {
 
 在加载模块的时候，执行顺序如下：
 
- ![](https://static.vue-js.com/9c2c43b0-a6ff-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/9c2c43b0-a6ff-11eb-85f6-6fac77c0c9b3.png)
 
 当 `webpack` 碰到不识别的模块的时候，`webpack` 会在配置的中查找该文件解析规则
 
-
-
 关于配置`loader`的方式有三种：
 
-- 配置方式（推荐）：在 webpack.config.js文件中指定 loader
+- 配置方式（推荐）：在 webpack.config.js 文件中指定 loader
 - 内联方式：在每个 import 语句中显式指定 loader
 - CLI 方式：在 shell 命令中指定它们
-
 
 #### 配置方式
 
@@ -511,27 +494,25 @@ output: {
 
 ```js
 module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true
-            }
-          },
-          { loader: 'sass-loader' }
-        ]
-      }
-    ]
-  }
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: [
+					{ loader: "style-loader" },
+					{
+						loader: "css-loader",
+						options: {
+							modules: true,
+						},
+					},
+					{ loader: "sass-loader" },
+				],
+			},
+		],
+	},
 };
 ```
-
-
 
 ### 二、特性
 
@@ -539,7 +520,7 @@ module.exports = {
 
 从上述代码可以看到，在处理`css`模块的时候，`use`属性中配置了三个`loader`分别处理`css`文件
 
-因为`loader `支持链式调用，链中的每个` loader `会处理之前已处理过的资源，最终变为`js`代码。顺序为相反的顺序执行，即上述执行方式为`sass-loader`、`css-loader`、`style-loader`
+因为`loader `支持链式调用，链中的每个`loader`会处理之前已处理过的资源，最终变为`js`代码。顺序为相反的顺序执行，即上述执行方式为`sass-loader`、`css-loader`、`style-loader`
 
 除此之外，`loader`的特性还有如下：
 
@@ -551,28 +532,22 @@ module.exports = {
 
 可以通过 loader 的预处理函数，为 JavaScript 生态系统提供更多能力。用户现在可以更加灵活地引入细粒度逻辑，例如：压缩、打包、语言翻译和更多其他特性
 
-
-
-
-
-### 三、常见的loader
+### 三、常见的 loader
 
 在页面开发过程中，我们经常性加载除了`js`文件以外的内容，这时候我们就需要配置响应的`loader`进行加载
 
 常见的`loader`如下：
 
-- style-loader: 将css添加到DOM的内联样式标签style里
-- css-loader :允许将css文件通过require的方式引入，并返回css代码
-- less-loader: 处理less
-- sass-loader: 处理sass
-- postcss-loader: 用postcss来处理CSS
-- autoprefixer-loader: 处理CSS3属性前缀，已被弃用，建议直接使用postcss
-- file-loader: 分发文件到output目录并返回相对路径
-- url-loader: 和file-loader类似，但是当文件小于设定的limit时可以返回一个Data Url
-- html-minify-loader: 压缩HTML
-- babel-loader :用babel来转换ES6文件到ES5
-
-
+- style-loader: 将 css 添加到 DOM 的内联样式标签 style 里
+- css-loader :允许将 css 文件通过 require 的方式引入，并返回 css 代码
+- less-loader: 处理 less
+- sass-loader: 处理 sass
+- postcss-loader: 用 postcss 来处理 CSS
+- autoprefixer-loader: 处理 CSS3 属性前缀，已被弃用，建议直接使用 postcss
+- file-loader: 分发文件到 output 目录并返回相对路径
+- url-loader: 和 file-loader 类似，但是当文件小于设定的 limit 时可以返回一个 Data Url
+- html-minify-loader: 压缩 HTML
+- babel-loader :用 babel 来转换 ES6 文件到 ES5
 
 下面给出一些常见的`loader`的使用：
 
@@ -610,8 +585,6 @@ rules: [
 
 如果我们希望再完成插入`style`的操作，那么我们还需要另外一个`loader`，就是`style-loader`
 
-
-
 #### style-loader
 
 把 `css-loader` 生成的内容，用 `style` 标签挂载到页面的 `head` 中
@@ -632,10 +605,6 @@ rules: [
 
 同一个任务的 `loader` 可以同时挂载多个，处理顺序为：从右到左，从下往上
 
-
-
-
-
 #### less-loader
 
 开发中，我们也常常会使用`less`、`sass`、`stylus`预处理器编写`css`样式，使开发效率提高，这里需要使用`less-loader`
@@ -653,8 +622,6 @@ rules: [
  }
 ]
 ```
-
-
 
 #### raw-loader
 
@@ -679,8 +646,6 @@ module.exports = {
  }
 }
 ```
-
-
 
 #### file-loader
 
@@ -711,11 +676,9 @@ rules: [
 ]
 ```
 
-
-
 #### url-loader
 
-可以处理理 `file-loader` 所有的事情，但是遇到图片格式的模块，可以选择性的把图片转成 `base64`  格式的字符串，并打包到 `js` 中，对小体积的图片比较合适，大图片不合适。
+可以处理理 `file-loader` 所有的事情，但是遇到图片格式的模块，可以选择性的把图片转成 `base64` 格式的字符串，并打包到 `js` 中，对小体积的图片比较合适，大图片不合适。
 
 ```bash
 npm install --save-dev url-loader
@@ -744,13 +707,12 @@ rules: [
 ]
 ```
 
-## 说说webpack中常见的Plugin？解决了什么问题？
+## 说说 webpack 中常见的 Plugin？解决了什么问题？
 
- ![](https://static.vue-js.com/8d3978a0-a7c2-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/8d3978a0-a7c2-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、是什么
+
 `Plugin`（Plug-in）是一种计算机应用程序，它和主应用程序互相交互，以提供特定的功能
 
 是一种遵循一定规范的应用程序接口编写出来的程序，只能运行在程序规定的系统下，因为其需要调用原纯净系统提供的函数库或者数据
@@ -777,8 +739,6 @@ module.exports = {
 };
 ```
 
-
-
 ### 二、特性
 
 其本质是一个具有`apply`方法`javascript`对象
@@ -786,14 +746,14 @@ module.exports = {
 `apply` 方法会被 `webpack compiler `调用，并且在整个编译生命周期都可以访问 `compiler `对象
 
 ```javascript
-const pluginName = 'ConsoleLogOnBuildWebpackPlugin';
+const pluginName = "ConsoleLogOnBuildWebpackPlugin";
 
 class ConsoleLogOnBuildWebpackPlugin {
-  apply(compiler) {
-    compiler.hooks.run.tap(pluginName, (compilation) => {
-      console.log('webpack 构建过程开始！');
-    });
-  }
+	apply(compiler) {
+		compiler.hooks.run.tap(pluginName, (compilation) => {
+			console.log("webpack 构建过程开始！");
+		});
+	}
 }
 
 module.exports = ConsoleLogOnBuildWebpackPlugin;
@@ -814,15 +774,11 @@ module.exports = ConsoleLogOnBuildWebpackPlugin;
 - done： 完成所有的编译过程
 - failed： 编译失败的时候
 
-
-
-### 三、常见的Plugin
+### 三、常见的 Plugin
 
 常见的`plugin`有如图所示：
 
 ![](https://static.vue-js.com/bd749400-a7c2-11eb-85f6-6fac77c0c9b3.png)
-
-
 
 下面介绍几个常用的插件用法：
 
@@ -844,7 +800,7 @@ module.exports = {
        title: "My App",
        filename: "app.html",
        template: "./src/html/index.html"
-     }) 
+     })
   ]
 };
 ```
@@ -853,23 +809,21 @@ module.exports = {
 <!--./src/html/index.html-->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%=htmlWebpackPlugin.options.title%></title>
-</head>
-<body>
-    <h1>html-webpack-plugin</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<title><%=htmlWebpackPlugin.options.title%></title>
+	</head>
+	<body>
+		<h1>html-webpack-plugin</h1>
+	</body>
 </html>
 ```
 
 在 `html` 模板中，可以通过 `<%=htmlWebpackPlugin.options.XXX%>` 的方式获取配置的值
 
 更多的配置可以自寻查找
-
-
 
 #### clean-webpack-plugin
 
@@ -890,8 +844,6 @@ module.exports = {
   ]
 }
 ```
-
-
 
 #### mini-css-extract-plugin
 
@@ -929,8 +881,6 @@ module.exports = {
 }
 ```
 
-
-
 #### DefinePlugin
 
 允许在编译时创建配置的全局对象，是一个`webpack`内置的插件，不需要安装
@@ -954,10 +904,6 @@ module.exports = {
 <link rel="icon" href="<%= BASE_URL%>favicon.ico>"
 ```
 
-
-
-
-
 #### copy-webpack-plugin
 
 复制文件或目录到执行区域，如`vue`的打包过程中，如果我们将一些文件放到`public`的目录下，那么这个目录会被复制到`dist`文件夹中
@@ -968,17 +914,15 @@ npm install copy-webpack-plugin -D
 
 ```js
 new CopyWebpackPlugin({
-    parrerns:[
-        {
-            from:"public",
-            globOptions:{
-                ignore:[
-                    '**/index.html'
-                ]
-            }
-        }
-    ]
-})
+	parrerns: [
+		{
+			from: "public",
+			globOptions: {
+				ignore: ["**/index.html"],
+			},
+		},
+	],
+});
 ```
 
 复制的规则在`patterns`属性中设置：
@@ -987,7 +931,7 @@ new CopyWebpackPlugin({
 - to：复制到的位置，可以省略，会默认复制到打包的目录下
 - globOptions：设置一些额外的选项，其中可以编写需要忽略的文件
 
-## 说说Loader和Plugin的区别？编写Loader，Plugin的思路？
+## 说说 Loader 和 Plugin 的区别？编写 Loader，Plugin 的思路？
 
 ![](https://static.vue-js.com/93042280-a894-11eb-ab90-d9ae814b240d.png)
 
@@ -1004,16 +948,14 @@ new CopyWebpackPlugin({
 
 可以看到，两者在运行时机上的区别：
 
--  loader 运行在打包文件之前
--  plugins 在整个编译周期都起作用
+- loader 运行在打包文件之前
+- plugins 在整个编译周期都起作用
 
-在` Webpack` 运行的生命周期中会广播出许多事件，`Plugin` 可以监听这些事件，在合适的时机通过` Webpack `提供的 `API `改变输出结果
+在` Webpack` 运行的生命周期中会广播出许多事件，`Plugin` 可以监听这些事件，在合适的时机通过`Webpack`提供的 `API `改变输出结果
 
-对于`loader`，实质是一个转换器，将A文件进行编译形成B文件，操作的是文件，比如将`A.scss`或`A.less`转变为`B.css`，单纯的文件转换过程
+对于`loader`，实质是一个转换器，将 A 文件进行编译形成 B 文件，操作的是文件，比如将`A.scss`或`A.less`转变为`B.css`，单纯的文件转换过程
 
-
-
-### 二、编写loader
+### 二、编写 loader
 
 在编写 `loader` 前，我们首先需要了解 `loader` 的本质
 
@@ -1029,34 +971,32 @@ new CopyWebpackPlugin({
 
 ```js
 // 导出一个函数，source为webpack传递给loader的文件源内容
-module.exports = function(source) {
-    const content = doSomeThing2JsString(source);
-    
-    // 如果 loader 配置了 options 对象，那么this.query将指向 options
-    const options = this.query;
-    
-    // 可以用作解析其他模块路径的上下文
-    console.log('this.context');
-    
-    /*
-     * this.callback 参数：
-     * error：Error | null，当 loader 出错时向外抛出一个 error
-     * content：String | Buffer，经过 loader 编译后需要导出的内容
-     * sourceMap：为方便调试生成的编译后内容的 source map
-     * ast：本次编译生成的 AST 静态语法树，之后执行的 loader 可以直接使用这个 AST，进而省去重复生成 AST 的过程
-     */
-    this.callback(null, content); // 异步
-    return content; // 同步
-}
+module.exports = function (source) {
+	const content = doSomeThing2JsString(source);
+
+	// 如果 loader 配置了 options 对象，那么this.query将指向 options
+	const options = this.query;
+
+	// 可以用作解析其他模块路径的上下文
+	console.log("this.context");
+
+	/*
+	 * this.callback 参数：
+	 * error：Error | null，当 loader 出错时向外抛出一个 error
+	 * content：String | Buffer，经过 loader 编译后需要导出的内容
+	 * sourceMap：为方便调试生成的编译后内容的 source map
+	 * ast：本次编译生成的 AST 静态语法树，之后执行的 loader 可以直接使用这个 AST，进而省去重复生成 AST 的过程
+	 */
+	this.callback(null, content); // 异步
+	return content; // 同步
+};
 ```
 
 一般在编写`loader`的过程中，保持功能单一，避免做多种功能
 
-如` less `文件转换成 `css `文件也不是一步到位，而是 `less-loader`、`css-loader`、` style-loader `几个 `loader `的链式调用才能完成转换
+如`less`文件转换成 `css `文件也不是一步到位，而是 `less-loader`、`css-loader`、`style-loader`几个 `loader `的链式调用才能完成转换
 
-
-
-### 三、编写plugin
+### 三、编写 plugin
 
 由于`webpack`基于发布订阅模式，在运行的生命周期中会广播出许多事件，插件通过监听这些事件，就可以在特定的阶段执行自己的插件任务
 
@@ -1071,33 +1011,28 @@ module.exports = function(source) {
 - 传给每个插件的 `compiler` 和 `compilation` 对象都是同一个引用，因此不建议修改
 - 异步的事件需要在插件处理完任务时调用回调函数通知 `Webpack` 进入下一个流程，不然会卡住
 
-
-
 实现`plugin`的模板如下：
 
 ```js
 class MyPlugin {
-    // Webpack 会调用 MyPlugin 实例的 apply 方法给插件实例传入 compiler 对象
-  apply (compiler) {
-    // 找到合适的事件钩子，实现自己的插件功能
-    compiler.hooks.emit.tap('MyPlugin', compilation => {
-        // compilation: 当前打包构建流程的上下文
-        console.log(compilation);
-        
-        // do something...
-    })
-  }
+	// Webpack 会调用 MyPlugin 实例的 apply 方法给插件实例传入 compiler 对象
+	apply(compiler) {
+		// 找到合适的事件钩子，实现自己的插件功能
+		compiler.hooks.emit.tap("MyPlugin", (compilation) => {
+			// compilation: 当前打包构建流程的上下文
+			console.log(compilation);
+
+			// do something...
+		});
+	}
 }
 ```
 
 在 `emit` 事件发生时，代表源文件的转换和组装已经完成，可以读取到最终将输出的资源、代码块、模块及其依赖，并且可以修改输出资源的内容
 
+## 说说 webpack 的热更新是如何做到的？原理是什么？
 
-## 说说webpack的热更新是如何做到的？原理是什么？
-
- ![](https://static.vue-js.com/a076da40-acd4-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/a076da40-acd4-11eb-85f6-6fac77c0c9b3.png)
 
 #### 一、是什么
 
@@ -1110,15 +1045,15 @@ class MyPlugin {
 在`webpack`中配置开启热模块也非常的简单，如下代码：
 
 ```js
-const webpack = require('webpack')
+const webpack = require("webpack");
 module.exports = {
-  // ...
-  devServer: {
-    // 开启 HMR 特性
-    hot: true
-    // hotOnly: true
-  }
-}
+	// ...
+	devServer: {
+		// 开启 HMR 特性
+		hot: true,
+		// hotOnly: true
+	},
+};
 ```
 
 通过上述这种配置，如果我们修改并保存`css`文件，确实能够以不刷新的形式更新到页面中
@@ -1130,27 +1065,25 @@ module.exports = {
 我们需要去指定哪些模块发生更新时进行`HRM`，如下代码：
 
 ```js
-if(module.hot){
-    module.hot.accept('./util.js',()=>{
-        console.log("util.js更新了")
-    })
+if (module.hot) {
+	module.hot.accept("./util.js", () => {
+		console.log("util.js更新了");
+	});
 }
 ```
-
-
 
 ### 二、实现原理
 
 首先来看看一张图，如下：
 
- ![](https://static.vue-js.com/adc05780-acd4-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/adc05780-acd4-11eb-ab90-d9ae814b240d.png)
 
 - Webpack Compile：将 JS 源代码编译成 bundle.js
 - HMR Server：用来将热更新的文件输出给 HMR Runtime
 - Bundle Server：静态资源文件服务器，提供文件访问路径
-- HMR Runtime：socket服务器，会被注入到浏览器，更新文件的变化
+- HMR Runtime：socket 服务器，会被注入到浏览器，更新文件的变化
 - bundle.js：构建输出的文件
-- 在HMR Runtime 和 HMR Server之间建立 websocket，即图上4号线，用于实时更新文件变化
+- 在 HMR Runtime 和 HMR Server 之间建立 websocket，即图上 4 号线，用于实时更新文件变化
 
 上面图中，可以分成两个阶段：
 
@@ -1160,13 +1093,13 @@ if(module.hot){
 
 - 更新阶段为上图 1 - 2 - 3 - 4
 
-当某一个文件或者模块发生变化时，`webpack `监听到文件变化对文件重新编译打包，编译生成唯一的` hash `值，这个`hash `值用来作为下一次热更新的标识
+当某一个文件或者模块发生变化时，`webpack `监听到文件变化对文件重新编译打包，编译生成唯一的`hash`值，这个`hash `值用来作为下一次热更新的标识
 
 根据变化的内容生成两个补丁文件：`manifest`（包含了 `hash` 和 `chundId `，用来说明变化的内容）和` chunk.js` 模块
 
 由于`socket`服务器在`HMR Runtime` 和 `HMR Server`之间建立 `websocket`链接，当文件发生改动的时候，服务端会向浏览器推送一条消息，消息包含文件改动后生成的`hash`值，如下图的`h`属性，作为下一次热更细的标识
 
- ![](https://static.vue-js.com/05a0edf0-ad4a-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/05a0edf0-ad4a-11eb-85f6-6fac77c0c9b3.png)
 
 在浏览器接受到这条消息之前，浏览器已经在上一次` socket` 消息中已经记住了此时的` hash` 标识，这时候我们会创建一个 `ajax` 去服务端请求获取到变化内容的 `manifest` 文件
 
@@ -1174,27 +1107,22 @@ if(module.hot){
 
 浏览器根据 `manifest` 文件获取模块变化的内容，从而触发`render`流程，实现局部模块更新
 
- ![](https://static.vue-js.com/0e7b7850-ad4a-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/0e7b7850-ad4a-11eb-ab90-d9ae814b240d.png)
 
 ### 三、总结
 
 关于`webpack`热模块更新的总结如下：
 
-- 通过`webpack-dev-server`创建两个服务器：提供静态资源的服务（express）和Socket服务
+- 通过`webpack-dev-server`创建两个服务器：提供静态资源的服务（express）和 Socket 服务
 - express server 负责直接提供静态资源的服务（打包后的资源直接被浏览器请求和解析）
 - socket server 是一个 websocket 的长连接，双方可以通信
-- 当 socket server 监听到对应的模块发生变化时，会生成两个文件.json（manifest文件）和.js文件（update chunk）
+- 当 socket server 监听到对应的模块发生变化时，会生成两个文件.json（manifest 文件）和.js 文件（update chunk）
 - 通过长连接，socket server 可以直接将这两个文件主动发送给客户端（浏览器）
-- 浏览器拿到两个新的文件后，通过HMR runtime机制，加载这两个文件，并且针对修改的模块进行更新
+- 浏览器拿到两个新的文件后，通过 HMR runtime 机制，加载这两个文件，并且针对修改的模块进行更新
 
+## 说说 webpack proxy 工作原理？为什么能解决跨域?
 
-## 说说webpack proxy工作原理？为什么能解决跨域?
-
- ![](https://static.vue-js.com/5b871600-ace5-11eb-85f6-6fac77c0c9b3.png)
-
-
+![](https://static.vue-js.com/5b871600-ace5-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、是什么
 
@@ -1207,6 +1135,7 @@ if(module.hot){
 想要实现代理首先需要一个中间服务器，`webpack`中提供服务器的工具为`webpack-dev-server`
 
 ###### webpack-dev-server
+
 `webpack-dev-server`是 `webpack` 官方推出的一款开发工具，将自动编译和自动刷新浏览器等一系列对开发友好的功能全部集成在了一起
 
 目的是为了提高开发者日常的开发效率，**只适用在开发阶段**
@@ -1215,22 +1144,22 @@ if(module.hot){
 
 ```js
 // ./webpack.config.js
-const path = require('path')
+const path = require("path");
 
 module.exports = {
-    // ...
-    devServer: {
-        contentBase: path.join(__dirname, 'dist'),
-        compress: true,
-        port: 9000,
-        proxy: {
-            '/api': {
-                target: 'https://api.github.com'
-            }
-        }
-        // ...
-    }
-}
+	// ...
+	devServer: {
+		contentBase: path.join(__dirname, "dist"),
+		compress: true,
+		port: 9000,
+		proxy: {
+			"/api": {
+				target: "https://api.github.com",
+			},
+		},
+		// ...
+	},
+};
 ```
 
 `devServetr`里面`proxy`则是关于代理的配置，该属性为对象的形式，对象中每一个属性就是一个代理的规则匹配
@@ -1238,35 +1167,29 @@ module.exports = {
 属性的名称是需要被代理的请求路径前缀，一般为了辨别都会设置前缀为` /api`，值为对应的代理匹配规则，对应如下：
 
 - target：表示的是代理到的目标地址
-- pathRewrite：默认情况下，我们的 /api-hy 也会被写入到URL中，如果希望删除，可以使用pathRewrite
-- secure：默认情况下不接收转发到https的服务器上，如果希望支持，可以设置为false
-- changeOrigin：它表示是否更新代理后请求的 headers 中host地址
-
-
-
-
+- pathRewrite：默认情况下，我们的 /api-hy 也会被写入到 URL 中，如果希望删除，可以使用 pathRewrite
+- secure：默认情况下不接收转发到 https 的服务器上，如果希望支持，可以设置为 false
+- changeOrigin：它表示是否更新代理后请求的 headers 中 host 地址
 
 ### 二、工作原理
 
- `proxy`工作原理实质上是利用`http-proxy-middleware` 这个`http`代理中间件，实现请求转发给其他服务器
+`proxy`工作原理实质上是利用`http-proxy-middleware` 这个`http`代理中间件，实现请求转发给其他服务器
 
 举个例子：
 
 在开发阶段，本地地址为`http://localhost:3000`，该浏览器发送一个前缀带有`/api`标识的请求到服务端获取数据，但响应这个请求的服务器只是将请求转发到另一台服务器中
 
 ```js
-const express = require('express');
-const proxy = require('http-proxy-middleware');
+const express = require("express");
+const proxy = require("http-proxy-middleware");
 
 const app = express();
 
-app.use('/api', proxy({target: 'http://www.example.org', changeOrigin: true}));
+app.use("/api", proxy({ target: "http://www.example.org", changeOrigin: true }));
 app.listen(3000);
 
 // http://localhost:3000/api/foo/bar -> http://www.example.org/api/foo/bar
 ```
-
-
 
 ### 三、跨域
 
@@ -1278,18 +1201,15 @@ app.listen(3000);
 
 当本地发送请求的时候，代理服务器响应该请求，并将请求转发到目标服务器，目标服务器响应数据后再将数据返回给代理服务器，最终再由代理服务器将数据响应给本地
 
- ![](https://static.vue-js.com/65b5e5c0-ace5-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/65b5e5c0-ace5-11eb-85f6-6fac77c0c9b3.png)
 
 在代理服务器传递数据给本地浏览器的过程中，两者同源，并不存在跨域行为，这时候浏览器就能正常接收数据
 
 注意：**服务器与服务器之间请求数据并不会存在跨域行为，跨域行为是浏览器安全策略限制**
 
+## 说说如何借助 webpack 来优化前端性能？
 
-## 说说如何借助webpack来优化前端性能？
-
- ![](https://static.vue-js.com/15e1ace0-aee4-11eb-ab90-d9ae814b240d.png)
-
-
+![](https://static.vue-js.com/15e1ace0-aee4-11eb-ab90-d9ae814b240d.png)
 
 ### 一、背景
 
@@ -1299,26 +1219,20 @@ app.listen(3000);
 
 一般项目在完成后，会通过`webpack`进行打包，利用`webpack`对前端项目性能优化是一个十分重要的环节
 
-
-
 ### 二、如何优化
-
-
 
 通过`webpack`优化前端的手段有：
 
-- JS代码压缩
-- CSS代码压缩
-- Html文件代码压缩
+- JS 代码压缩
+- CSS 代码压缩
+- Html 文件代码压缩
 - 文件大小压缩
 - 图片压缩
 - Tree Shaking
 - 代码分离
 - 内联 chunk
 
-
-
-#### JS代码压缩
+#### JS 代码压缩
 
 `terser`是一个`JavaScript`的解释、绞肉机、压缩机的工具集，可以帮助我们压缩、丑化我们的代码，让`bundle`更小
 
@@ -1341,22 +1255,20 @@ module.exports = {
 
 属性介绍如下：
 
--  extractComments：默认值为true，表示会将注释抽取到一个单独的文件中，开发阶段，我们可设置为 false ，不保留注释
--  parallel：使用多进程并发运行提高构建的速度，默认值是true，并发运行的默认数量： os.cpus().length - 1
--  terserOptions：设置我们的terser相关的配置：
-  - compress：设置压缩相关的选项
-  - mangle：设置丑化相关的选项，可以直接设置为true
-  - toplevel：底层变量是否进行转换
-  - keep_classnames：保留类的名称
-  - keep_fnames：保留函数的名称
+- extractComments：默认值为 true，表示会将注释抽取到一个单独的文件中，开发阶段，我们可设置为 false ，不保留注释
+- parallel：使用多进程并发运行提高构建的速度，默认值是 true，并发运行的默认数量： os.cpus().length - 1
+- terserOptions：设置我们的 terser 相关的配置：
+- compress：设置压缩相关的选项
+- mangle：设置丑化相关的选项，可以直接设置为 true
+- toplevel：底层变量是否进行转换
+- keep_classnames：保留类的名称
+- keep_fnames：保留函数的名称
 
-
-
-#### CSS代码压缩
+#### CSS 代码压缩
 
 `CSS`压缩通常是去除无用的空格等，因为很难去修改选择器、属性的名称、值等
 
-CSS的压缩我们可以使用另外一个插件：`css-minimizer-webpack-plugin`
+CSS 的压缩我们可以使用另外一个插件：`css-minimizer-webpack-plugin`
 
 ```cmd
 npm install css-minimizer-webpack-plugin -D
@@ -1365,25 +1277,21 @@ npm install css-minimizer-webpack-plugin -D
 配置方法如下：
 
 ```js
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
-    // ...
-    optimization: {
-        minimize: true,
-        minimizer: [
-            new CssMinimizerPlugin({
-                parallel: true
-            })
-        ]
-    }
-}
+	// ...
+	optimization: {
+		minimize: true,
+		minimizer: [
+			new CssMinimizerPlugin({
+				parallel: true,
+			}),
+		],
+	},
+};
 ```
 
-
-
-
-
-#### Html文件代码压缩
+#### Html 文件代码压缩
 
 使用`HtmlWebpackPlugin`插件来生成`HTML`的模板时候，通过配置属性`minify`进行`html`优化
 
@@ -1405,8 +1313,6 @@ module.exports = {
 
 设置了`minify`，实际会使用另一个插件`html-minifier-terser`
 
-
-
 #### 文件大小压缩
 
 对文件的大小进行压缩，减少`http`传输过程中宽带的损耗
@@ -1417,16 +1323,12 @@ npm install compression-webpack-plugin -D
 
 ```js
 new ComepressionPlugin({
-    test:/\.(css|js)$/,  // 哪些文件需要压缩
-    threshold:500, // 设置文件多大开始压缩
-    minRatio:0.7, // 至少压缩的比例
-    algorithm:"gzip", // 采用的压缩算法
-})
+	test: /\.(css|js)$/, // 哪些文件需要压缩
+	threshold: 500, // 设置文件多大开始压缩
+	minRatio: 0.7, // 至少压缩的比例
+	algorithm: "gzip", // 采用的压缩算法
+});
 ```
-
-
-
-
 
 #### 图片压缩
 
@@ -1436,53 +1338,49 @@ new ComepressionPlugin({
 
 ```js
 module: {
-  rules: [
-    {
-      test: /\.(png|jpg|gif)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            name: '[name]_[hash].[ext]',
-            outputPath: 'images/',
-          }
-        },
-        {
-          loader: 'image-webpack-loader',
-          options: {
-            // 压缩 jpeg 的配置
-            mozjpeg: {
-              progressive: true,
-              quality: 65
-            },
-            // 使用 imagemin**-optipng 压缩 png，enable: false 为关闭
-            optipng: {
-              enabled: false,
-            },
-            // 使用 imagemin-pngquant 压缩 png
-            pngquant: {
-              quality: '65-90',
-              speed: 4
-            },
-            // 压缩 gif 的配置
-            gifsicle: {
-              interlaced: false,
-            },
-            // 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
-            webp: {
-              quality: 75
-            }
-          }
-        }
-      ]
-    },
-  ]
-} 
+	rules: [
+		{
+			test: /\.(png|jpg|gif)$/,
+			use: [
+				{
+					loader: "file-loader",
+					options: {
+						name: "[name]_[hash].[ext]",
+						outputPath: "images/",
+					},
+				},
+				{
+					loader: "image-webpack-loader",
+					options: {
+						// 压缩 jpeg 的配置
+						mozjpeg: {
+							progressive: true,
+							quality: 65,
+						},
+						// 使用 imagemin**-optipng 压缩 png，enable: false 为关闭
+						optipng: {
+							enabled: false,
+						},
+						// 使用 imagemin-pngquant 压缩 png
+						pngquant: {
+							quality: "65-90",
+							speed: 4,
+						},
+						// 压缩 gif 的配置
+						gifsicle: {
+							interlaced: false,
+						},
+						// 开启 webp，会把 jpg 和 png 图片压缩为 webp 格式
+						webp: {
+							quality: 75,
+						},
+					},
+				},
+			],
+		},
+	];
+}
 ```
-
-
-
-
 
 #### Tree Shaking
 
@@ -1490,12 +1388,10 @@ module: {
 
 在`webpack`实现`Trss shaking`有两种不同的方案：
 
-- usedExports：通过标记某些函数是否被使用，之后通过Terser来进行优化的
+- usedExports：通过标记某些函数是否被使用，之后通过 Terser 来进行优化的
 - sideEffects：跳过整个模块/文件，直接查看该文件是否有副作用
 
 两种不同的配置方案， 有不同的效果
-
-
 
 ###### usedExports
 
@@ -1512,19 +1408,15 @@ module.exports = {
 
 使用之后，没被用上的代码在`webpack`打包中会加入`unused harmony export mul`注释，用来告知 `Terser` 在优化时，可以删除掉这段代码
 
- 如下面`sum`函数没被用到，`webpack`打包会添加注释，`terser`在优化时，则将该函数去掉
+如下面`sum`函数没被用到，`webpack`打包会添加注释，`terser`在优化时，则将该函数去掉
 
- ![](https://static.vue-js.com/21b2e200-aee4-11eb-85f6-6fac77c0c9b3.png)
-
-
-
-
+![](https://static.vue-js.com/21b2e200-aee4-11eb-85f6-6fac77c0c9b3.png)
 
 ###### sideEffects
 
 `sideEffects`用于告知`webpack compiler`哪些模块有副作用，配置方法是在`package.json`中设置`sideEffects`属性
 
-如果`sideEffects`设置为false，就是告知`webpack`可以安全的删除未用到的`exports`
+如果`sideEffects`设置为 false，就是告知`webpack`可以安全的删除未用到的`exports`
 
 如果有些文件需要保留，可以设置为数组的形式
 
@@ -1534,8 +1426,6 @@ module.exports = {
     "*.css" // 所有的css文件
 ]
 ```
-
-
 
 上述都是关于`javascript`的`tree shaking`，`css`同样也能够实现`tree shaking`
 
@@ -1564,10 +1454,8 @@ module.exports = {
 }
 ```
 
-- paths：表示要检测哪些目录下的内容需要被分析，配合使用glob
-- 默认情况下，Purgecss会将我们的html标签的样式移除掉，如果我们希望保留，可以添加一个safelist的属性
-
-
+- paths：表示要检测哪些目录下的内容需要被分析，配合使用 glob
+- 默认情况下，Purgecss 会将我们的 html 标签的样式移除掉，如果我们希望保留，可以添加一个 safelist 的属性
 
 #### 代码分离
 
@@ -1579,7 +1467,7 @@ module.exports = {
 
 这里通过`splitChunksPlugin`来实现，该插件`webpack`已经默认安装和集成，只需要配置即可
 
-默认配置中，chunks仅仅针对于异步（async）请求，我们可以设置为initial或者all
+默认配置中，chunks 仅仅针对于异步（async）请求，我们可以设置为 initial 或者 all
 
 ```js
 module.exports = {
@@ -1595,13 +1483,11 @@ module.exports = {
 `splitChunks`主要属性有如下：
 
 - Chunks，对同步代码还是异步代码进行处理
-- minSize： 拆分包的大小, 至少为minSize，如何包的大小不超过minSize，这个包不会拆分
-- maxSize： 将大于maxSize的包，拆分为不小于minSize的包
--  minChunks：被引入的次数，默认是1
+- minSize： 拆分包的大小, 至少为 minSize，如何包的大小不超过 minSize，这个包不会拆分
+- maxSize： 将大于 maxSize 的包，拆分为不小于 minSize 的包
+- minChunks：被引入的次数，默认是 1
 
-
-
-#### 内联chunk
+#### 内联 chunk
 
 可以通过`InlineChunkHtmlPlugin`插件将一些`chunk`的模块内联到`html`，如`runtime`的代码（对模块进行解析、加载、模块信息相关的代码），代码量并不大，但是必须加载的
 
@@ -1615,18 +1501,13 @@ module.exports = {
 }
 ```
 
-
-
-
-
 #### 三、总结
 
-关于`webpack`对前端性能的优化，可以通过文件体积大小入手，其次还可通过分包的形式、减少http请求次数等方式，实现对前端性能的优化
+关于`webpack`对前端性能的优化，可以通过文件体积大小入手，其次还可通过分包的形式、减少 http 请求次数等方式，实现对前端性能的优化
 
+## 如何提高 webpack 的构建速度？
 
-## 如何提高webpack的构建速度？
-
- ![](https://static.vue-js.com/3a1b8620-b01b-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/3a1b8620-b01b-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、背景
 
@@ -1635,7 +1516,6 @@ module.exports = {
 构建时间与我们日常开发效率密切相关，当我们本地开发启动 `devServer` 或者 `build` 的时候，如果时间过长，会大大降低我们的工作效率
 
 所以，优化`webpack` 构建速度是十分重要的环节
-
 
 ### 二、如何优化
 
@@ -1650,11 +1530,7 @@ module.exports = {
 - terser 启动多线程
 - 合理使用 sourceMap
 
-
-
-
-
-#### 优化loader配置
+#### 优化 loader 配置
 
 在使用`loader`时，可以通过配置`include`、`exclude`、`test`属性来匹配文件，借助`include`、`exclude`规定哪些匹配应用`loader`
 
@@ -1662,22 +1538,20 @@ module.exports = {
 
 ```js
 module.exports = {
-  module: {
-    rules: [
-      {
-        // 如果项目源码中只有 js 文件就不要写成 /\.jsx?$/，提升正则表达式性能
-        test: /\.js$/,
-        // babel-loader 支持缓存转换出的结果，通过 cacheDirectory 选项开启
-        use: ['babel-loader?cacheDirectory'],
-        // 只对项目根目录下的 src 目录中的文件采用 babel-loader
-        include: path.resolve(__dirname, 'src'),
-      },
-    ]
-  },
+	module: {
+		rules: [
+			{
+				// 如果项目源码中只有 js 文件就不要写成 /\.jsx?$/，提升正则表达式性能
+				test: /\.js$/,
+				// babel-loader 支持缓存转换出的结果，通过 cacheDirectory 选项开启
+				use: ["babel-loader?cacheDirectory"],
+				// 只对项目根目录下的 src 目录中的文件采用 babel-loader
+				include: path.resolve(__dirname, "src"),
+			},
+		],
+	},
 };
 ```
-
-
 
 #### 合理使用 resolve.extensions
 
@@ -1696,8 +1570,6 @@ module.exports = {
 
 当我们配置的时候，则不要随便把所有后缀都写在里面，这会调用多次文件的查找，这样就会减慢打包速度
 
-
-
 #### 优化 resolve.modules
 
 `resolve.modules` 用于配置 `webpack` 去哪些目录下寻找第三方模块。默认值为`['node_modules']`，所以默认会从`node_modules`中查找文件
@@ -1713,9 +1585,7 @@ module.exports = {
 };
 ```
 
-
-
-#### 优化 resolve.alias 
+#### 优化 resolve.alias
 
 `alias`给一些常用的路径起一个别名，特别当我们的项目目录结构比较深的时候，一个文件的路径可能是`./../../`的形式
 
@@ -1732,13 +1602,9 @@ module.exports = {
 }
 ```
 
-
-
-
-
 #### 使用 DLLPlugin 插件
 
-`DLL`全称是 动态链接库，是为软件在winodw种实现共享函数库的一种实现方式，而Webpack也内置了DLL的功能，为的就是可以共享，不经常改变的代码，抽成一个共享的库。这个库在之后的编译过程中，会被引入到其他项目的代码中
+`DLL`全称是 动态链接库，是为软件在 winodw 种实现共享函数库的一种实现方式，而 Webpack 也内置了 DLL 的功能，为的就是可以共享，不经常改变的代码，抽成一个共享的库。这个库在之后的编译过程中，会被引入到其他项目的代码中
 
 使用步骤分成两部分：
 
@@ -1747,7 +1613,7 @@ module.exports = {
 
 ###### 打包一个 DLL 库
 
-`webpack`内置了一个`DllPlugin`可以帮助我们打包一个DLL的库文件
+`webpack`内置了一个`DllPlugin`可以帮助我们打包一个 DLL 的库文件
 
 ```js
 module.exports = {
@@ -1760,8 +1626,6 @@ module.exports = {
     ]
 }
 ```
-
-
 
 ###### 引入 DLL 库
 
@@ -1783,8 +1647,6 @@ module.exports = {
 }
 ```
 
-
-
 #### 使用 cache-loader
 
 在一些性能开销较大的 `loader `之前添加 `cache-loader`，以将结果缓存到磁盘里，显著提升二次构建速度
@@ -1793,19 +1655,17 @@ module.exports = {
 
 ```js
 module.exports = {
-    module: {
-        rules: [
-            {
-                test: /\.ext$/,
-                use: ['cache-loader', ...loaders],
-                include: path.resolve('src'),
-            },
-        ],
-    },
+	module: {
+		rules: [
+			{
+				test: /\.ext$/,
+				use: ["cache-loader", ...loaders],
+				include: path.resolve("src"),
+			},
+		],
+	},
 };
 ```
-
-
 
 #### terser 启动多线程
 
@@ -1813,38 +1673,32 @@ module.exports = {
 
 ```js
 module.exports = {
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-      }),
-    ],
-  },
+	optimization: {
+		minimizer: [
+			new TerserPlugin({
+				parallel: true,
+			}),
+		],
+	},
 };
 ```
 
-
-
 #### 合理使用 sourceMap
 
-打包生成  `sourceMap` 的时候，如果信息越详细，打包速度就会越慢。对应属性取值如下所示：
+打包生成 `sourceMap` 的时候，如果信息越详细，打包速度就会越慢。对应属性取值如下所示：
 
 ![](https://static.vue-js.com/11647af0-b01d-11eb-85f6-6fac77c0c9b3.png)
-
-
-
-
 
 #### 三、总结
 
 可以看到，优化`webpack`构建的方式有很多，主要可以从优化搜索时间、缩小文件搜索范围、减少不必要的编译等方面入手
 
-
-## 与webpack类似的工具还有哪些？区别？
+## 与 webpack 类似的工具还有哪些？区别？
 
 ![](https://static.vue-js.com/8ed8d520-b1a4-11eb-85f6-6fac77c0c9b3.png)
 
 ### 一、模块化工具
+
 模块化是一种处理复杂系统分解为更好的可管理模块的方式
 
 可以用来分割，组织和打包应用。每个模块完成一个特定的子功能，所有的模块按某种方法组装起来，成为一个整体(`bundle`)
@@ -1866,26 +1720,26 @@ module.exports = {
 ```js
 // ./src/messages.js
 export default {
-  hi: 'Hey Guys, I am zce~'
-}
+	hi: "Hey Guys, I am zce~",
+};
 
 // ./src/logger.js
-export const log = msg => {
-  console.log('---------- INFO ----------')
-  console.log(msg)
-  console.log('--------------------------')
-}
+export const log = (msg) => {
+	console.log("---------- INFO ----------");
+	console.log(msg);
+	console.log("--------------------------");
+};
 
-export const error = msg => {
-  console.error('---------- ERROR ----------')
-  console.error(msg)
-  console.error('---------------------------')
-}
+export const error = (msg) => {
+	console.error("---------- ERROR ----------");
+	console.error(msg);
+	console.error("---------------------------");
+};
 
 // ./src/index.js
-import { log } from './logger'
-import messages from './messages'
-log(messages.hi)
+import { log } from "./logger";
+import messages from "./messages";
+log(messages.hi);
 ```
 
 然后通过`rollup`进行打包
@@ -1911,10 +1765,6 @@ $ npx rollup ./src/index.js --file ./dist/bundle.js
 
 但是在用于打包` JavaScript` 库时，`rollup`比 `webpack` 更有优势，因为其打包出来的代码更小、更快，其存在的缺点可以忽略
 
-
-
-
-
 #### Parcel
 
 Parcel ，是一款完全零配置的前端打包器，它提供了 “傻瓜式” 的使用体验，只需了解简单的命令，就能构建前端应用程序
@@ -1935,17 +1785,17 @@ Parcel ，是一款完全零配置的前端打包器，它提供了 “傻瓜式
 </html>
 ```
 
-main.js文件通过`ES Moudle`方法导入其他模块成员
+main.js 文件通过`ES Moudle`方法导入其他模块成员
 
 ```js
 // ./src/main.js
-import { log } from './logger'
-log('hello parcel')
+import { log } from "./logger";
+log("hello parcel");
 // ./src/logger.js
-export const log = msg => {
-  console.log('---------- INFO ----------')
-  console.log(msg)
-}
+export const log = (msg) => {
+	console.log("---------- INFO ----------");
+	console.log(msg);
+};
 ```
 
 运行之后，使用命令打包
@@ -1974,8 +1824,6 @@ npx parcel src/index.html
 
 可以感受到，`Parcel `给开发者一种很大的自由度，只管去实现业务代码，其他事情用`Parcel`解决
 
-
-
 #### Snowpack
 
 Snowpack，是一种闪电般快速的前端构建工具，专为现代`Web`设计，较复杂的打包工具（如`Webpack`或`Parcel`）的替代方案，利用`JavaScript`的本机模块系统，避免不必要的工作并保持流畅的开发体验
@@ -1984,9 +1832,9 @@ Snowpack，是一种闪电般快速的前端构建工具，专为现代`Web`设�
 
 下图给出`webpack`与`snowpack`打包区别：
 
- ![](https://static.vue-js.com/79197830-b1a3-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/79197830-b1a3-11eb-85f6-6fac77c0c9b3.png)
 
-在重新构建每次变更时没有任何的时间浪费，只需要在浏览器中进行HMR更新
+在重新构建每次变更时没有任何的时间浪费，只需要在浏览器中进行 HMR 更新
 
 #### Vite
 
@@ -1994,8 +1842,8 @@ vite 是一种新型前端构建工具，能够显著提升前端开发体验
 
 它主要由两部分组成：
 
-- 一个开发服务器，它基于 原生 ES 模块 提供了丰富的内建功能，如速度快到惊人的模块热更新HMR
-- 一套构建指令，它使用 Rollup打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源
+- 一个开发服务器，它基于 原生 ES 模块 提供了丰富的内建功能，如速度快到惊人的模块热更新 HMR
+- 一套构建指令，它使用 Rollup 打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源
 
 其作用类似`webpack `+ `webpack-dev-server`，其特点如下：
 
@@ -2009,11 +1857,9 @@ vite 是一种新型前端构建工具，能够显著提升前端开发体验
 
 原理图如下所示：
 
- ![](https://static.vue-js.com/9f2eed30-b143-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/9f2eed30-b143-11eb-85f6-6fac77c0c9b3.png)
 
 在热模块`HMR`方面，当修改一个模块的时候，仅需让浏览器重新请求该模块即可，无须像`webpack`那样需要把该模块的相关依赖模块全部编译一次，效率更高
-
-
 
 #### webpack
 
@@ -2023,18 +1869,11 @@ vite 是一种新型前端构建工具，能够显著提升前端开发体验
 
 - 智能解析：对 CommonJS 、 AMD 、ES6 的语法做了兼容
 - 万物模块：对 js、css、图片等资源文件都支持打包
-- 开箱即用：HRM、Tree-shaking等功能
+- 开箱即用：HRM、Tree-shaking 等功能
 - 代码分割：可以将代码切割成不同的 chunk，实现按需加载，降低了初始化时间
 - 插件系统，具有强大的 Plugin 接口，具有更好的灵活性和扩展性
 - 易于调试：支持 SourceUrls 和 SourceMaps
 - 快速运行：webpack 使用异步 IO 并具有多级缓存，这使得 webpack 很快且在增量编译上更加快
 - 生态环境好：社区更丰富，出现的问题更容易解决
 
-
-
-
 ### 参考文献
-
-
-[web前端面试官系列](https://vue3js.cn/interview/)
-

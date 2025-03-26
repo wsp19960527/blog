@@ -1,7 +1,14 @@
-# 面试官：JavaScript中执行上下文和执行栈是什么？
+---
+title: JavaScript中执行上下文和执行栈是什么？
+date: 2025/03/26
+tags:
+  - js
+  - JavaScript
+categories:
+  - 前端
+---
 
 ![](https://static.vue-js.com/8652b710-74c1-11eb-85f6-6fac77c0c9b3.png)
-
 
 ## 一、执行上下文
 
@@ -15,13 +22,11 @@
 
 下面给出全局上下文和函数上下文的例子：
 
- ![](https://static.vue-js.com/90dd3b60-74c1-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/90dd3b60-74c1-11eb-85f6-6fac77c0c9b3.png)
 
 紫色框住的部分为全局上下文，蓝色和橘色框起来的是不同的函数上下文。只有全局上下文（的变量）能被其他任何上下文访问
 
 可以有任意多个函数上下文，每次调用函数创建一个新的上下文，会创建一个私有作用域，函数内部声明的任何变量都不能在当前函数作用域外部直接访问
-
-
 
 ## 二、生命周期
 
@@ -40,19 +45,16 @@
 伪代码如下：
 
 ```js
-ExecutionContext = {  
-  ThisBinding = <this value>,     // 确定this 
+ExecutionContext = {
+  ThisBinding = <this value>,     // 确定this
   LexicalEnvironment = { ... },   // 词法环境
   VariableEnvironment = { ... },  // 变量环境
 }
 ```
 
-
-
 #### This Binding
 
 确定`this`的值我们前面讲到，`this`的值是在执行的时候才能确认，定义的时候不能确认
-
 
 #### 词法环境
 
@@ -69,9 +71,9 @@ GlobalExectionContext = {  // 全局执行上下文
   LexicalEnvironment: {       // 词法环境
     EnvironmentRecord: {     // 环境记录
       Type: "Object",           // 全局环境
-      // 标识符绑定在这里 
+      // 标识符绑定在这里
       outer: <null>           // 对外部环境的引用
-  }  
+  }
 }
 
 FunctionExectionContext = { // 函数执行上下文
@@ -79,12 +81,10 @@ FunctionExectionContext = { // 函数执行上下文
     EnvironmentRecord: {    // 环境记录
       Type: "Declarative",      // 函数环境
       // 标识符绑定在这里      // 对外部环境的引用
-      outer: <Global or outer function environment reference>  
-  }  
+      outer: <Global or outer function environment reference>
+  }
 }
 ```
-
-
 
 #### 变量环境
 
@@ -95,13 +95,13 @@ FunctionExectionContext = { // 函数执行上下文
 举个例子
 
 ```js
-let a = 20;  
-const b = 30;  
+let a = 20;
+const b = 30;
 var c;
 
-function multiply(e, f) {  
- var g = 20;  
- return e * f * g;  
+function multiply(e, f) {
+	var g = 20;
+	return e * f * g;
 }
 
 c = multiply(20, 30);
@@ -115,47 +115,47 @@ GlobalExectionContext = {
   ThisBinding: <Global Object>,
 
   LexicalEnvironment: {  // 词法环境
-    EnvironmentRecord: {  
-      Type: "Object",  
-      // 标识符绑定在这里  
-      a: < uninitialized >,  
-      b: < uninitialized >,  
-      multiply: < func >  
-    }  
-    outer: <null>  
+    EnvironmentRecord: {
+      Type: "Object",
+      // 标识符绑定在这里
+      a: < uninitialized >,
+      b: < uninitialized >,
+      multiply: < func >
+    }
+    outer: <null>
   },
 
   VariableEnvironment: {  // 变量环境
-    EnvironmentRecord: {  
-      Type: "Object",  
-      // 标识符绑定在这里  
-      c: undefined,  
-    }  
-    outer: <null>  
-  }  
+    EnvironmentRecord: {
+      Type: "Object",
+      // 标识符绑定在这里
+      c: undefined,
+    }
+    outer: <null>
+  }
 }
 
-FunctionExectionContext = {  
-   
+FunctionExectionContext = {
+
   ThisBinding: <Global Object>,
 
-  LexicalEnvironment: {  
-    EnvironmentRecord: {  
-      Type: "Declarative",  
-      // 标识符绑定在这里  
-      Arguments: {0: 20, 1: 30, length: 2},  
-    },  
-    outer: <GlobalLexicalEnvironment>  
+  LexicalEnvironment: {
+    EnvironmentRecord: {
+      Type: "Declarative",
+      // 标识符绑定在这里
+      Arguments: {0: 20, 1: 30, length: 2},
+    },
+    outer: <GlobalLexicalEnvironment>
   },
 
-  VariableEnvironment: {  
-    EnvironmentRecord: {  
-      Type: "Declarative",  
-      // 标识符绑定在这里  
-      g: undefined  
-    },  
-    outer: <GlobalLexicalEnvironment>  
-  }  
+  VariableEnvironment: {
+    EnvironmentRecord: {
+      Type: "Declarative",
+      // 标识符绑定在这里
+      g: undefined
+    },
+    outer: <GlobalLexicalEnvironment>
+  }
 }
 ```
 
@@ -167,27 +167,21 @@ FunctionExectionContext = {
 
 这就是变量提升的实际原因
 
-
-
 ### 执行阶段
 
 在这阶段，执行变量赋值、代码执行
 
 如果 `Javascript` 引擎在源代码中声明的实际位置找不到变量的值，那么将为其分配 `undefined` 值
 
-
-
 ### 回收阶段
 
 执行上下文出栈等待虚拟机回收执行上下文
-
-
 
 ## 二、执行栈
 
 执行栈，也叫调用栈，具有 LIFO（后进先出）结构，用于存储在代码执行期间创建的所有执行上下文
 
- ![](https://static.vue-js.com/9eda0310-74c1-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/9eda0310-74c1-11eb-ab90-d9ae814b240d.png)
 
 当`Javascript`引擎开始执行你第一行脚本代码的时候，它就会创建一个全局执行上下文然后将它压到执行栈中
 
@@ -198,22 +192,22 @@ FunctionExectionContext = {
 举个例子：
 
 ```js
-let a = 'Hello World!';
+let a = "Hello World!";
 function first() {
-  console.log('Inside first function');
-  second();
-  console.log('Again inside first function');
+	console.log("Inside first function");
+	second();
+	console.log("Again inside first function");
 }
 function second() {
-  console.log('Inside second function');
+	console.log("Inside second function");
 }
 first();
-console.log('Inside Global Execution Context');
+console.log("Inside Global Execution Context");
 ```
 
 转化成图的形式
 
- ![](https://static.vue-js.com/ac11a600-74c1-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/ac11a600-74c1-11eb-ab90-d9ae814b240d.png)
 
 简单分析一下流程：
 
@@ -223,7 +217,6 @@ console.log('Inside Global Execution Context');
 - `second`函数执行完毕，对应的函数执行上下文被推出执行栈，执行下一个执行上下文`first`函数
 - `first`函数执行完毕，对应的函数执行上下文也被推出栈中，然后执行全局上下文
 - 所有代码执行完毕，全局上下文也会被推出栈中，程序结束
-
 
 ## 参考文献
 

@@ -1,12 +1,20 @@
-# 面试官：说说你在使用React 过程中遇到的常见问题？如何解决?
+---
+title: React 总结
+date: 2025/03/26
+tags:
+  - react
+  - JavaScript
+categories:
+  - 前端
+---
 
-
- ![](https://static.vue-js.com/7efcd400-f47d-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/7efcd400-f47d-11eb-ab90-d9ae814b240d.png)
 
 ## 一、前言
+
 在使用`react`开发项目过程中，每个人或多或少都会遇到一些"奇怪"的问题，本质上都是我们对其理解的不够透彻
 
-`react` 系列，33个工作日，33次凌晨还在亮起的台灯，到今天就圆满画上句号了，比心
+`react` 系列，33 个工作日，33 次凌晨还在亮起的台灯，到今天就圆满画上句号了，比心
 
 在系列中我们列出了很多比较经典的考题，工作中遇到的问题也往往就藏中其中，只是以不同的表现形式存在罢了
 
@@ -16,39 +24,37 @@
 
 - react 有什么特性
 - 生命周期有哪些不同阶段？每个阶段对应的方法是？
-- state 和 props有什么区别？
-- super()和super(props)有什么区别？
-- setState执行机制？
-- React的事件机制？
+- state 和 props 有什么区别？
+- super()和 super(props)有什么区别？
+- setState 执行机制？
+- React 的事件机制？
 - 事件绑定的方式有哪些？
 - 构建组件的方式有哪些？区别？
 - 组件之间如何通信？
-- key有什么作用？
+- key 有什么作用？
 - refs 的理解？应用场景？
-- Hooks的理解？解决了什么问题？
-- 如何引入css？
-- redux工作原理？
-- redux中间件有哪些？
-- react-router组件有哪些？
-- render触发时机？
-- 如何减少render？
-- JSX转化DOM过程？
+- Hooks 的理解？解决了什么问题？
+- 如何引入 css？
+- redux 工作原理？
+- redux 中间件有哪些？
+- react-router 组件有哪些？
+- render 触发时机？
+- 如何减少 render？
+- JSX 转化 DOM 过程？
 - 性能优化手段有哪些
 - 如何做服务端渲染？
-
 
 ### react 有什么特性
 
 主要的特性分为：
 
-- JSX语法
+- JSX 语法
 - 单向数据绑定
-- 虚拟DOM
+- 虚拟 DOM
 - 声明式编程
 - Component
 
 借助这些特性，`react`整体使用起来更加简单高效，组件式开发提高了代码的复用率
-
 
 ### 生命周期有哪些不同阶段？每个阶段对应的方法是？
 
@@ -56,15 +62,13 @@
 
 - 新版生命周期整体流程如下图所示：
 
-   ![](https://static.vue-js.com/66c999c0-d373-11eb-85f6-6fac77c0c9b3.png)
+  ![](https://static.vue-js.com/66c999c0-d373-11eb-85f6-6fac77c0c9b3.png)
 
   旧的生命周期流程图如下：
 
   ![](https://static.vue-js.com/d379e420-d374-11eb-ab90-d9ae814b240d.png)
 
-
-
-### state 和 props有什么区别？
+### state 和 props 有什么区别？
 
 两者相同点：
 
@@ -78,9 +82,7 @@
 - props 在组件内部是不可修改的，但 state 在组件内部可以进行修改
 - state 是多变的、可以修改
 
-
-
-### super()和super(props)有什么区别？
+### super()和 super(props)有什么区别？
 
 在`React`中，类组件基于`ES6`，所以在`constructor`中必须使用`super`
 
@@ -88,22 +90,18 @@
 
 如果只调用了`super()`，那么`this.props`在`super()`和构造函数结束之间仍是`undefined`
 
-
-
-### setState执行机制？
+### setState 执行机制？
 
 在`react`类组件的状态需要通过`setState`进行更改，在不同场景下对应不同的执行顺序：
 
-- 在组件生命周期或React合成事件中，setState是异步
-- 在setTimeout或者原生dom事件中，setState是同步
+- 在组件生命周期或 React 合成事件中，setState 是异步
+- 在 setTimeout 或者原生 dom 事件中，setState 是同步
 
 当我们批量更改`state`的值的时候，`react`内部会将其进行覆盖，只取最后一次的执行结果
 
 当需要下一个`state`依赖当前`state`的时候，则可以在`setState`中传递一个回调函数进行下次更新
 
-
-
-### React的事件机制？
+### React 的事件机制？
 
 `React`基于浏览器的事件机制自身实现了一套事件机制，包括事件注册、事件的合成、事件冒泡、事件派发等
 
@@ -111,20 +109,16 @@
 
 自身实现了一套事件冒泡机制，阻止不同时间段的冒泡行为，需要对应使用不同的方法
 
-
-
 ### 事件绑定的方式有哪些？
 
 `react`常见的绑定方式有如下：
 
-- render方法中使用bind
-- render方法中使用箭头函数
-- constructor中bind
+- render 方法中使用 bind
+- render 方法中使用箭头函数
+- constructor 中 bind
 - 定义阶段使用箭头函数绑定
 
 前两种方式在每次组件`render`的时候都会生成新的方法实例，性能问题欠缺
-
-
 
 ### 构建组件的方式有哪些？区别？
 
@@ -136,25 +130,19 @@
 
 如今一般都是前两种方式，对于一些无状态的组件创建，建议使用函数式创建的方式，再比如`hooks`的机制下，函数式组件能做类组件对应的事情，所以建议都使用函数式的方式来创建组件
 
-
-
 ### 组件之间如何通信？
 
 组件间通信可以通过`props`、传递回调函数、`context`、`redux`等形式进行组件之间通讯
 
-
-
-### key有什么作用？
+### key 有什么作用？
 
 使用`key`是`react`性能优化的手段，在一系列数据最前面插入元素，如果没有`key`的值，则所有的元素都需要进行更换，而有`key`的情况只需要将最新元素插入到前面，不涉及删除操作
 
 在使用`key`的时候应保证：
 
 - key 应该是唯一的
-- key不要使用随机值（随机数在下一次 render 时，会重新生成一个数字）
+- key 不要使用随机值（随机数在下一次 render 时，会重新生成一个数字）
 - 避免使用 index 作为 key
-
-
 
 ### refs 的理解？应用场景？
 
@@ -162,14 +150,12 @@
 
 下面的场景使用`refs`非常有用：
 
-- 对Dom元素的焦点控制、内容选择、控制
-- 对Dom元素的内容设置及媒体播放
-- 对Dom元素的操作和对组件实例的操作
+- 对 Dom 元素的焦点控制、内容选择、控制
+- 对 Dom 元素的内容设置及媒体播放
+- 对 Dom 元素的操作和对组件实例的操作
 - 集成第三方 DOM 库
 
-
-
-### Hooks的理解？解决了什么问题？
+### Hooks 的理解？解决了什么问题？
 
 `Hook` 是 React 16.8 的新增特性。它可以让你在不编写 `class` 的情况下使用 `state` 以及其他的 `React` 特性
 
@@ -177,12 +163,10 @@
 
 - 难以重用和共享组件中的与状态相关的逻辑
 - 逻辑复杂的组件难以开发与维护，当我们的组件需要处理多个互不相关的 local state 时，每个生命周期函数中可能会包含着各种互不相关的逻辑在里面
-- 类组件中的this增加学习成本，类组件在基于现有工具的优化上存在些许问题
+- 类组件中的 this 增加学习成本，类组件在基于现有工具的优化上存在些许问题
 - 由于业务变动，函数组件不得不改为类组件等等
 
-
-
-### 如何引入css？
+### 如何引入 css？
 
 常见的`CSS`引入方式有以下：
 
@@ -197,9 +181,7 @@
 
 `css in js `这种方法，可以满足大部分场景的应用，可以类似于预处理器一样样式嵌套、定义、修改状态等
 
-
-
-### redux工作原理？
+### redux 工作原理？
 
 `redux `要求我们把数据都放在 `store `公共存储空间
 
@@ -207,20 +189,16 @@
 
 工作流程图如下所示：
 
- ![](https://static.vue-js.com/27b2e930-e56b-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/27b2e930-e56b-11eb-85f6-6fac77c0c9b3.png)
 
-
-
-### redux中间件有哪些？
+### redux 中间件有哪些？
 
 市面上有很多优秀的`redux`中间件，如：
 
 - redux-thunk：用于异步操作
 - redux-logger：用于日志记录
 
-
-
-### react-router组件有哪些？
+### react-router 组件有哪些？
 
 常见的组件有：
 
@@ -230,17 +208,13 @@
 - switch
 - redirect
 
-
-
-### render触发时机？
+### render 触发时机？
 
 在` React` 中，类组件只要执行了 `setState` 方法，就一定会触发 `render` 函数执行
 
 函数组件`useState` 会判断当前值有无发生改变确定是否执行`render`方法，一旦父组件发生渲染，子组件也会渲染
 
-
-
-### 如何减少render？
+### 如何减少 render？
 
 父组件渲染导致子组件渲染，子组件并没有发生任何改变，这时候就可以从避免无谓的渲染，具体实现的方式有如下：
 
@@ -248,13 +222,9 @@
 - PureComponent
 - React.memo
 
-
-
-### JSX转化DOM过程？
+### JSX 转化 DOM 过程？
 
 `jsx`首先会转化成`React.createElement`这种形式，`React.createElement`作用是生成一个虚拟`Dom`对象，然后会通过`ReactDOM.render`进行渲染成真实`DOM`
-
-
 
 ### 性能优化手段有哪些
 
@@ -277,4 +247,4 @@
 
 浏览器开始进行渲染和节点对比，然后执行完成组件内事件绑定和一些交互，浏览器重用了服务端输出的 `html` 节点，整个流程结束
 
- ![](https://static.vue-js.com/a2894970-f3f7-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/a2894970-f3f7-11eb-85f6-6fac77c0c9b3.png)

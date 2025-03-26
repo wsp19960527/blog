@@ -1,7 +1,16 @@
-# 面试官：说说对Css预编语言的理解？有哪些区别?
+---
+title: Css预编语言
+date: 2025/03/26
+tags:
+  - css
+  - sass
+  - less
+  - stylus
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/81cca1c0-a42c-11eb-85f6-6fac77c0c9b3.png)
-
+![](https://static.vue-js.com/81cca1c0-a42c-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -19,7 +28,6 @@
 
 包含一套自定义的语法及一个解析器，根据这些语法定义自己的样式规则，这些规则最终会通过解析器，编译生成对应的 `Css` 文件
 
-
 ## 二、有哪些
 
 `Css`预编译语言在前端里面有三大优秀的预编处理器，分别是：
@@ -27,8 +35,6 @@
 - sass
 - less
 - stylus
-
-
 
 ### sass
 
@@ -38,21 +44,15 @@
 
 ### less
 
-2009年出现，受` SASS `的影响较大，但又使用 `Css` 的语法，让大部分开发者和设计师更容易上手，在 `Ruby `社区之外支持者远超过 `SASS`
+2009 年出现，受`SASS`的影响较大，但又使用 `Css` 的语法，让大部分开发者和设计师更容易上手，在 `Ruby `社区之外支持者远超过 `SASS`
 
 其缺点是比起 `SASS `来，可编程功能不够，不过优点是简单和兼容 `Css`，反过来也影响了 `SASS `演变到了` Scss` 的时代
-
-
 
 ### stylus
 
 `Stylus `是一个`Css`的预处理框架，2010 年产生，来自 `Node.js `社区，主要用来给 `Node` 项目进行 `Css` 预处理支持
 
-所以` Stylus` 是一种新型语言，可以创建健壮的、动态的、富有表现力的` Css`。比较年轻，其本质上做的事情与` SASS/LESS `等类似
-
-
-
-
+所以` Stylus` 是一种新型语言，可以创建健壮的、动态的、富有表现力的` Css`。比较年轻，其本质上做的事情与`SASS/LESS`等类似
 
 ## 三、区别
 
@@ -66,11 +66,9 @@
 
 因此，下面就展开这些方面的区别
 
-
-
 ### 基本使用
 
-less和scss
+less 和 scss
 
 ```Css
 .box {
@@ -92,10 +90,6 @@ stylus
   display: block
 ```
 
-
-
-
-
 ### 嵌套
 
 三者的嵌套语法都是一致的，甚至连引用父级选择器的标记 & 也相同
@@ -111,8 +105,6 @@ less
   }
 }
 ```
-
-
 
 ### 变量
 
@@ -149,10 +141,6 @@ strong
   color: red
 ```
 
-
-
-
-
 ### 作用域
 
 `Css` 预编译器把变量赋予作用域，也就是存在生命周期。就像 `js `一样，它会先从局部作用域查找变量，依次向上级作用域查找
@@ -169,7 +157,7 @@ $color: black;
 }
 .unscoped {
   color:$color;
-} 
+}
 ```
 
 编译后
@@ -181,12 +169,10 @@ $color: black;
 }
 .unscoped {
   color:white;/*白色（无全局变量概念）*/
-} 
+}
 ```
 
 所以，在`sass`中最好不要定义相同的变量名
-
-
 
 `less`与`stylus`的作用域跟`javascript`十分的相似，首先会查找局部定义的变量，如果没有找到，会像冒泡一样，一级一级往下查找，直到根为止
 
@@ -200,7 +186,7 @@ $color: black;
 }
 .unscoped {
   color:@color;
-} 
+}
 ```
 
 编译后：
@@ -212,12 +198,8 @@ $color: black;
 }
 .unscoped {
   color:black;/*黑色（调用了全局变量）*/
-} 
+}
 ```
-
-
-
-
 
 ### 混入
 
@@ -292,12 +274,8 @@ error(borderWidth= 2px) {
   position: absolute;
   top: 20px;
   error(5px); /* 调用error mixins，并将参数$borderWidth的值指定为5px */
-} 
+}
 ```
-
-
-
-
 
 ### 代码模块化
 
@@ -311,8 +289,6 @@ error(borderWidth= 2px) {
 @import './mixin';
 @import './variables';
 ```
-
-
 
 ## 参考文献
 

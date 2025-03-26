@@ -1,6 +1,13 @@
-# 面试官：怎么理解回流跟重绘？什么场景下会触发？
+---
+title: 回流与重绘
+date: 2025/03/26
+tags:
+  - css3
+categories:
+  - 前端
+---
 
- ![](https://static.vue-js.com/1ed5d340-9cdc-11eb-85f6-6fac77c0c9b3.png)
+![](https://static.vue-js.com/1ed5d340-9cdc-11eb-85f6-6fac77c0c9b3.png)
 
 ## 一、是什么
 
@@ -12,24 +19,20 @@
 
 具体的浏览器解析渲染机制如下所示：
 
- ![](https://static.vue-js.com/2b56a950-9cdc-11eb-ab90-d9ae814b240d.png)
+![](https://static.vue-js.com/2b56a950-9cdc-11eb-ab90-d9ae814b240d.png)
 
-- 解析HTML，生成DOM树，解析CSS，生成CSSOM树
+- 解析 HTML，生成 DOM 树，解析 CSS，生成 CSSOM 树
 
-- 将DOM树和CSSOM树结合，生成渲染树(Render Tree)
+- 将 DOM 树和 CSSOM 树结合，生成渲染树(Render Tree)
 - Layout(回流):根据生成的渲染树，进行回流(Layout)，得到节点的几何信息（位置，大小）
 - Painting(重绘):根据渲染树以及回流得到的几何信息，得到节点的绝对像素
-- Display:将像素发送给GPU，展示在页面上
-
-
+- Display:将像素发送给 GPU，展示在页面上
 
 在页面初始渲染阶段，回流不可避免的触发，可以理解成页面一开始是空白的元素，后面添加了新的元素使页面布局发生改变
 
 当我们对 `DOM` 的修改引发了 `DOM `几何尺寸的变化（比如修改元素的宽、高或隐藏元素等）时，浏览器需要重新计算元素的几何属性，然后再将计算的结果绘制出来
 
 当我们对 `DOM `的修改导致了样式的变化（`color`或`background-color`），却并未影响其几何属性时，浏览器不需重新计算元素的几何属性、直接为该元素绘制新的样式，这里就仅仅触发了重绘
-
-
 
 ## 二、如何触发
 
@@ -39,7 +42,7 @@
 
 回流这一阶段主要是计算节点的位置和几何信息，那么当页面布局和几何信息发生变化的时候，就需要回流，如下面情况：
 
-- 添加或删除可见的DOM元素
+- 添加或删除可见的 DOM 元素
 - 元素的位置发生变化
 - 元素的尺寸发生变化（包括外边距、内边框、边框大小、高度和宽度等）
 - 内容发生变化，比如文本变化或图片被另一个不同尺寸的图片所替代
@@ -54,8 +57,6 @@
 
 除此还包括`getComputedStyle `方法，原理是一样的
 
-
-
 ### 重绘触发时机
 
 触发回流一定会触发重绘
@@ -69,8 +70,6 @@
 - 文本方向的修改
 - 阴影的修改
 
-
-
 ### 浏览器优化机制
 
 由于每次重排都会造成额外的计算消耗，因此大多数浏览器都会通过队列化修改并批量执行来优化重排过程。浏览器会将修改操作放入到队列里，直到过了一段时间或者操作达到了一个阈值，才清空队列
@@ -78,8 +77,6 @@
 当你获取布局信息的操作的时候，会强制队列刷新，包括前面讲到的`offsetTop`等方法都会返回最新的数据
 
 因此浏览器不得不清空队列，触发回流重绘来返回正确的值
-
-
 
 ## 三、如何减少
 
@@ -90,7 +87,7 @@
 - 应用元素的动画，使用 `position` 属性的 `fixed` 值或 `absolute` 值(如前文示例所提)
 - 避免使用 `table` 布局，`table` 中每个元素的大小以及内容的改动，都会导致整个 `table` 的重新计算
 - 对于那些复杂的动画，对其设置 `position: fixed/absolute`，尽可能地使元素脱离文档流，从而减少对其他元素的影响
-- 使用css3硬件加速，可以让`transform`、`opacity`、`filters`这些动画不会引起回流重绘
+- 使用 css3 硬件加速，可以让`transform`、`opacity`、`filters`这些动画不会引起回流重绘
 - 避免使用 CSS 的 `JavaScript` 表达式
 
 在使用 `JavaScript` 动态插入多个节点时, 可以使用`DocumentFragment`. 创建后一次插入. 就能避免多次的渲染性能
@@ -100,10 +97,10 @@
 例如，多次修改一个把元素布局的时候，我们很可能会如下操作
 
 ```js
-const el = document.getElementById('el')
-for(let i=0;i<10;i++) {
-    el.style.top  = el.offsetTop  + 10 + "px";
-    el.style.left = el.offsetLeft + 10 + "px";
+const el = document.getElementById("el");
+for (let i = 0; i < 10; i++) {
+	el.style.top = el.offsetTop + 10 + "px";
+	el.style.left = el.offsetLeft + 10 + "px";
 }
 ```
 
@@ -111,44 +108,45 @@ for(let i=0;i<10;i++) {
 
 ```js
 // 缓存offsetLeft与offsetTop的值
-const el = document.getElementById('el')
-let offLeft = el.offsetLeft, offTop = el.offsetTop
+const el = document.getElementById("el");
+let offLeft = el.offsetLeft,
+	offTop = el.offsetTop;
 
 // 在JS层面进行计算
-for(let i=0;i<10;i++) {
-  offLeft += 10
-  offTop  += 10
+for (let i = 0; i < 10; i++) {
+	offLeft += 10;
+	offTop += 10;
 }
 
 // 一次性将计算结果应用到DOM上
-el.style.left = offLeft + "px"
-el.style.top = offTop  + "px"
+el.style.left = offLeft + "px";
+el.style.top = offTop + "px";
 ```
 
 我们还可避免改变样式，使用类名去合并样式
 
 ```js
-const container = document.getElementById('container')
-container.style.width = '100px'
-container.style.height = '200px'
-container.style.border = '10px solid red'
-container.style.color = 'red'
+const container = document.getElementById("container");
+container.style.width = "100px";
+container.style.height = "200px";
+container.style.border = "10px solid red";
+container.style.color = "red";
 ```
 
 使用类名去合并样式
 
 ```html
 <style>
-    .basic_style {
-        width: 100px;
-        height: 200px;
-        border: 10px solid red;
-        color: red;
-    }
+	.basic_style {
+		width: 100px;
+		height: 200px;
+		border: 10px solid red;
+		color: red;
+	}
 </style>
 <script>
-    const container = document.getElementById('container')
-    container.classList.add('basic_style')
+	const container = document.getElementById("container");
+	container.classList.add("basic_style");
 </script>
 ```
 
@@ -161,11 +159,11 @@ container.style.color = 'red'
 我们还可以通过通过设置元素属性`display: none`，将其从页面上去掉，然后再进行后续操作，这些后续操作也不会触发回流与重绘，这个过程称为离线操作
 
 ```js
-const container = document.getElementById('container')
-container.style.width = '100px'
-container.style.height = '200px'
-container.style.border = '10px solid red'
-container.style.color = 'red'
+const container = document.getElementById("container");
+container.style.width = "100px";
+container.style.height = "200px";
+container.style.border = "10px solid red";
+container.style.color = "red";
 ```
 
 离线操作后
@@ -180,8 +178,6 @@ container.style.color = 'red'
 ...（省略了许多类似的后续操作）
 container.style.display = 'block'
 ```
-
-
 
 ## 参考文献
 
