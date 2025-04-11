@@ -182,3 +182,6 @@ store.dispatch({
 - https://cn.redux.js.org/docs/introduction/
 - https://www.redux.org.cn/docs/basics/Actions.html
 - https://lulujianglab.com/posts/大白话解析 Redux 、 redux-thunk 、redux-saga 和 react-redux
+
+![alt text](image.png)
+![alt text](image-1.png)
