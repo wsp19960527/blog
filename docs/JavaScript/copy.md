@@ -177,6 +177,35 @@ function deepClone(obj, hash = new WeakMap()) {
 }
 ```
 
+### structuredClone
+
+`structuredClone`是浏览器原生提供的深拷贝方法，支持大部分数据类型，包括`Date`、`Map`、`Set`、`ArrayBuffer`等
+
+```js
+const obj1 = {
+	a: 1,
+	b: { f: { g: 1 } },
+	c: [1, 2, 3],
+};
+const obj2 = structuredClone(obj1);
+console.log(obj1.b.f === obj2.b.f); // false
+```
+
+`structuredClone`的优点是性能较高，缺点是浏览器兼容性较差，部分浏览器不支持该方法
+`structuredClone`的兼容性如下：
+
+- Chrome 98+
+- Firefox 86+
+- Safari 15.4+
+- Edge 98+
+- Node.js 17.0+
+- Deno 1.18+
+- Opera 84+
+- Android WebView 98+
+- iOS Safari 15.4+
+- Samsung Internet 16.0+
+- Opera Mini 8.0+
+
 ## 四、区别
 
 下面首先借助两张图，可以更加清晰看到浅拷贝与深拷贝的区别
